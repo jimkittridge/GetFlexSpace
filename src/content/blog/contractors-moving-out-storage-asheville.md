@@ -4,8 +4,8 @@ slug: "contractors-moving-out-storage-asheville"
 description: "Storage units vs warehouse space in Asheville. Contractors and service businesses are upgrading from climate-controlled units to flex space with power, drive-in doors, and parking."
 date: "2026-04-11"
 categories:
-  - category: "NC"
-  - category: "Asheville"
+  - NC
+  - Asheville
 image: "/images/exterior-closeup.svg"
 imageAlt: "Contractor flex space garage with drive-in door, better than storage units"
 author: ""

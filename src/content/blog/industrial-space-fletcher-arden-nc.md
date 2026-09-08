@@ -4,8 +4,8 @@ slug: "industrial-space-fletcher-arden-nc"
 description: "Fletcher and Arden hold most of Asheville's industrial inventory. Flex space rents $18-22/SF with I-26 access, high clear height, and drive-in doors. Ideal for contractors, distributors, and service businesses."
 date: "2026-04-03"
 categories:
-  - category: "NC"
-  - category: "Asheville"
+  - NC
+  - Asheville
 image: "/images/DSC00318.JPG"
 imageAlt: "Industrial park in Fletcher, NC with flex space and modern warehouse buildings"
 author: ""

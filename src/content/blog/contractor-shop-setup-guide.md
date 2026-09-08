@@ -4,8 +4,8 @@ slug: "contractor-shop-setup-guide"
 date: "2026-04-17"
 description: "Contractor shop needs 100-200 amp electrical, drive-in door, parts storage, vehicle bay. Get landlord approval for modifications, signage, after-hours access before signing."
 categories:
-  - category: "NC"
-  - category: "SC"
+  - NC
+  - SC
 image: "/images/exterior-front.svg"
 imageAlt: "Contractor shop interior with vehicle bay, workbench, tool storage, and office desk"
 author: ""

@@ -4,8 +4,8 @@ slug: "contractor-shop-space-columbia-sc"
 date: "2026-03-29"
 description: "Contractor shop space in Columbia SC. Fort Jackson maintenance, USC projects, state work. Where to find bays with loading, electrical, tools storage."
 categories:
-  - category: "SC"
-  - category: "Columbia"
+  - SC
+  - Columbia
 image: "/images/129-131-Calvin-Dr-Columbia-SC-Building-Photo-3-LargeHighDefinition.jpg"
 imageAlt: "Industrial contractor bay with overhead door and work space in Columbia"
 author: ""

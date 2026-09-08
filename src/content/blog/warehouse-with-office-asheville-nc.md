@@ -4,8 +4,8 @@ slug: "warehouse-with-office-asheville-nc"
 description: "Warehouse with office space near Asheville. Find 1,000-3,000 SF units with integrated office in Fletcher and Arden. Cost ranges and what to look for."
 date: "2026-04-19"
 categories:
-  - category: "NC"
-  - category: "Asheville"
+  - NC
+  - Asheville
 image: "/images/exterior-full.svg"
 imageAlt: "Warehouse flex space with integrated office in Fletcher, North Carolina"
 author: ""

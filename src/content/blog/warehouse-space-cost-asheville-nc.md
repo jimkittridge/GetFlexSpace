@@ -4,8 +4,8 @@ slug: "warehouse-space-cost-asheville-nc"
 description: "Warehouse space near Asheville costs $18-22/SF base rent plus $400-600/month NNN. Prices vary by location, building age, and amenities. See real costs for 1,000-3,000 SF units."
 date: "2026-04-07"
 categories:
-  - category: "NC"
-  - category: "Asheville"
+  - NC
+  - Asheville
 image: "/images/DJI_0210.JPG"
 imageAlt: "Flexible warehouse space for lease in Fletcher, NC near Asheville"
 author: ""

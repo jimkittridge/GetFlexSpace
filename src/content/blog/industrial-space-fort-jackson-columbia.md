@@ -4,8 +4,8 @@ slug: "industrial-space-fort-jackson-columbia"
 date: "2026-04-06"
 description: "Fort Jackson drives industrial demand in Columbia. $6.6B annual economic impact. Military contractors, supply logistics, and base support services need warehouse space."
 categories:
-  - category: "SC"
-  - category: "Columbia"
+  - SC
+  - Columbia
 image: "/images/exterior-angle.svg"
 imageAlt: "Industrial space in Columbia SC supporting Fort Jackson military operations"
 author: ""

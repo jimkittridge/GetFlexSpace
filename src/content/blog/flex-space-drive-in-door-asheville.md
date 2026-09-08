@@ -4,8 +4,8 @@ slug: "flex-space-drive-in-door-asheville"
 description: "Flex space with drive-in door near Asheville in Fletcher and Arden. Drive-in doors matter for contractors, distributors, and equipment businesses. Clear height and apron grade also critical."
 date: "2026-04-27"
 categories:
-  - category: "NC"
-  - category: "Asheville"
+  - NC
+  - Asheville
 image: "/images/IMG_9519.JPG"
 imageAlt: "Flex space warehouse with drive-in door opening to loaded truck"
 author: ""

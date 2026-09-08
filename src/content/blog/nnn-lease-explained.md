@@ -4,8 +4,8 @@ slug: "nnn-lease-explained"
 description: "NNN lease = base rent + property tax + insurance + CAM. Example: $20/SF base + $4/SF NNN = $24/SF total. Learn what's included and how to read lease abstracts."
 date: "2026-04-01"
 categories:
-  - category: "NC"
-  - category: "SC"
+  - NC
+  - SC
 image: "/images/DSC00334.JPG"
 imageAlt: "Lease document showing rental rate breakdown and NNN charges"
 author: ""

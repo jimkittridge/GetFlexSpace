@@ -4,8 +4,8 @@ slug: "columbia-three-interstate-distribution"
 date: "2026-04-22"
 description: "Columbia three-interstate advantage: I-20 to Atlanta/coast, I-77 to Charlotte, I-26 to Charleston. Drive times and logistics strategy for regional service and distribution."
 categories:
-  - category: "SC"
-  - category: "Columbia"
+  - SC
+  - Columbia
 image: "/images/DSC00318.JPG"
 imageAlt: "Map showing Columbia SC at the intersection of I-20, I-26, and I-77 interstates"
 author: ""

@@ -4,8 +4,8 @@ slug: "warehouse-drive-in-door-guide"
 description: "Drive-in vs. dock-high loading. Drive-in doors range 10x10 to 14x14. Standard sizes fit cargo van, box truck, small trailer. [Get Flex Space](/) offers 10-14 ft drive-in doors."
 date: "2026-04-13"
 categories:
-  - category: "NC"
-  - category: "SC"
+  - NC
+  - SC
 image: "/images/exterior-closeup.svg"
 imageAlt: "Warehouse drive-in door with box truck entering bay"
 author: ""

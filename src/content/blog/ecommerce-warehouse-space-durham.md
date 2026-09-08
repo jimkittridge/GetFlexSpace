@@ -4,8 +4,8 @@ slug: "ecommerce-warehouse-space-durham"
 date: "2026-04-25"
 description: "E-commerce in Durham needs racking-friendly clear height, power for packing, I-40/I-85 access. Start small in 950-1,500 SF flex space; estimate SF by SKU count and inventory depth."
 categories:
-  - category: "NC"
-  - category: "Durham"
+  - NC
+  - Durham
 image: "/images/IMG_9519.JPG"
 imageAlt: "E-commerce warehouse with packing stations, shelving, and shipping area"
 author: ""

@@ -4,8 +4,8 @@ slug: "asheville-helene-rebuild-warehouse-demand"
 description: "Hurricane Helene rebuild is driving demand for contractor space and equipment storage in Asheville. Flex space availability is critically tight in Fletcher and Arden."
 date: "2026-03-30"
 categories:
-  - category: "NC"
-  - category: "Asheville"
+  - NC
+  - Asheville
 image: "/images/exterior-angle.svg"
 imageAlt: "Asheville warehouse space available for post-hurricane rebuild operations"
 author: ""

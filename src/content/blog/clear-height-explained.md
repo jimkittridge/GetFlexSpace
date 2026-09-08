@@ -4,8 +4,8 @@ slug: "clear-height-explained"
 description: "Clear height is floor to lowest obstruction. Most contractors need 12-14 ft; e-commerce with racking needs 16-18 ft. [Get Flex Space](/) offers 14-20 ft clear height."
 date: "2026-03-28"
 categories:
-  - category: "NC"
-  - category: "SC"
+  - NC
+  - SC
 image: "/images/DSC00318.JPG"
 imageAlt: "Warehouse interior showing clear height measurement from floor to ceiling with racking systems"
 author: ""

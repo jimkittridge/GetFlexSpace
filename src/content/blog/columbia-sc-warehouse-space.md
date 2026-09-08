@@ -4,8 +4,8 @@ slug: "columbia-sc-warehouse-space"
 description: "Industrial space in Columbia SC from 2,000-4,000 SF. Lower rents than Charlotte. Drive-in doors, 24/7 access, move-in as fast as 2 weeks."
 date: "2026-03-25"
 categories:
-  - category: "SC"
-  - category: "Columbia"
+  - SC
+  - Columbia
 image: "/images/129-131-Calvin-Dr-Columbia-SC-Building-Photo-1-LargeHighDefinition.jpg"
 imageAlt: "Small industrial warehouse with drive-in door and loading access in Columbia"
 author: ""

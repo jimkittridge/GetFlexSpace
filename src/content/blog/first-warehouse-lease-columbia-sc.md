@@ -4,8 +4,8 @@ slug: "first-warehouse-lease-columbia-sc"
 date: "2026-04-14"
 description: "Guide to leasing your first warehouse in Columbia SC. Determine size, understand NNN vs gross rent, tour, negotiate, move in as fast as 2 weeks."
 categories:
-  - category: "SC"
-  - category: "Columbia"
+  - SC
+  - Columbia
 image: "/images/exterior-closeup.svg"
 imageAlt: "First-time warehouse tenant touring a Columbia industrial space"
 author: ""

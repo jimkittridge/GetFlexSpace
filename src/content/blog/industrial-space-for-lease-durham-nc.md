@@ -4,8 +4,8 @@ slug: "industrial-space-for-lease-durham-nc"
 description: "Industrial space for lease in Durham ranges $14-22/SF depending on location. South Durham near I-40 offers newer builds; RTP corridor commands premium pricing. See current availability."
 date: "2026-03-20"
 categories:
-  - category: "NC"
-  - category: "Durham"
+  - NC
+  - Durham
 image: "/images/DJI_0194.JPG"
 imageAlt: "Modern industrial flex warehouse with drive-in door and clear height"
 author: ""

@@ -4,8 +4,8 @@ slug: "small-warehouse-with-office-durham"
 description: "Hybrid warehouse-office space is ideal for service businesses and e-commerce. Most tenants want 10-30% office. Durham flex space offers integrated office-warehouse combos at $20/SF."
 date: "2026-04-09"
 categories:
-  - category: "NC"
-  - category: "Durham"
+  - NC
+  - Durham
 image: "/images/exterior-angle.svg"
 imageAlt: "Warehouse office combination space with desk area overlooking bay"
 author: ""

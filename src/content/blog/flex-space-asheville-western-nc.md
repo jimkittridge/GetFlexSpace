@@ -4,8 +4,8 @@ slug: "flex-space-asheville-western-nc"
 description: "Flex space and small warehouses near Asheville rent from $18-22/SF. Fletcher and Arden offer 1,000-3,000 SF units with drive-in doors and high clear height."
 date: "2026-03-22"
 categories:
-  - category: "NC"
-  - category: "Asheville"
+  - NC
+  - Asheville
 image: "/images/city-asheville-photo.jpeg"
 imageAlt: "Flex space warehouse with drive-in door near Asheville, NC"
 author: ""

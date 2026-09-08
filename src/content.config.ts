@@ -90,8 +90,11 @@ const pages = defineCollection({
     }).optional(),
     // Homepage fields
     heroBackgroundImage: z.string().optional(),
-    heroOverlayColor: z.string().optional().default('#000000'),
-    heroOverlayOpacity: z.number().optional().default(55),
+    // Sveltia CMS writes `null` (or an empty string) when these are cleared in
+    // the admin UI. Zod's .default() only fills in for `undefined`, so a cleared
+    // field would fail validation and break the build — coerce explicitly.
+    heroOverlayColor: z.string().nullish().transform((v) => v || '#000000'),
+    heroOverlayOpacity: z.number().nullish().transform((v) => v ?? 55),
     logo: z.string().optional(),
     bullets: z.array(z.string()).optional(),
     stats: z.array(z.object({

@@ -4,8 +4,8 @@ slug: "small-warehouse-hendersonville-south-asheville"
 description: "Small warehouse in Hendersonville rents $14-16/SF NNN. Less competition than Fletcher. I-26 access. Good for south county contractors and distributors."
 date: "2026-04-23"
 categories:
-  - category: "NC"
-  - category: "Asheville"
+  - NC
+  - Asheville
 image: "/images/DSC00334.JPG"
 imageAlt: "Small warehouse space for rent in Hendersonville, North Carolina"
 author: ""

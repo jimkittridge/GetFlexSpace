@@ -4,8 +4,8 @@ slug: "durham-industrial-submarkets"
 description: "South Durham near I-40 offers newest inventory at $18-22/SF. East Durham is $14-18/SF but older. RTP corridor commands premiums for tech-adjacent tenants at $20-25/SF."
 date: "2026-04-05"
 categories:
-  - category: "NC"
-  - category: "Durham"
+  - NC
+  - Durham
 image: "/images/Durham Flex Space.png"
 imageAlt: "Aerial view of Durham industrial parks showing warehouse buildings and interstate access"
 author: ""

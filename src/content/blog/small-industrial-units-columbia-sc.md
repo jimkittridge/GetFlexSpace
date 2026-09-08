@@ -4,8 +4,8 @@ slug: "small-industrial-units-columbia-sc"
 date: "2026-04-30"
 description: "Small industrial units in Columbia SC under 3,000 SF. Gap in market. Multi-tenant flex buildings, converted properties, older parks. What to expect."
 categories:
-  - category: "SC"
-  - category: "Columbia"
+  - SC
+  - Columbia
 image: "/images/DSC00334.JPG"
 imageAlt: "Small multi-tenant industrial building with flex space units in Columbia"
 author: ""

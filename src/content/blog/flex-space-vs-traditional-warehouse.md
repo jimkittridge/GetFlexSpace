@@ -4,8 +4,8 @@ slug: "flex-space-vs-traditional-warehouse"
 date: "2026-04-21"
 description: "Flex space: 950-3,000 SF, office included, 1-5 year leases, $20-25/SF. Traditional warehouse: 10,000+ SF, single tenant, longer terms, $15-20/SF. Choose based on growth stage."
 categories:
-  - category: "NC"
-  - category: "SC"
+  - NC
+  - SC
 image: "/images/exterior-full.svg"
 imageAlt: "Comparison view showing modern flex warehouse and traditional distribution center"
 author: ""

@@ -4,8 +4,8 @@ slug: "warehouse-loading-access-columbia-sc"
 date: "2026-04-18"
 description: "Warehouse loading access in Columbia SC. Drive-in doors, dock-high, ramps. What small tenants need. Apron depth, turning radius, corridor-specific guidance."
 categories:
-  - category: "SC"
-  - category: "Columbia"
+  - SC
+  - Columbia
 image: "/images/exterior-front.svg"
 imageAlt: "Warehouse drive-in door with open bay and loading area in Columbia"
 author: ""

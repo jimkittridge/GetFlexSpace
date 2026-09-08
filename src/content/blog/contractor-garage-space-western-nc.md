@@ -4,8 +4,8 @@ slug: "contractor-garage-space-western-nc"
 description: "Contractor garage space in Western NC rents $18-22/SF NNN. Find 1,000-3,000 SF bays in Fletcher and Arden with high clear height, 200 amp power, and drive-in doors."
 date: "2026-03-26"
 categories:
-  - category: "NC"
-  - category: "Asheville"
+  - NC
+  - Asheville
 image: "/images/DJI_0194.JPG"
 imageAlt: "Contractor garage bay with drive-in door in Fletcher, NC near Asheville"
 author: ""

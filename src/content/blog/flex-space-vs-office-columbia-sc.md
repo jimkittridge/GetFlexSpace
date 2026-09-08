@@ -4,8 +4,8 @@ slug: "flex-space-vs-office-columbia-sc"
 date: "2026-04-26"
 description: "Flex space vs office in Columbia SC. Flex $14-18/SF with warehouse. Downtown office $18-24/SF office-only. When to make the move."
 categories:
-  - category: "SC"
-  - category: "Columbia"
+  - SC
+  - Columbia
 image: "/images/exterior-full.svg"
 imageAlt: "Comparison of office space downtown versus flex space with warehouse in Columbia"
 author: ""

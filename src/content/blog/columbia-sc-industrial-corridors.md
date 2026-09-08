@@ -4,8 +4,8 @@ slug: "columbia-sc-industrial-corridors"
 date: "2026-04-10"
 description: "Columbia industrial corridors: I-20 East (newest, $16-20/SF), I-77 North (premium, $18-24/SF), I-26 (coast access), Cayce (lowest rent, $12-16/SF)."
 categories:
-  - category: "SC"
-  - category: "Columbia"
+  - SC
+  - Columbia
 image: "/images/DJI_0210.JPG"
 imageAlt: "Map of Columbia SC industrial corridors along I-20, I-26, and I-77"
 author: ""

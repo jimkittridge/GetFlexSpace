@@ -4,8 +4,8 @@ slug: "columbia-vs-charlotte-industrial-space"
 date: "2026-04-02"
 description: "Columbia vs Charlotte industrial space. Columbia: 30-40% cheaper, less competition, faster leases. Charlotte: bigger market, more inventory, stronger labor pool."
 categories:
-  - category: "SC"
-  - category: "Columbia"
+  - SC
+  - Columbia
 image: "/images/DJI_0194.JPG"
 imageAlt: "Comparison of warehouse locations between Columbia SC and Charlotte NC"
 author: ""

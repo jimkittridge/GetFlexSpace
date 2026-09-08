@@ -4,8 +4,8 @@ slug: "contractor-bay-vs-storage-unit"
 description: "Storage unit costs $141/mo but offers no power or drive-in access. Contractor bay costs ~$1,583/mo for 950+ SF with drive-in, 14-20 ft clear, 100-200 amp. Real cost comparison."
 date: "2026-03-24"
 categories:
-  - category: "NC"
-  - category: "SC"
+  - NC
+  - SC
 image: "/images/DJI_0210.JPG"
 imageAlt: "Contractor work bay with drive-in door, workbench, and equipment storage"
 author: ""

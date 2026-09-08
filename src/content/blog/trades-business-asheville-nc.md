@@ -4,8 +4,8 @@ slug: "trades-business-asheville-nc"
 description: "Start a trades business in Asheville. Permits, zoning, licensing requirements for plumbers, electricians, HVAC, and contractors in Buncombe County and Western NC."
 date: "2026-04-15"
 categories:
-  - category: "NC"
-  - category: "Asheville"
+  - NC
+  - Asheville
 image: "/images/exterior-front.svg"
 imageAlt: "Trades business operating from flex space in Fletcher near Asheville"
 author: ""
