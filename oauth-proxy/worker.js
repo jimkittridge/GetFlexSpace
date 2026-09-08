@@ -58,6 +58,13 @@ async function handleCallback(url, env) {
 
   const data = await tokenRes.json();
 
+  // Build the handshake message, then embed it as a properly escaped JS
+  // string literal. Interpolating raw JSON here would emit unescaped double
+  // quotes and break the inline script with a SyntaxError.
+  const message = data.access_token
+    ? `authorization:github:success:${JSON.stringify({ token: data.access_token, provider: 'github' })}`
+    : `authorization:github:error:${JSON.stringify(data)}`;
+
   // Return HTML that sends the token back to the CMS via postMessage
   const html = `<!doctype html>
 <html><body><script>
@@ -75,11 +82,7 @@ async function handleCallback(url, env) {
       if (!sent) window.close();
     }, 5000);
   }
-  sendMsg(${
-    data.access_token
-      ? `"authorization:github:success:${JSON.stringify({ token: data.access_token, provider: 'github' })}"`
-      : `"authorization:github:error:${JSON.stringify(data)}"`
-  });
+  sendMsg(${JSON.stringify(message)});
 })();
 </script></body></html>`;
 
