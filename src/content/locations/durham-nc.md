@@ -88,7 +88,7 @@ faq:
     answer: Common fits include contractors, trades, service businesses, e-commerce, fulfillment, light manufacturing, biotech support, and showroom plus warehouse users.
 schema:
   address:
-    street: 200 Industrial Blvd
+    street: 1320 Old Oxford Rd
     city: Durham
     state: NC
     zip: '27701'
