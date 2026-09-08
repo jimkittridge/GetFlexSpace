@@ -55,7 +55,7 @@ suites:
     size: 1,200 SF
     status: waitlist
     description: Good for smaller operators that need storage, workspace, and flexible warehouse plus office use.
-    baseRent: ''
+    baseRent: $22.00 / SF NNN
 tenantProfiles:
   - title: Contractor bay space
     description: Ideal for electricians, plumbers, HVAC companies, painters, landscapers, and other trades that need room for tools, materials, vehicles, and daily dispatch.
@@ -93,9 +93,9 @@ schema:
     state: NC
     zip: '27701'
   geo:
-    lat: 35.994
-    lng: -78.8986
-  phone: '+19195551234'
+    lat: 36.03841781616211
+    lng: -78.885
+  phone: '+17046003839'
 heroH1: Flex Space, Small Warehouse & Contractor Bay Space for Lease in Durham, NC
 heroSubtitle: Small warehouse and flex space for lease in Durham, NC for contractors, service businesses, e-commerce operators, and light industrial users. 950–3,000 SF, 10'–14' drive-in doors, 14–20 ft clear height, and 24/7 access, with HVAC available in some units.
 suitesHeading: 'Available now: 950 SF warehouse suite in Durham'
