@@ -23,4 +23,8 @@ const subject = `GetFlexSpace availability and tour request — ${Astro.url.path
   .leasing-contact a:focus-visible{outline:3px solid #b5611e;outline-offset:4px}
   .leasing-contact p{font-size:12px;line-height:1.75;color:#626a64;margin:2px 0 0}
   .compact{margin-top:0}
+  @media(max-width:767px){
+    .leasing-contact a{font-size:1rem;line-height:1.5;min-height:52px}
+    .leasing-contact p{font-size:1rem;line-height:1.65}
+  }
 </style>

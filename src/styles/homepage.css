@@ -77,3 +77,77 @@ dialog{border:0;padding:0;border-radius:8px;max-width:590px;width:calc(100% - 32
 .property-cta-secondary { min-height: 56px; background: #fff; font-size: 16px; }
 .property-cta-secondary:hover { background: var(--soft); }
 .property .property-cta:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+
+/* Phone typography prioritizes comfortable reading over content density. */
+@media (max-width: 760px) {
+  .hero-description,
+  .section-heading > p,
+  .property-description,
+  .space-guide-copy > p:not(.eyebrow),
+  .space-specs p,
+  .business-intro > p:not(.eyebrow),
+  .business-row p,
+  .steps-grid p,
+  .faq-intro > p:not(.eyebrow),
+  .faq-list details > p,
+  .contact-banner > div > p:not(.eyebrow),
+  .dialog-content > p:not(.eyebrow) {
+    font-size: 1.125rem;
+    line-height: 1.65;
+  }
+
+  .hero .hero-search-title { font-size: 1.375rem; line-height: 1.45; }
+  .hero-copy { padding-top: 40px; padding-bottom: 40px; }
+  .hero-actions { gap: 16px 24px; }
+  .button, .hero-actions .button { font-size: 1.125rem; min-height: 56px; }
+  .text-link, .hero-actions .text-link, .space-guide-copy > .text-link,
+  .location-help .text-link, .dialog-actions .text-link { font-size: 1rem; line-height: 1.5; }
+  .hero-actions .text-link { min-height: 44px; }
+  .site-header nav { font-size: 1.125rem; }
+  .header-actions .call-link { font-size: .9375rem; }
+  .menu { min-width: 44px; min-height: 44px; }
+
+  .eyebrow, .hero .eyebrow, .spec-label, .steps-grid span { font-size: .8125rem; letter-spacing: 1.3px; }
+  .hero-note, .use-note, .business-number, .property-heading > span,
+  .status, .photo-top, .photo-caption p { font-size: .875rem; line-height: 1.5; }
+  .photo-top { gap: 16px; flex-wrap: wrap; }
+  .photo-caption { bottom: 102px; }
+  .photo-switch { gap: 8px 20px; }
+  .photo-switch button { font-size: 1rem; min-height: 48px; }
+  .feature-strip { font-size: 1rem; line-height: 1.5; gap: 24px 16px; }
+  .feature-strip span { align-items: flex-start; }
+  .feature-strip svg { margin-top: 3px; }
+  .location-tabs { gap: 8px; }
+  .location-tabs button { font-size: 1rem; min-height: 48px; padding: 12px; }
+  .property-facts { font-size: 1rem; line-height: 1.5; flex-wrap: wrap; }
+  .property-facts span + span:before { display: none; }
+  .property-description { margin-top: 12px; }
+  .property-grid { gap: 48px; }
+  .location-help { font-size: 1.125rem; }
+  .space-specs { grid-template-columns: 1fr; gap: 32px; }
+  .space-specs h3, .business-row h3, .steps-grid h3 { font-size: 1.5rem; line-height: 1.3; }
+  .business-row { gap: 16px; }
+  .faq-list summary { font-size: 1.125rem; line-height: 1.5; }
+  .faq-list details > p { padding-right: 0; }
+  .contact-actions > div { flex-wrap: wrap; font-size: 1rem; gap: 16px; }
+  .contact-actions > p { font-size: .875rem !important; }
+
+  .footer-main { grid-template-columns: 1fr; gap: 28px; }
+  .footer-main > p, .footer-main > div { font-size: 1rem; line-height: 1.6; }
+  .footer-main > div > span, .footer-bottom { font-size: .875rem; }
+  .footer-main > div { gap: 16px; }
+  footer { padding-bottom: calc(130px + env(safe-area-inset-bottom)); }
+  .mobile-contact { gap: 8px; padding-left: 12px; padding-right: 12px; }
+  .mobile-contact .button { font-size: 1rem; min-height: 52px; padding: 13px 14px; gap: 10px; }
+  .mobile-contact > a:not(.button) { font-size: .875rem; min-width: 48px; padding: 4px 6px; }
+  .mobile-contact svg { width: 20px; height: 20px; }
+  .dialog-content dt { font-size: .875rem; }
+  .dialog-content dd { font-size: 1.125rem; }
+  .fine-print { font-size: .875rem !important; }
+}
+
+@media (max-width: 380px) {
+  .feature-strip { grid-template-columns: 1fr; }
+  .photo-switch { gap: 8px 16px; }
+  .photo-switch button { font-size: .9375rem; }
+}

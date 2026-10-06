@@ -39,6 +39,15 @@
 }
 
 /* ===== Reset ===== */
+@media (max-width: 767px) {
+  :root {
+    --font-size-xs: .875rem;
+    --font-size-sm: 1rem;
+    --font-size-base: 1.125rem;
+    --font-size-lg: 1.25rem;
+  }
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;

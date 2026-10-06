@@ -74,7 +74,9 @@ not verify the live domain. The live redesign was verified in October 2026.
 The homepage tour/waitlist pop-out collects location, name, business name or
 website, and cell phone. Large call and text links sit beside it on desktop;
 compact buttons share a row below the form on mobile. The mobile form fits in
-one phone viewport, with scrolling available for the keyboard or enlarged text.
+the phone width and scrolls on shorter screens. Mobile readability takes priority
+over fitting everything above the fold: homepage body copy is 18px, with larger
+links, field labels, and secondary text throughout the public site.
 Public contact details still come from
 `src/content/pages/contact.md`; notifications go to **jim@rothcapital.com**.
 
