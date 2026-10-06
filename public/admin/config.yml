@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: jimkittridge/TestGithub
+  repo: jimkittridge/getflexspace
   branch: claude/build-flexspace-site-dSsmL
 
 media_folder: public/images
