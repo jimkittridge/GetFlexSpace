@@ -1,63 +1,87 @@
 ---
 import { getEntry } from 'astro:content';
 import NewLayout from '../../layouts/NewLayout.astro';
-import LeasingContact from '../../components/LeasingContact.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import SuiteGallery from '../../components/SuiteGallery.astro';
 const property = (await getEntry('retail', 'morganton-nc'))!.data;
+const contact = (await getEntry('pages', 'contact'))!.data;
 const sizes = property.sizes.map(size => size.toLocaleString('en-US'));
 const sizeRange = `${sizes[0]}–${sizes[sizes.length - 1]} sq ft`;
 const logo = (await getEntry('pages', 'homepage'))!.data.logo || '/images/brand/getflexspace-color.svg';
 const address = `${property.address}, ${property.city}, ${property.state}`;
 const mapQuery = encodeURIComponent(address);
 const storefront = property.media.find(item => item.category === 'Storefronts');
-const categories = ['Storefronts', 'Interiors', 'Floor plans', 'Parking', 'Neighborhood'];
+const categories = ['Storefronts', 'Interiors', 'Parking'];
+const mediaFor = (category: string) => property.media.filter(item => item.category === category).map(item => ({image: item.image, label: item.alt, type: 'photo' as const}));
+const plans = property.media.filter(item => item.category === 'Floor plans').map(item => ({image: item.image, label: item.alt, type: 'floor-plan' as const}));
+const neighborhood = mediaFor('Neighborhood');
 const schema = JSON.stringify({ '@context': 'https://schema.org', '@type': 'Place', name: property.name,
   address: {'@type': 'PostalAddress', streetAddress: property.address, addressLocality: property.city, addressRegion: property.state, addressCountry: 'US'},
   url: 'https://getflexspace.com/retail-space/' });
 ---
-<NewLayout title="Retail Space for Lease in Morganton, NC | GetFlexSpace" description={`Retail space for lease at ${address}. Both ${sizes.join(" sq ft and ")} sq ft units available. Contact GetFlexSpace for pricing and a tour.`} schemaMarkup={schema}>
-  <div class="retail-page">
-    <section class="retail-hero">
-      <div class="retail-wrap">
-        <nav aria-label="Breadcrumb"><a href="/">Home</a> / <span>Retail Space</span></nav>
-        <p class="kicker">Retail Space · Morganton, NC</p>
-        <h1>RETAIL SPACE<br/>FOR LEASE</h1>
-        <p class="size-range">{sizeRange}</p>
-        <img class="retail-logo" src={logo} alt="GetFlexSpace" width="1243" height="228"/>
-        <p class="address">{property.address}<br/>{property.city}, {property.state}</p>
-        <p class="availability"><span aria-hidden="true">●</span> Both sizes available</p>
-        <div class="retail-actions"><a class="retail-button" href="#leasing">Ask about availability &amp; pricing ↗</a><a href="#property-tour">Explore the property ↓</a></div>
-      </div>
-    </section>
-    {storefront && <figure class="retail-cover retail-wrap"><img src={storefront.image} alt={storefront.alt} width="1600" height="1032" fetchpriority="high"/><figcaption>{address}</figcaption></figure>}
-    <section class="retail-wrap retail-section" aria-labelledby="units-title">
-      <p class="kicker">Choose your space</p><h2 id="units-title">Two sizes. Your next storefront.</h2>
-      <div class="unit-grid">{property.sizes.map(size => <article class="retail-card"><p class="availability">Available</p><h3>{size.toLocaleString('en-US')} <span>sq ft</span></h3><p>Retail space at {property.address}.</p><a href="#leasing">Ask about this size ↗</a></article>)}</div>
-      <p class="retail-note">Contact leasing for suite layouts, pricing, lease terms, and suitability for your intended use.</p>
-    </section>
-    <section class="retail-wrap retail-section" aria-labelledby="strengths-title">
-      <p class="kicker">A place for your business</p><h2 id="strengths-title">Get to know this location.</h2>
-      <div class="strength-grid">{property.highlights.map(item => <article><h3>{item.title}</h3><p>{item.description}</p></article>)}</div>
-    </section>
-    <section class="retail-wrap retail-section" id="property-tour" aria-labelledby="tour-title">
-      <p class="kicker">Property tour</p><h2 id="tour-title">See how the space fits.</h2>
-      <p class="photo-note">Photos show existing spaces and furnishings. Confirm the condition and layout of your preferred suite with leasing.</p>
-      <nav class="gallery-nav" aria-label="Property photo categories">{categories.map(category => <a href={`#${category.toLowerCase().replaceAll(' ', '-')}`}>{category}</a>)}</nav>
-      <div class="gallery-groups">{categories.map(category => {
-        const media = property.media.filter(item => item.category === category);
-        return <section class="media-group" id={category.toLowerCase().replaceAll(' ', '-')}>
-          <h3>{category}</h3>
-          {media.length > 0 && <div class="media-grid">{media.map(item => <figure><a href={item.image} target="_blank" rel="noopener" aria-label={`View full-size photo: ${item.alt}`}><img src={item.image} alt={item.alt} loading="lazy" width="1600" height={item.image.includes('storefront-front') ? 1032 : item.image.includes('paved-frontage') ? 1040 : 1200}/></a><figcaption>{item.alt}</figcaption></figure>)}</div>}
-          {category === 'Floor plans' && media.length === 0 && <p class="media-pending">Floor plans are not currently available. <a href="#leasing">Arrange a tour</a> to review the 1,200 sq ft and 2,400 sq ft layouts in person.</p>}
-          {category === 'Neighborhood' && <><p>Explore the surrounding streets, homes, and businesses.</p><iframe title={`Neighborhood map — ${address}`} src={`https://www.google.com/maps?q=${mapQuery}&output=embed`} width="100%" height="420" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe><a href={`https://www.google.com/maps/search/?api=1&query=${mapQuery}`} target="_blank" rel="noopener">Open map &amp; directions ↗</a></>}
-        </section>;
-      })}</div>
-    </section>
-    <section class="retail-wrap retail-section" id="leasing"><div class="leasing-panel"><div><p class="kicker">Let’s talk retail</p><h2>Your business.<br/>Your next space.</h2><p>{address}</p><p>Tell us whether you need 1,200 or 2,400 sq ft, your business type, and your preferred move-in timing.</p></div><LeasingContact/></div></section>
+<NewLayout title="Retail Space for Lease in Morganton, NC | GetFlexSpace" description={`Retail space for lease at ${address}. Both ${sizes.join(' sq ft and ')} sq ft units available. Contact GetFlexSpace for pricing and a tour.`} schemaMarkup={schema}>
+  <div class="bg-[#f7f5f1] border-b border-black/5">
+    <div class="mx-auto max-w-7xl px-6 py-3 lg:px-8">
+      <nav aria-label="Breadcrumb" class="flex flex-wrap items-center gap-2 text-sm text-black/45"><a href="/" class="no-underline text-black/45 hover:text-black">Home</a><span aria-hidden="true">›</span><a href="/locations/" class="no-underline text-black/45 hover:text-black">Locations</a><span aria-hidden="true">›</span><span class="text-black/70 font-medium">Morganton, NC · Retail Space</span></nav>
+    </div>
   </div>
+
+  <section class="relative overflow-hidden bg-black text-white">
+    <div class="absolute inset-0">
+      {storefront && <img src={storefront.image} alt={storefront.alt} class="h-full w-full object-cover" width="1600" height="1032" fetchpriority="high"/>}
+      <div class="absolute inset-0 bg-black/60"></div>
+    </div>
+    <div class="relative mx-auto max-w-7xl px-6 pb-24 pt-14 lg:px-8 lg:pb-32 lg:pt-20">
+      <div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+        <div>
+          <div class="flex flex-wrap items-center gap-3 mb-6"><span class="rounded-full px-3 py-1 text-xs font-medium bg-emerald-500/20 text-emerald-300 ring-1 ring-emerald-400/30">Available now</span><span class="text-sm text-white/75">Both sizes available</span></div>
+          <h1 class="text-4xl font-semibold leading-[1.05] tracking-[-0.03em] text-white sm:text-5xl lg:text-6xl" style="color:white">RETAIL SPACE FOR LEASE</h1>
+          <p class="mt-6 text-2xl font-semibold text-white">{sizeRange}</p>
+          <div class="mt-5 inline-flex rounded-xl bg-[#f7f5f1] px-4 py-3"><img src={logo} alt="GetFlexSpace" width="1243" height="228" class="h-auto w-[220px] max-w-full"/></div>
+          <p class="mt-6 max-w-xl text-lg leading-8 text-white/75">{property.address}<br/>{property.city}, {property.state}</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a href="#available-spaces" class="inline-flex items-center gap-2 rounded-2xl bg-white px-6 py-3 text-sm font-medium text-black no-underline hover:bg-white/90 transition">View available suites ↘</a>
+            <a href={`tel:${contact.phoneHref}`} class="inline-flex items-center rounded-2xl border border-white/20 bg-white/10 px-6 py-3 text-sm font-medium text-white no-underline hover:bg-white/15 transition">Call leasing</a>
+          </div>
+        </div>
+        <div class="rounded-[28px] bg-white p-6 text-black shadow-[0_24px_80px_rgba(0,0,0,0.25)]">
+          <div class="text-sm uppercase tracking-[0.14em] text-black/45 mb-2">Get availability</div><div class="text-xl font-semibold tracking-[-0.02em] text-[#111] mb-1">Interested in Morganton?</div><p class="text-sm text-black/55 mb-5">Contact leasing for pricing, suite details, and a tour.</p><LeadForm compact/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="available-spaces" class="py-20 lg:py-28">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="mb-10 max-w-3xl"><div class="text-sm uppercase tracking-[0.16em] text-black/45">Availability</div><h2 class="section-title mt-3 font-semibold tracking-[-0.03em]">Morganton retail suites and unit sizes</h2><p class="mt-4 text-lg leading-8 text-black/64">1,200 sq ft and 2,400 sq ft units are available at {property.address}.</p></div>
+      <div class="grid items-start gap-6 lg:grid-cols-2">{property.sizes.map(size => <article class="min-w-0 rounded-[28px] border border-black/10 bg-white p-6 shadow-[0_10px_24px_rgba(0,0,0,0.03)] lg:p-8">
+        <div class="flex items-center justify-between gap-4"><div class="text-xs uppercase tracking-[0.14em] text-black/42">Available suite</div><span class="rounded-full px-3 py-1 text-xs font-medium bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200">Available now</span></div>
+        <h3 class="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#111]">{size.toLocaleString('en-US')} sq ft</h3><p class="mt-3 text-black/62 leading-7">Retail space at {property.address}, {property.city}. Contact leasing to review the layout and suitability for your business.</p>
+        <div class="mt-4 rounded-2xl border border-black/10 bg-[#fbfaf8] px-4 py-4"><div class="text-xs uppercase tracking-[0.14em] text-black/42">Pricing</div><div class="mt-1 text-lg font-semibold text-[#111]">Contact for current rate</div></div>
+        <div class="mt-6 flex flex-wrap items-center gap-3 text-sm font-semibold"><a href="#lead-form" class="inline-flex items-center gap-2 rounded-full bg-[#111] px-5 py-2.5 text-white no-underline transition hover:bg-black">Schedule a tour ↗</a><a href="#lead-form" class="inline-flex items-center rounded-full border border-black/15 bg-white px-5 py-2.5 text-[#111] no-underline transition hover:bg-black/5">Request pricing</a></div>
+      </article>)}</div>
+    </div>
+  </section>
+
+  <section id="property-tour" class="bg-white/65 py-20 lg:py-28">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="mb-10 max-w-3xl"><div class="text-sm uppercase tracking-[0.16em] text-black/45">Property photos</div><h2 class="section-title mt-3 font-semibold tracking-[-0.03em]">Explore the property.</h2><p class="mt-4 text-lg leading-8 text-black/64">Photos show existing spaces and furnishings. Confirm the condition and layout of your preferred suite with leasing.</p></div>
+      <div class="grid items-start gap-6 lg:grid-cols-2">{categories.map(category => {
+        const media = mediaFor(category);
+        return media.length > 0 && <article id={category.toLowerCase()} class="min-w-0 rounded-[28px] border border-black/10 bg-white p-6 shadow-[0_10px_24px_rgba(0,0,0,0.03)] lg:p-8"><h3 class="text-2xl font-semibold tracking-[-0.02em] text-[#111]">{category}</h3><SuiteGallery media={media} name={`Morganton ${category.toLowerCase()}`}/></article>;
+      })}
+      <article id="floor-plans" class="min-w-0 rounded-[28px] border border-black/10 bg-white p-6 shadow-[0_10px_24px_rgba(0,0,0,0.03)] lg:p-8"><h3 class="text-2xl font-semibold tracking-[-0.02em] text-[#111]">Floor plans</h3>{plans.length ? <SuiteGallery media={plans} name="Morganton floor plans"/> : <p class="mt-4 leading-7 text-black/62">Floor plans are not currently available. <a href="#lead-form" class="underline">Arrange a tour</a> to review both layouts in person.</p>}</article>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 lg:py-28"><div class="mx-auto max-w-7xl px-6 lg:px-8"><div class="mb-10 max-w-3xl"><div class="text-sm uppercase tracking-[0.16em] text-black/45">Location highlights</div><h2 class="section-title mt-3 font-semibold tracking-[-0.03em]">A place for your business.</h2></div><div class="grid gap-4 sm:grid-cols-2">{property.highlights.map(item => <article class="rounded-[24px] border border-black/10 bg-white p-6 shadow-[0_10px_24px_rgba(0,0,0,0.03)]"><h3 class="text-lg font-semibold tracking-[-0.01em] text-[#111]">{item.title}</h3><p class="mt-2 leading-7 text-black/62">{item.description}</p></article>)}</div></div></section>
+
+  <section id="neighborhood" class="bg-[#ece7df] py-20 lg:py-28"><div class="mx-auto max-w-7xl px-6 lg:px-8"><div class="mb-8 max-w-2xl"><div class="text-sm uppercase tracking-[0.16em] text-black/45">Neighborhood</div><h2 class="section-title mt-3 font-semibold tracking-[-0.03em]">Morganton, NC</h2><p class="mt-4 text-lg leading-8 text-black/64">Explore the streets, homes, and businesses around {property.address}.</p></div>{neighborhood.length > 0 && <SuiteGallery media={neighborhood} name="Morganton neighborhood"/>}<div class="overflow-hidden rounded-[28px] border border-black/10 shadow-[0_10px_30px_rgba(0,0,0,0.06)]"><iframe title={`Neighborhood map — ${address}`} src={`https://www.google.com/maps?q=${mapQuery}&output=embed`} width="100%" height="450" style="border:0;display:block" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div><a class="mt-5 inline-flex py-2 text-black/70 underline" href={`https://www.google.com/maps/search/?api=1&query=${mapQuery}`} target="_blank" rel="noopener">Open map &amp; directions ↗</a></div></section>
+
+  <section id="lead-form" class="py-20 lg:py-28"><span id="leasing"></span><div class="mx-auto max-w-7xl px-6 lg:px-8"><div class="overflow-hidden rounded-[36px] border border-black/10 bg-[#f3eee7] shadow-[0_18px_50px_rgba(0,0,0,0.06)]"><div class="grid lg:grid-cols-[1fr_0.8fr]"><div class="p-8 lg:p-10"><div class="text-sm uppercase tracking-[0.16em] text-black/45">Get availability and pricing</div><h2 class="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#111]">Interested in retail space in Morganton?</h2><p class="mt-4 text-black/62">Tell us your preferred unit size, business type, and move-in timing.</p><div class="mt-8"><LeadForm compact/></div></div>{storefront && <div class="hidden lg:block"><img src={storefront.image} alt={storefront.alt} class="h-full w-full object-cover" loading="lazy"/></div>}</div></div></div></section>
 </NewLayout>
 <style>
-.retail-cover{margin-top:40px;margin-bottom:0}.retail-cover img{width:100%;max-height:650px;object-fit:cover;border-radius:20px}.retail-cover figcaption{margin-top:12px;color:#5e665f;font-size:16px}.gallery-nav{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0}.gallery-nav a{border:1px solid #c6cdbf;border-radius:100px;padding:10px 18px;text-decoration:none;min-height:44px}.gallery-nav a:hover{background:#eaece4}.media-group{scroll-margin-top:100px}.photo-note{max-width:720px;color:#5e665f}
-
-.retail-page{color:#202925}.retail-wrap{max-width:1200px;margin:auto;padding-left:24px;padding-right:24px}.retail-hero{background:#eaece4;padding:24px 0 64px}.retail-hero nav{font-size:16px;margin-bottom:44px}.retail-page a{color:inherit;text-underline-offset:4px}.kicker{font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin:0 0 18px}.retail-hero h1{color:#202925;font-size:clamp(46px,9vw,112px);font-weight:800;line-height:.95;letter-spacing:-.05em;margin:0}.size-range{font-size:clamp(26px,4vw,42px);font-weight:600;margin:24px 0}.retail-logo{width:250px;max-width:100%;height:auto;margin:0 0 32px}.address{font-size:22px;font-weight:600;line-height:1.5}.availability{color:#326044;font-weight:600}.retail-actions{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:28px}.retail-page .retail-button{background:#202925;color:white;padding:16px 22px;border-radius:10px;text-decoration:none;font-weight:600}.retail-section{padding-top:64px;padding-bottom:24px;scroll-margin-top:100px}.retail-page h2{font-size:clamp(30px,4vw,46px);font-weight:600;line-height:1.15;letter-spacing:-.03em;margin:0 0 28px;color:#202925}.retail-page h3{font-size:23px;font-weight:600;line-height:1.3;margin:0 0 12px;color:#202925}.retail-page p{line-height:1.65}.unit-grid,.strength-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.retail-card{background:white;border:1px solid #d5d8ce;padding:28px;border-radius:18px}.retail-card h3{font-size:40px}.retail-card h3 span{font-size:24px}.retail-card a{font-weight:600}.retail-note{color:#5e665f}.strength-grid article{border-top:1px solid #c6cdbf;padding:24px 0}.media-group{padding:28px 0;border-top:1px solid #d5d8ce}.media-pending{color:#5e665f}.media-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.media-grid figure{margin:0}.media-grid img{width:100%;height:auto;border-radius:12px}.media-grid figcaption{margin-top:10px;font-size:16px}.media-group iframe{border:0;border-radius:18px;margin:20px 0}.leasing-panel{background:#eaece4;border-radius:24px;padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:48px}.retail-page a:focus-visible{outline:3px solid #b5611e;outline-offset:4px}
-@media(max-width:767px){.retail-page p,.retail-page a{font-size:18px}.retail-page .size-range{font-size:30px}.retail-page .kicker{font-size:14px}.unit-grid,.strength-grid,.media-grid,.leasing-panel{grid-template-columns:1fr}.retail-section{padding-top:44px}.leasing-panel{padding:24px;gap:12px}.retail-actions{align-items:stretch;flex-direction:column}.retail-logo{width:220px}}
+.section-title{color:#111;font-size:clamp(1.75rem,1.3rem + 2.25vw,2.5rem)}
+section[id]{scroll-margin-top:100px}
 </style>
