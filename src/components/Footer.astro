@@ -5,7 +5,7 @@ const contact = (await getEntry('pages', 'contact'))!.data;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const year = new Date().getFullYear();
 const homepage = await getEntry('pages', 'homepage');
-const logo = homepage?.data?.logo || `${base}images/logo.png`;
+const logo = homepage?.data?.logo || `${base}images/brand/getflexspace-color.svg`;
 ---
 
 <footer class="site-footer">
@@ -13,7 +13,7 @@ const logo = homepage?.data?.logo || `${base}images/logo.png`;
     <div class="footer-grid">
       <div class="footer-col">
         <a href={base} class="footer-logo" aria-label="GetFlexSpace Home">
-          <img src={logo} alt="GetFlexSpace" class="footer-logo-img" />
+          <img src={logo} alt="GetFlexSpace" width="1243" height="228" class="footer-logo-img" />
         </a>
         <p class="footer-desc">Warehouse and flex space for lease in the Carolinas. Space for contractors, e-commerce, light industrial, and growing businesses.</p>
       </div>
@@ -82,7 +82,10 @@ const logo = homepage?.data?.logo || `${base}images/logo.png`;
   }
 
   .footer-logo {
-    display: flex;
+    display: inline-flex;
+    background: #f5f3ee;
+    padding: 6px 10px;
+    border-radius: 4px;
     align-items: center;
     gap: var(--space-2);
     color: var(--white);
