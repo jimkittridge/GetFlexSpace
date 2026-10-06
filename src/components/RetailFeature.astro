@@ -1,33 +1,29 @@
 ---
 import { getEntry } from 'astro:content';
+interface Props { directory?: boolean; }
+const { directory = false } = Astro.props;
 const property = (await getEntry('retail', 'morganton-nc'))!.data;
 const sizes = property.sizes.map(size => size.toLocaleString('en-US'));
 const sizeRange = `${sizes[0]}–${sizes[sizes.length - 1]} sq ft`;
-const logo = (await getEntry('pages', 'homepage'))!.data.logo || '/images/brand/getflexspace-color.svg';
 const image = property.media.find(item => item.category === 'Storefronts');
 ---
-<section class="retail-feature" id="retail-space" aria-labelledby="retail-heading">
-  <div class="retail-feature-inner">
-    <div>
-      <p class="retail-label">Retail Space · {property.city}, {property.state}</p>
-      <h2 id="retail-heading">RETAIL SPACE<br/>FOR LEASE</h2>
-      <p class="retail-sizes">{sizeRange}</p>
-      <img class="retail-logo" src={logo} alt="GetFlexSpace" width="1243" height="228" loading="lazy"/>
-      <p class="retail-address">{property.address}<br/>{property.city}, {property.state}</p>
-      <p>{sizes.join(" sq ft and ")} sq ft units available.</p>
-      <a class="retail-link" href="/retail-space/">Explore Morganton retail space <span aria-hidden="true">↗</span></a>
-    </div>
-    {image && <a class="retail-photo" href="/retail-space/"><img src={image.image} alt={image.alt} loading="lazy" width="1600" height="1032"/></a>}
+{directory ? <section id="retail-space" class="pb-20 lg:pb-28" aria-labelledby="retail-heading">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mb-10 max-w-3xl"><div class="text-sm uppercase tracking-[0.16em] text-black/45">Retail Space</div><h2 id="retail-heading" class="mt-3 text-4xl font-semibold tracking-[-0.03em] text-[#111]">Retail space for lease.</h2></div>
+    <div class="grid gap-6 lg:grid-cols-3"><a href="/retail-space/" class="block overflow-hidden rounded-[30px] border border-black/10 bg-white shadow-[0_15px_40px_rgba(0,0,0,0.05)] no-underline transition hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
+      {image && <div class="aspect-[4/3] overflow-hidden"><img src={image.image} alt={image.alt} class="h-full w-full object-cover transition duration-500 hover:scale-[1.03]" loading="lazy" width="1600" height="1032"/></div>}
+      <div class="p-6"><div class="flex items-start justify-between gap-4"><div><h3 class="text-2xl font-semibold tracking-[-0.02em] text-[#111]">{property.city}, {property.state}</h3><div class="mt-1 text-sm text-black/50">{sizeRange}</div></div><span class="rounded-full px-3 py-1 text-xs font-medium shrink-0 bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200">Available now</span></div><p class="mt-4 text-sm leading-6 text-black/60">{property.address}. Both sizes available, with individual storefront entrances and a covered walkway.</p><div class="mt-5 flex items-center justify-between rounded-2xl border border-black/10 bg-[#fbfaf8] px-4 py-3 text-sm text-black/70"><span>Rent Retail Space in {property.city}</span><span aria-hidden="true">↗</span></div></div>
+    </a></div>
   </div>
-</section>
-<style>
-.retail-feature{background:#eaece4;padding:clamp(32px,6vw,80px) 6%;color:#202925}
-.retail-feature-inner{max-width:1280px;margin:auto;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
-.retail-label{font-size:16px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin:0 0 20px}
-.retail-feature h2{font-size:clamp(38px,5.4vw,76px);line-height:.98;letter-spacing:-.04em;font-weight:800;margin:0; color:#202925}
-.retail-sizes{font-size:clamp(24px,3vw,36px);font-weight:600;margin:22px 0}
-.retail-logo{width:220px;height:auto;max-width:100%;margin-bottom:24px}
-.retail-address{font-weight:600}.retail-feature p{line-height:1.5}.retail-link{display:inline-flex;gap:24px;background:#202925;color:#fff;padding:16px 22px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:16px}
-.retail-link:focus-visible{outline:3px solid #b5611e;outline-offset:4px}.retail-photo{flex:1;min-width:0}.retail-photo img{width:100%;height:auto;border-radius:20px}
-@media(max-width:767px){.retail-feature-inner{display:block}.retail-photo{display:block;margin-top:28px}.retail-feature p{font-size:18px}.retail-feature .retail-sizes{font-size:28px}}
-</style>
+</section> : <section class="locations section" id="retail-space" aria-labelledby="retail-heading">
+  <div class="section-heading"><div><p class="eyebrow">RETAIL SPACE</p><h2 id="retail-heading">Retail space for lease.</h2></div><p>Find your next storefront. Both 1,200 and 2,400 sq ft units are available in Morganton.</p></div>
+  <div class="property-grid">
+    <article class="property">
+      {image && <a class="property-image" href="/retail-space/" aria-label="View Morganton retail property"><img src={image.image} alt={image.alt} loading="lazy" width="1600" height="1032"/><span class="status available"><i></i>Now leasing</span><span class="image-arrow" aria-hidden="true">↗</span></a>}
+      <div class="property-heading"><h3>{property.city}, {property.state}</h3><span>04</span></div>
+      <p class="property-description">Retail space at {property.address}, with individual storefront entrances and a covered walkway. Choose from 1,200 sq ft and 2,400 sq ft units.</p>
+      <div class="property-facts"><span>{sizeRange}</span><span>Retail Space</span></div>
+      <div class="property-bottom"><a href="/retail-space/#lead-form" class="property-cta property-cta-primary" data-tour="tour" data-location="Morganton">Request a tour <span aria-hidden="true">↗</span></a><a class="property-cta property-cta-secondary" href="/retail-space/">View Morganton property <span aria-hidden="true">↗</span></a></div>
+    </article>
+  </div>
+</section>}

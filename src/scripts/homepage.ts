@@ -21,7 +21,7 @@ document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(button => 
       item.classList.toggle('selected', selected);
       item.setAttribute('aria-pressed', String(selected));
     });
-    document.querySelectorAll<HTMLElement>('.property').forEach(card => {
+    document.querySelectorAll<HTMLElement>('#locations .property').forEach(card => {
       card.hidden = button.dataset.filter !== 'all' && card.dataset.city !== button.dataset.filter;
     });
   });

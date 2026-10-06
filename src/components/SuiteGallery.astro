@@ -6,7 +6,7 @@ interface Props {
 }
 const { media, name, brochure } = Astro.props;
 ---
-<section class="suite-gallery" aria-label={`${name} photos and floor plan`} aria-roledescription="carousel" data-suite-gallery>
+<section class="suite-gallery" aria-label={`${name} gallery`} aria-roledescription="carousel" data-suite-gallery>
   <div class="suite-slides" tabindex="0" aria-label="Unit images. Swipe or use the arrow buttons to browse.">
     {media.map((item, i) => (
       <a class="suite-slide" href={item.image} target="_blank" rel="noopener" aria-label={`Open full-size ${item.label.toLowerCase()}`} data-label={item.label}>
