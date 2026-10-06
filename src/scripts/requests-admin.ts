@@ -1,3 +1,5 @@
+import { CMS_USER_KEYS, readCmsSession } from '../lib/cms-session.js';
+
 type Lead = { id: string; created_at: string; name: string; location: string; business: string;
   cell_phone: string; request_type: string; status: string; email_status: string };
 const labels: Record<string, string> = { new: 'New', contacted: 'Contacted', tour_scheduled: 'Tour scheduled', closed: 'Closed' };
@@ -5,28 +7,46 @@ const login = document.querySelector<HTMLElement>('#admin-login')!;
 const inbox = document.querySelector<HTMLElement>('#admin-inbox')!;
 const message = document.querySelector<HTMLElement>('#admin-message')!;
 const list = document.querySelector<HTMLElement>('#requests-list')!;
-const tokenInput = document.querySelector<HTMLInputElement>('#github-token')!;
 const filter = document.querySelector<HTMLSelectElement>('#status-filter')!;
 const previous = document.querySelector<HTMLButtonElement>('#previous-page')!;
 const next = document.querySelector<HTMLButtonElement>('#next-page')!;
-const signOut = document.querySelector<HTMLButtonElement>('#sign-out')!;
 let token = '';
+let rejectedToken = '';
 let offset = 0;
 let loadId = 0;
+const embedded = window.parent !== window && new URL(location.href).searchParams.get('embedded') === '1';
+document.documentElement.classList.toggle('embedded-inbox', embedded);
+
+function currentCmsToken() {
+  try { return readCmsSession(localStorage)?.token || ''; } catch { return ''; }
+}
+function notifyParent(type: string) {
+  if (embedded) window.parent.postMessage({ type }, location.origin);
+}
 
 function showMessage(text: string, error = false) {
   message.textContent = text; message.hidden = !text; message.classList.toggle('error', error);
 }
 function clearSession() {
-  token = ''; tokenInput.value = ''; list.replaceChildren();
-  login.hidden = false; inbox.hidden = true; signOut.hidden = true; offset = 0; loadId++;
+  token = ''; list.replaceChildren();
+  login.hidden = false; inbox.hidden = true; offset = 0; loadId++;
 }
 async function api(path: string, options: RequestInit = {}) {
-  const response = await fetch(path, { ...options, headers: { Authorization: `Bearer ${token}`,
+  const requestToken = currentCmsToken();
+  if (!requestToken || requestToken !== token) {
+    clearSession(); throw new Error('Sign in to the content manager to open your tour inbox.');
+  }
+  const response = await fetch(path, { ...options, headers: { Authorization: `Bearer ${requestToken}`,
     Accept: 'application/json', ...(options.body ? { 'Content-Type': 'application/json' } : {}) }, cache: 'no-store' });
+  // Discard in-flight responses after logout/account switching, even if the
+  // server had already authorized that request.
+  if (currentCmsToken() !== requestToken || token !== requestToken) throw new Error('Your admin session changed.');
   const data = await response.json();
   if (!response.ok) {
-    if (response.status === 401) clearSession();
+    if (response.status === 401) {
+      rejectedToken = requestToken; clearSession();
+      throw new Error('Your CMS sign-in needs attention. Open the content manager and sign in with an account that can edit GetFlexSpace.');
+    }
     throw new Error(data.error || 'The request could not be completed.');
   }
   return data;
@@ -78,7 +98,7 @@ async function load() {
   try {
     const data = await api(`/api/admin/requests?status=${encodeURIComponent(filter.value)}&offset=${offset}`);
     if (current !== loadId || !token) return;
-    login.hidden = true; inbox.hidden = false; signOut.hidden = false;
+    login.hidden = true; inbox.hidden = false;
     list.replaceChildren(...data.requests.map(renderLead));
     document.querySelector<HTMLElement>('#empty-inbox')!.hidden = data.requests.length > 0;
     const counts = Object.fromEntries(data.counts.map((item: {status: string; count: number}) => [item.status, item.count]));
@@ -90,12 +110,36 @@ async function load() {
     showMessage('');
   } catch (error) { if (current === loadId || !token) showMessage(error instanceof Error ? error.message : 'Couldn’t load requests.', true); }
 }
-document.querySelector<HTMLFormElement>('#admin-login-form')!.addEventListener('submit', async event => {
-  event.preventDefault(); token = tokenInput.value.trim(); tokenInput.value = ''; offset = 0; await load();
+function syncSession(refresh = false) {
+  const nextToken = currentCmsToken();
+  if (!nextToken) {
+    clearSession(); rejectedToken = ''; showMessage('');
+    notifyParent('getflexspace:session-changed');
+    return;
+  }
+  if (nextToken === rejectedToken) return;
+  const changed = nextToken !== token;
+  if (changed) { clearSession(); token = nextToken; rejectedToken = ''; }
+  if (changed || refresh) void load();
+  notifyParent('getflexspace:session-changed');
+}
+document.querySelector('#cms-sign-in')!.addEventListener('click', event => {
+  if (!embedded) return;
+  event.preventDefault(); notifyParent('getflexspace:cms-sign-in');
 });
 filter.addEventListener('change', () => { offset = 0; load(); });
 document.querySelector('#refresh-inbox')!.addEventListener('click', () => load());
 previous.addEventListener('click', () => { offset = Math.max(0, offset - 50); load(); });
 next.addEventListener('click', () => { offset += 50; load(); });
-signOut.addEventListener('click', () => { clearSession(); showMessage('Signed out.'); });
+window.addEventListener('storage', event => {
+  if (event.key === null || CMS_USER_KEYS.includes(event.key)) syncSession();
+});
+window.addEventListener('message', event => {
+  if (embedded && event.origin === location.origin && event.source === window.parent
+    && event.data?.type === 'getflexspace:refresh-inbox') syncSession(true);
+});
+window.addEventListener('focus', () => syncSession());
+window.addEventListener('pageshow', () => syncSession());
+document.addEventListener('visibilitychange', () => { if (!document.hidden) syncSession(); });
 window.addEventListener('pagehide', clearSession);
+syncSession();

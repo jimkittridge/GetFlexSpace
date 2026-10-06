@@ -86,10 +86,18 @@ are stored by that limit.
 
 ### Tour request admin
 
-Open `/admin/requests/`, or click **Tour requests** in the content manager.
-Sign in with the same GitHub access token used for the CMS. The server verifies
-write access to this repository on every admin request. The token lives only in
-memory until sign-out or navigation; lead data is not stored in the public repo.
+Open `/admin/` and select the **Tour requests** tab. Sign in once using the
+content manager; both tabs use that existing Sveltia session. Switching tabs
+keeps the CMS mounted, so unfinished content edits are preserved. The older
+`/admin/requests/` URL still works and reuses the same session; signed-out users
+are directed to the content manager instead of a second token form.
+
+The server verifies repository write access on every inbox request. No additional
+token copy, URL token, or public lead file is created. The shared-session adapter
+in `src/lib/cms-session.js` reads Sveltia's existing browser user cache; signing
+out through the CMS account menu clears the inbox too. Data stays in private D1.
+The CMS is pinned to **0.229.0** because the cache format is an internal detail;
+verify the adapter and sign-in/sign-out flow before upgrading that version.
 The inbox includes status filters, New/Contacted/Tour scheduled/Closed statuses,
 phone links, notification status, and a retry button for failed notifications.
 
@@ -135,13 +143,12 @@ GitHub. It can also be edited by hand in `src/content/`.
 
 ### Signing in
 
-The **"Sign in with GitHub"** button does not work. `public/admin/config.yml`
-has no `base_url`, so Sveltia falls back to Netlify's OAuth service and the
-popup 404s against `api.netlify.com` — the live site is hosted on Cloudflare.
-
-**Use "Sign In Using Access Token"** instead, with a classic GitHub personal
+The CMS offers **"Sign In Using Access Token"**, with a classic GitHub personal
 access token (`repo` scope). That talks directly to the GitHub API and needs no
-OAuth server. It stops working when the token expires.
+OAuth server. Sveltia remembers this sign-in and the tour inbox shares it. The
+session stops working when the token expires or is revoked. The unsupported
+OAuth button is hidden using `auth_methods: [token]`; it previously fell back to
+Netlify's unavailable OAuth service because this site has no `base_url`.
 
 **Permanent fix (not yet done):** deploy
 [`sveltia/sveltia-cms-auth`](https://github.com/sveltia/sveltia-cms-auth) to
@@ -177,9 +184,9 @@ specs — they were deduplicated deliberately.
 
 ## Known issues
 
-- `public/admin/index.html` loads Sveltia **unpinned** from a CDN, so upstream
-  releases change the admin UI with no change here. Worth pinning (last known
-  good: 0.208.2).
+- `src/pages/admin/index.astro` hosts the combined admin workspace; the CMS
+  version is pinned in `src/lib/cms-session.js`. Session cache integration needs
+  to be verified when upgrading Sveltia.
 - Three deploy configs coexist: `.github/workflows/deploy.yml` (GitHub Pages),
   `netlify.toml`, and the connected Cloudflare Pages project. Cloudflare serves
   the live domain; the Netlify configuration is legacy.
