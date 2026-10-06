@@ -204,9 +204,11 @@ not apply to these listings. Both 1,200 and 2,400 sq ft sizes are available per
 the owner. Fleming Drive frontage is documented in the listing broker's record:
 https://www.coldwellbankerhomes.com/nc/morganton/408-w-fleming-dr/pid_73311855/
 
-Owner-supplied album (2026-10-06): https://photos.app.goo.gl/ED5hNG8Sa3v34hVE7
-Media import remains pending because the browser's security policy check could
-not authorize access. Do not substitute another property's photos or invented
-floor plans. Obtain the files from the owner and populate the media categories
-before treating the imagery request as complete. Signage rights, parking counts,
-traffic counts, and nearby resident counts have not been verified.
+Property photos were provided by the owner in the local `408 w fleming` folder
+on 2026-10-06. Nine images are optimized as WebP in `public/images/morganton/`,
+with EXIF metadata removed. They cover storefronts, covered entrances, interiors,
+and the paved frontage. The neighborhood is shown with a Google Maps embed.
+The owner confirmed no floor plans are available; the page states this and
+invites visitors to tour the layouts. Interior photos depict existing furnishings,
+not a commitment about what comes with the leased space. Signage rights,
+parking counts, traffic counts, and nearby resident counts are not asserted.

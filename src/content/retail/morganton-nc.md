@@ -6,12 +6,39 @@ state: NC
 sizes: [1200, 2400]
 highlights:
   - title: Fleming Drive frontage
-    description: A retail address on W Fleming Drive. Explore how your storefront can present your business to passing customers.
+    description: Put your business on W Fleming Drive, with a brick storefront and windows facing the paved approach.
   - title: Customer access
-    description: Visit the property to review customer entrances, parking, and the route from the street to your suite.
+    description: Individual storefront entrances open onto a covered walkway beside the paved frontage, making the route to your business easy to see. Tour the property to review parking arrangements.
   - title: Signage opportunities
-    description: Talk with leasing about storefront signage options for your business and the approvals required.
+    description: Give your business a visible identity at its own storefront. Ask leasing about available sign locations, sizes, and required approvals.
   - title: Your local customer base
-    description: Explore the surrounding Morganton neighborhood and nearby homes and businesses on the map below.
-media: []
+    description: A Morganton address for businesses serving local residents. Explore the surrounding homes, businesses, and customer routes on the neighborhood map.
+media:
+  - category: Storefronts
+    image: /images/morganton/storefront-front.webp
+    alt: Brick retail storefronts and covered entrances at 408 W Fleming Dr
+  - category: Storefronts
+    image: /images/morganton/covered-entrances.webp
+    alt: Glass storefront entrance beneath the covered walkway
+  - category: Storefronts
+    image: /images/morganton/covered-patio.webp
+    alt: Covered patio and storefront windows at the property
+  - category: Interiors
+    image: /images/morganton/open-interior.webp
+    alt: Open interior with wood-look flooring, windows, and a ceiling fan
+  - category: Interiors
+    image: /images/morganton/interior-wide.webp
+    alt: Wide view of the existing interior and entrance
+  - category: Interiors
+    image: /images/morganton/interior-rear.webp
+    alt: Interior view toward the adjoining rooms
+  - category: Interiors
+    image: /images/morganton/interior-seating.webp
+    alt: Existing tiled interior with seating and a glass entrance
+  - category: Parking
+    image: /images/morganton/paved-frontage.webp
+    alt: Paved area immediately outside the retail storefronts
+  - category: Parking
+    image: /images/morganton/walkway-access.webp
+    alt: Covered pedestrian walkway beside the paved customer approach
 ---

@@ -17,17 +17,17 @@ const image = property.media.find(item => item.category === 'Storefronts');
       <p>{sizes.join(" sq ft and ")} sq ft units available.</p>
       <a class="retail-link" href="/retail-space/">Explore Morganton retail space <span aria-hidden="true">↗</span></a>
     </div>
-    {image && <a class="retail-photo" href="/retail-space/"><img src={image.image} alt={image.alt} loading="lazy" width="1000" height="750"/></a>}
+    {image && <a class="retail-photo" href="/retail-space/"><img src={image.image} alt={image.alt} loading="lazy" width="1600" height="1032"/></a>}
   </div>
 </section>
 <style>
 .retail-feature{background:#eaece4;padding:clamp(32px,6vw,80px) 6%;color:#202925}
-.retail-feature-inner{max-width:1280px;margin:auto;display:flex;gap:40px;align-items:center}
+.retail-feature-inner{max-width:1280px;margin:auto;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
 .retail-label{font-size:16px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin:0 0 20px}
-.retail-feature h2{font-size:clamp(42px,6.5vw,88px);line-height:.98;letter-spacing:-.04em;font-weight:800;margin:0; color:#202925}
+.retail-feature h2{font-size:clamp(38px,5.4vw,76px);line-height:.98;letter-spacing:-.04em;font-weight:800;margin:0; color:#202925}
 .retail-sizes{font-size:clamp(24px,3vw,36px);font-weight:600;margin:22px 0}
 .retail-logo{width:220px;height:auto;max-width:100%;margin-bottom:24px}
 .retail-address{font-weight:600}.retail-feature p{line-height:1.5}.retail-link{display:inline-flex;gap:24px;background:#202925;color:#fff;padding:16px 22px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:16px}
-.retail-link:focus-visible{outline:3px solid #b5611e;outline-offset:4px}.retail-photo{flex:1;min-width:0}.retail-photo img{width:100%;border-radius:20px}
+.retail-link:focus-visible{outline:3px solid #b5611e;outline-offset:4px}.retail-photo{flex:1;min-width:0}.retail-photo img{width:100%;height:auto;border-radius:20px}
 @media(max-width:767px){.retail-feature-inner{display:block}.retail-photo{display:block;margin-top:28px}.retail-feature p{font-size:18px}.retail-feature .retail-sizes{font-size:28px}}
 </style>
