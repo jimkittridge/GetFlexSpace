@@ -3,13 +3,14 @@ interface Props {
   media: { image: string; label: string; type: 'photo' | 'floor-plan' }[];
   name: string;
   brochure?: string | null;
+  galleryId?: string;
 }
-const { media, name, brochure } = Astro.props;
+const { media, name, brochure, galleryId } = Astro.props;
 ---
 <section class="suite-gallery" aria-label={`${name} gallery`} aria-roledescription="carousel" data-suite-gallery>
   <div class="suite-slides" tabindex="0" aria-label="Unit images. Swipe or use the arrow buttons to browse.">
     {media.map((item, i) => (
-      <a class="suite-slide" href={item.image} target="_blank" rel="noopener" aria-label={`Open full-size ${item.label.toLowerCase()}`} data-label={item.label}>
+      <a class="suite-slide" href={item.image} target="_blank" rel="noopener" aria-label={`Open full-size ${item.label.toLowerCase()}`} data-label={item.label} data-property-media={galleryId} data-media-index={i}>
         <img src={item.image} alt={item.label} loading="lazy" class:list={{ 'is-plan': item.type === 'floor-plan' }} width="1800" height="1350" />
       </a>
     ))}
@@ -28,7 +29,7 @@ const { media, name, brochure } = Astro.props;
     ))}
   </div>
   <div class="suite-links">
-    <a data-full-size href={media[0].image} target="_blank" rel="noopener">View full size ↗</a>
+    <a data-full-size data-property-media={galleryId} data-media-index="0" href={media[0].image} target="_blank" rel="noopener">View full size ↗</a>
     {brochure && <a href={brochure} target="_blank" rel="noopener">Property brochure (PDF) ↗</a>}
   </div>
 </section>
@@ -39,10 +40,12 @@ const { media, name, brochure } = Astro.props;
     const thumbs = Array.from(gallery.querySelectorAll<HTMLButtonElement>('[data-index]'));
     let current = 0;
     function update() {
+      if (!track.clientWidth) return;
       current = Math.max(0, Math.min(slides.length - 1, Math.round(track.scrollLeft / track.clientWidth)));
       gallery.querySelector('[data-caption]')!.textContent = slides[current].dataset.label!;
       gallery.querySelector('[data-count]')!.textContent = `${current + 1} / ${slides.length}`;
       gallery.querySelector<HTMLAnchorElement>('[data-full-size]')!.href = slides[current].href;
+      gallery.querySelector<HTMLAnchorElement>('[data-full-size]')!.dataset.mediaIndex = String(current);
       thumbs.forEach((thumb, i) => thumb.setAttribute('aria-pressed', String(i === current)));
     }
     function go(index: number) {
@@ -54,6 +57,7 @@ const { media, name, brochure } = Astro.props;
     gallery.querySelector('[data-next]')!.addEventListener('click', () => go(current + 1));
     thumbs.forEach((thumb, i) => thumb.addEventListener('click', () => go(i)));
     track.addEventListener('scroll', update, { passive: true });
+    new ResizeObserver(() => { if (track.clientWidth) go(current); }).observe(track);
     track.addEventListener('keydown', event => {
       if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
         event.preventDefault(); go(current + (event.key === 'ArrowRight' ? 1 : -1));

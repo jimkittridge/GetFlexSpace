@@ -26,20 +26,20 @@ gallery:
   - /images/DSC00318.JPG
   - /images/DJI_0210.JPG
   - /images/IMG_9519.JPG
-tagline: Small warehouse and flex space for lease in Durham, NC for contractors, service businesses, e-commerce operators, and light industrial users. 950–3,000 SF suites with 10'–14' drive-in doors, 14–20 ft clear height, and 24/7 access near RTP and RDU.
+tagline: Warehouse and flex space for lease in Durham, NC for contractors, service businesses, e-commerce operators, and light industrial users. 950–3,000 SF suites with 10'–14' drive-in doors, 14–20 ft clear height, and 24/7 access near RTP and RDU.
 seo:
-  title: Small Warehouse & Flex Space for Lease in Durham, NC | GetFlexSpace
-  description: Lease flex space and small warehouse units in Durham, NC. 950–3,000 SF suites with drive-in doors, 14–20 ft clear height, 24/7 access, and office-ready layouts for contractors, service businesses, e-commerce, and light industrial users.
+  title: Warehouse & Flex Space for Lease in Durham, NC | GetFlexSpace
+  description: Lease flex space and warehouse units in Durham, NC. 950–3,000 SF suites with drive-in doors, 14–20 ft clear height, 24/7 access, and office-ready layouts for contractors, service businesses, e-commerce, and light industrial users.
 specs:
   ceilingHeight: 14–20 ft clear
-  power: 100-200amps
+  power: 100–200 amps
   doorSize: 10'-14' Drive-In
   hvac: HVAC available in some warehouses
   suiteRange: 950–3,000 sq ft
   lease: 1–5 years
 mapEmbedUrl: https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d103574.8!2d-78.9!3d35.99!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89ace46d3bdb!2sDurham%2C+NC!5e0!3m2!1sen!2sus!4v1
 localGuide:
-  heading: Why rent flex or small warehouse space in Durham, NC
+  heading: Why rent flex or warehouse space in Durham, NC
   nearbyHighways:
     - I-40
     - I-85
@@ -87,12 +87,12 @@ suites:
   - name: Coming Soon!
     size: 1,200 SF
     status: waitlist
-    description: Good for smaller operators that need storage, workspace, and flexible warehouse plus office use.
+    description: Good for growing businesses that need storage, workspace, and flexible warehouse plus office use.
     baseRent: $22.00 / SF NNN
 tenantProfiles:
   - title: Contractor bay space
     description: Ideal for electricians, plumbers, HVAC companies, painters, landscapers, and other trades that need room for tools, materials, vehicles, and daily dispatch.
-  - title: Small warehouse with office
+  - title: Warehouse with office
     description: A strong fit for service businesses and operators who need warehouse space plus a front office, back office, or customer-facing area in one unit.
   - title: E-commerce and fulfillment space
     description: Useful for inventory storage, packing, shipping, and local distribution across Durham, RTP, Raleigh, Chapel Hill, and surrounding markets.
@@ -104,9 +104,9 @@ tenantProfiles:
     description: Well positioned for businesses serving RTP, Duke, and Durham's broader innovation economy.
 faq:
   - question: What types of space do you offer in Durham?
-    answer: We offer flex space, small warehouse space, and industrial suites in Durham for businesses that need a mix of storage, workspace, office functionality, and drive-in access.
-  - question: Do you have small warehouse space for rent in Durham right now?
-    answer: Yes. We currently have a 950 SF suite available, with additional suite types listed as they become available.
+    answer: We offer flex space, warehouse space, and industrial suites in Durham for businesses that need a mix of storage, workspace, office functionality, and drive-in access.
+  - question: Do you have warehouse space for rent in Durham right now?
+    answer: "{{availabilitySummary}}"
   - question: Is this a good fit for contractors?
     answer: Yes. These suites are a strong fit for contractors and trades that need room for tools, materials, vehicles, dispatch, and day-to-day operations.
   - question: Do the units have drive-in doors?
@@ -114,7 +114,7 @@ faq:
   - question: Can I use this as warehouse space with office?
     answer: Yes. These suites are designed for businesses that need combined warehouse and office space in one unit.
   - question: What size units are available?
-    answer: Suite sizes range from 950 to 3,000 SF, with a currently available 950 SF option and other suite types listed separately.
+    answer: "Suite sizes range from {{suiteRange}}. {{availabilitySummary}}"
   - question: How close is the property to RTP and RDU?
     answer: The property is minutes from RTP, with RDU about 15 minutes away, and convenient access to I-40 and NC-147.
   - question: What kinds of businesses are a fit?
@@ -129,18 +129,18 @@ schema:
     lat: 36.03841781616211
     lng: -78.885
   phone: '+19806002520'
-heroH1: Flex Space, Small Warehouse & Contractor Bay Space for Lease in Durham, NC
-heroSubtitle: Small warehouse and flex space for lease in Durham, NC for contractors, service businesses, e-commerce operators, and light industrial users. 950–3,000 SF, 10'–14' drive-in doors, 14–20 ft clear height, and 24/7 access, with HVAC available in some units.
+heroH1: Warehouse & flex space in Durham, NC.
+heroSubtitle: Your home base for storage, workspace, and what’s next. Explore warehouse and flex suites with drive-in access at 1320 Old Oxford Road.
 suitesHeading: 'Available spaces in Durham'
-suitesSubheading: A good fit for contractors and trades, service businesses, small warehouse users, e-commerce and fulfillment, and light industrial operations.
+suitesSubheading: Compare currently listed space and upcoming options. View the floor plan, browse photos, and talk directly with leasing.
 tenantProfilesLabel: Who it's for
-tenantProfilesHeading: A good fit for Durham businesses that need warehouse space without leasing a big-box building
+tenantProfilesHeading: Built around your business.
 tenantProfilesSubheading: These Durham flex and warehouse suites are built for businesses that need functional industrial space, drive-in access, and a layout that can support storage, workspace, dispatch, light production, or office use.
-specsHeading: Built for businesses that need practical industrial space in Durham
-specsSubheading: If you are comparing small warehouse space, contractor shop space, or flex industrial units, here are the specs that matter most.
-faqHeading: Durham flex space, warehouse, and contractor bay FAQ
-ctaHeading: Looking for flex space or a small warehouse in Durham?
-ctaSubheading: Get current availability, pricing, and next steps for Durham flex space, small warehouse units, and contractor bay space. 950–3,000 SF suites with drive-in loading, clear height, and 24/7 access.
+specsHeading: The details that matter.
+specsSubheading: If you are comparing warehouse space, contractor shop space, or flex industrial units, here are the specs that matter most.
+faqHeading: Questions about leasing in Durham.
+ctaHeading: Let’s find your space in Durham.
+ctaSubheading: Tell us about your business. We’ll help you explore availability, pricing, and the right layout.
 galleryAltTexts:
   - Aerial view of the buildings and parking at 1320 Old Oxford Road in Durham
   - Warehouse interior with concrete floor and roll-up doors at 1320 Old Oxford Road
@@ -154,7 +154,7 @@ galleryAltTexts:
   - Overhead aerial view of the property at 1320 Old Oxford Road
   - Parking and yard area at 1320 Old Oxford Road
   - Shared courtyard and loading access at 1320 Old Oxford Road
-  - small warehouse space for lease in Durham NC
+  - warehouse space for lease in Durham NC
   - Durham flex warehouse with drive in door
   - contractor bay space in Durham NC
   - flex space interior Durham NC
@@ -162,8 +162,8 @@ galleryAltTexts:
   - Durham NC industrial space exterior
 ---
 
-Durham is one of the strongest markets in North Carolina for businesses looking for small warehouse, flex industrial, and contractor-ready space. This location gives tenants access to the Research Triangle, RTP, Duke, RDU Airport, and major routes including I-40, I-85, NC-147, and US-70.
+Durham is one of the strongest markets in North Carolina for businesses looking for warehouse, flex industrial, and contractor-ready space. This location gives tenants access to the Research Triangle, RTP, Duke, RDU Airport, and major routes including I-40, I-85, NC-147, and US-70.
 
-For smaller operators, this matters because you get access to a large and growing customer base, better connectivity for crews, deliveries, and service calls, a more functional alternative to traditional office or retail space, and warehouse capability without taking on a large industrial footprint.
+For growing businesses, this matters because you get access to a large and growing customer base, better connectivity for crews, deliveries, and service calls, a more functional alternative to traditional office or retail space, and warehouse capability without taking on a large industrial footprint.
 
-Whether you need a contractor bay, small warehouse for rent, warehouse with office, or flex industrial space near RTP, Durham offers some of the strongest small bay options in the Carolinas.
+Whether you need a contractor bay, warehouse for rent, warehouse with office, or flex industrial space near RTP, Durham offers some of the strongest small bay options in the Carolinas.

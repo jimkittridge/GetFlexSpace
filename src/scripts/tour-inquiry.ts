@@ -12,13 +12,15 @@ let sent = false;
 let requestId = '';
 let lastPayload = '';
 let mode = 'tour';
+let requestedMode: 'tour' | 'waitlist' | undefined;
 
 function updateMode() {
-  mode = location.selectedOptions[0]?.dataset.available === 'false' ? 'waitlist' : 'tour';
+  const full = location.selectedOptions[0]?.dataset.available === 'false';
+  mode = full ? 'waitlist' : requestedMode || 'tour';
   const waitlist = mode === 'waitlist';
   document.querySelector('#inquiry-title')!.textContent = waitlist ? 'Get on the list.' : 'Request a tour.';
   document.querySelector('#inquiry-intro')!.textContent = waitlist
-    ? `${location.value} is full. We’ll contact you when space opens.`
+    ? full ? `${location.value} is full. We’ll contact you when space opens.` : `We’ll contact you about upcoming space in ${location.value}.`
     : 'We’ll call or text to confirm a tour time.';
   submitLabel.textContent = waitlist ? 'Join the waitlist' : 'Request my tour';
   document.querySelector('.tour-form-note')!.textContent = waitlist
@@ -26,7 +28,7 @@ function updateMode() {
     : 'No obligation. We’ll confirm your tour time.';
 }
 
-export function openTourInquiry(city = '') {
+export function openTourInquiry(city = '', requestType?: 'tour' | 'waitlist') {
   if (sent) {
     form.reset(); sent = false; requestId = ''; lastPayload = '';
     success.hidden = true; formContent.hidden = false;
@@ -34,6 +36,7 @@ export function openTourInquiry(city = '') {
     dialog.setAttribute('aria-describedby', 'inquiry-intro');
   }
   if (!sending) {
+    requestedMode = requestType;
     if (city) location.value = city;
     errorBox.hidden = true;
     updateMode();
@@ -41,7 +44,7 @@ export function openTourInquiry(city = '') {
   dialog.showModal();
 }
 
-location.addEventListener('change', updateMode);
+location.addEventListener('change', () => { requestedMode = undefined; updateMode(); });
 phone.addEventListener('input', () => phone.setCustomValidity(''));
 document.querySelector('#tour-done')!.addEventListener('click', () => dialog.close());
 

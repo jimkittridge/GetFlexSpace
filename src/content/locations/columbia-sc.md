@@ -68,13 +68,13 @@ tenantProfiles:
     description: A fit for businesses that need both storage and customer-facing space.
 faq:
   - question: What size suites are typically available?
-    answer: Most suites are between 1,000 and 2,500 square feet, with 18–22 ft clear height ceilings and drive-in door access.
+    answer: "Suite sizes range from {{suiteRange}}, with {{ceilingHeight}} height and drive-in access. {{availabilitySummary}}"
   - question: What types of businesses are a good fit?
     answer: These suites work well for contractors, distribution operators, service businesses, light manufacturers, and government support contractors.
   - question: Are suites always immediately available?
-    answer: Not always. Many suites lease quickly, so we encourage businesses to submit their requirements to receive current matches and upcoming openings.
+    answer: "{{availabilitySummary}}"
   - question: Can I request pricing even if nothing is available today?
-    answer: Yes. Submit your business details, size range, and timing, and we'll respond with relevant options when there is a fit.
+    answer: Yes. Share your business details with leasing, and we'll respond with relevant options when there is a fit.
   - question: How quickly can I get a response?
     answer: We respond to all qualified inquiries within 1 business day, typically sooner.
   - question: Do you offer tours?
