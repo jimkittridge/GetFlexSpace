@@ -8,12 +8,30 @@ availability: available
 availableUnits: 1 Unit Available – 2,000 sq ft
 image: /images/Durham Flex Space.png
 gallery:
+  - /images/1320-old-oxford-road/aerial-front.webp
+  - /images/1320-old-oxford-road/warehouse-interior.webp
+  - /images/1320-old-oxford-road/office-entry.webp
+  - /images/1320-old-oxford-road/drive-in-doors.webp
+  - /images/1320-old-oxford-road/loading-dock.webp
+  - /images/1320-old-oxford-road/warehouse-office.webp
+  - /images/1320-old-oxford-road/open-drive-in-doors.webp
+  - /images/1320-old-oxford-road/office-interior.webp
+  - /images/1320-old-oxford-road/fenced-yard.webp
+  - /images/1320-old-oxford-road/aerial-site.webp
+  - /images/1320-old-oxford-road/yard-parking.webp
+  - /images/1320-old-oxford-road/courtyard.webp
   - /images/Durham Flex Space.png
   - /images/DJI_0194.JPG
   - /images/DSC00334.JPG
   - /images/DSC00318.JPG
   - /images/DJI_0210.JPG
   - /images/IMG_9519.JPG
+floorPlans:
+  - title: Warehouse and office floor plan
+    image: /images/1320-old-oxford-road/floor-plan.webp
+    description: Floor plan from the Pickett Sprouse brochure for 1320 Old Oxford Road. Confirm the applicable suite and current layout with our leasing team.
+    brochure: /images/1320-old-oxford-road/property-brochure.pdf
+    sourceUrl: https://pickettsprouse.com/properties/866781
 tagline: Small warehouse and flex space for lease in Durham, NC for contractors, service businesses, e-commerce operators, and light industrial users. 950–3,000 SF suites with 10'–14' drive-in doors, 14–20 ft clear height, and 24/7 access near RTP and RDU.
 seo:
   title: Small Warehouse & Flex Space for Lease in Durham, NC | GetFlexSpace
@@ -110,6 +128,18 @@ faqHeading: Durham flex space, warehouse, and contractor bay FAQ
 ctaHeading: Looking for flex space or a small warehouse in Durham?
 ctaSubheading: Get current availability, pricing, and next steps for Durham flex space, small warehouse units, and contractor bay space. 950–3,000 SF suites with drive-in loading, clear height, and 24/7 access.
 galleryAltTexts:
+  - Aerial view of the buildings and parking at 1320 Old Oxford Road in Durham
+  - Warehouse interior with concrete floor and roll-up doors at 1320 Old Oxford Road
+  - Office entrance and windows at 1320 Old Oxford Road
+  - Drive-in loading doors at 1320 Old Oxford Road
+  - Loading dock at 1320 Old Oxford Road
+  - Warehouse interior with enclosed office and stairs at 1320 Old Oxford Road
+  - Open drive-in doors facing the courtyard at 1320 Old Oxford Road
+  - Office interior at 1320 Old Oxford Road
+  - Fenced yard and gate at 1320 Old Oxford Road
+  - Overhead aerial view of the property at 1320 Old Oxford Road
+  - Parking and yard area at 1320 Old Oxford Road
+  - Shared courtyard and loading access at 1320 Old Oxford Road
   - small warehouse space for lease in Durham NC
   - Durham flex warehouse with drive in door
   - contractor bay space in Durham NC
