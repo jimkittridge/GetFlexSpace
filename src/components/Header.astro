@@ -4,7 +4,7 @@ import { getEntry } from 'astro:content';
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const currentPath = Astro.url.pathname;
 const homepage = await getEntry('pages', 'homepage');
-const logo = homepage?.data?.logo || `${base}images/logo.png`;
+const logo = homepage?.data?.logo || `${base}images/brand/getflexspace-color.svg`;
 const navLinks = [
   { href: base, label: 'Home' },
   { href: `${base}locations/`, label: 'Locations' },
@@ -17,7 +17,7 @@ const navLinks = [
 <header class="site-header">
   <div class="container header-inner">
     <a href={base} class="logo" aria-label="GetFlexSpace Home">
-      <img src={logo} alt="GetFlexSpace" class="logo-img" />
+      <img src={logo} alt="GetFlexSpace" width="1243" height="228" class="logo-img" />
     </a>
 
     <nav class="nav-desktop" aria-label="Main navigation">
@@ -70,7 +70,10 @@ const navLinks = [
   }
 
   .logo {
-    display: flex;
+    display: inline-flex;
+    background: #f5f3ee;
+    padding: 6px 10px;
+    border-radius: 4px;
     align-items: center;
     gap: var(--space-2);
     color: var(--white);

@@ -3,7 +3,7 @@ seo:
   title: Warehouse & Flex Space for Lease in NC & SC | GetFlexSpace
   description: Explore warehouse and flex space for lease in Durham, Asheville, and Columbia. Compare suite sizes, drive-in access, office options, and request a tour.
 heroBackgroundImage: /images/Durham Flex Space.png
-logo: /images/Screenshot 2026-03-17 at 10.03.28 PM-1.png
+logo: /images/brand/getflexspace-color.svg
 hero:
   headline: Warehouse & flex space for lease in North Carolina & South Carolina.
   subheadline: Find your home base in Durham, Asheville, or Columbia. Space for contractors, service businesses, e-commerce, and light industrial operations.
