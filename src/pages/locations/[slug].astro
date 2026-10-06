@@ -153,7 +153,7 @@ const galleryAltTexts = city.galleryAltTexts || [];
           <div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
             {specItems.map(([label, value]) => (
               <div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-3">
-                <div class="text-[11px] uppercase tracking-[0.14em] text-white/40">{label}</div>
+                <div class="text-xs md:text-[11px] uppercase tracking-[0.14em] text-white/40">{label}</div>
                 <div class="mt-1 text-sm font-medium text-white/90">{value}</div>
               </div>
             ))}
@@ -653,6 +653,10 @@ const galleryAltTexts = city.galleryAltTexts || [];
     font-size: 1rem;
     line-height: 1.8;
     margin-bottom: 1rem;
+  }
+  @media (max-width: 767px) {
+    .prose-location :global(p) { font-size: 1.125rem; line-height: 1.65; }
+    .gallery-view-overlay .gallery-view-btn { font-size: 1rem; min-height: 44px; }
   }
 
   /* ===== Gallery Grid ===== */

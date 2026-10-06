@@ -3,3 +3,18 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* Shared mobile type scale for location, contact, and resource pages. */
+@media (max-width: 767px) {
+  :root {
+    --text-xs: .875rem;
+    --text-sm: 1rem;
+    --text-base: 1.125rem;
+    --text-sm--line-height: 1.6;
+    --text-base--line-height: 1.65;
+  }
+
+  body { font-size: 1.125rem; }
+  header nav { max-width: calc(100vw - 48px); }
+  footer a { overflow-wrap: anywhere; }
+}
