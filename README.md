@@ -71,13 +71,60 @@ not verify the live domain. The live redesign was verified in October 2026.
 
 ## Leasing inquiries
 
-The homepage tour/waitlist dialog and active leasing cards use direct call, SMS,
-and email links. Phone and email come from `src/content/pages/contact.md`. There
-is no form submission backend or automatic tour booking. The old Netlify forms
-were not compatible with the live host and have been removed from active pages.
-A future booking/form integration must confirm successful receipt before
-showing a submitted message. Calls and messages are sent by the visitor in
-their phone, messaging, or email app.
+The homepage tour/waitlist pop-out collects location, name, business name or
+website, and cell phone. Large call and text links sit beside it on desktop and
+below it on mobile. Public contact details still come from
+`src/content/pages/contact.md`; notifications go to **jim@rothcapital.com**.
+
+Requests are saved in a private Cloudflare D1 database before success is shown.
+This is a request for follow-up, not an automatically booked appointment. A UUID
+makes retries safe without duplicate leads. Server validation, a honeypot, and a
+five-request/15-minute IP limit protect the endpoint. Only short-lived IP hashes
+are stored by that limit.
+
+### Tour request admin
+
+Open `/admin/requests/`, or click **Tour requests** in the content manager.
+Sign in with the same GitHub access token used for the CMS. The server verifies
+write access to this repository on every admin request. The token lives only in
+memory until sign-out or navigation; lead data is not stored in the public repo.
+The inbox includes status filters, New/Contacted/Tour scheduled/Closed statuses,
+phone links, notification status, and a retry button for failed notifications.
+
+### Hosting setup
+
+Cloudflare Pages Functions in `functions/` expose the form and authenticated
+admin APIs. `server/tour-requests.js` contains validation, persistence, and email
+logic. The static GitHub Pages mirror does not support these functions.
+
+1. Create D1 database `getflexspace-tour-requests` and run
+   `migrations/0001_tour_requests.sql` in its console (or Wrangler).
+2. Bind that database as **LEADS_DB** in the **production** environment of Pages
+   project `testgithub`. Use a separate test database for any preview environment;
+   never share production lead data with untrusted preview code.
+3. Verify `jim@rothcapital.com` as a Cloudflare Email Routing destination and
+   onboard `getflexspace.com` to Email Routing. Deploy the complete worker in
+   `notification-worker/` with its `EMAIL` binding restricted to that recipient.
+   Its public HTTP handler always returns 404; only the private `notify` RPC
+   method sends messages. Bind it to Pages production as service
+   **TOUR_NOTIFICATIONS**, then set **TOUR_EMAIL_ENABLED** to **true**.
+   A saved request is the source of truth. Email failures remain visible in the
+   inbox and can be retried; they do not lose the request.
+4. Redeploy after binding/variable changes. Verify one clearly labeled test lead
+   in the admin inbox and its notification before treating launch as complete.
+
+Cloudflare sends notifications from `notifications@getflexspace.com` to the fixed
+verified destination `jim@rothcapital.com`. Sending to verified destinations is
+available on the free plan. No mail API key is stored in this repository. The
+notification worker is deployed separately from the Pages/GitHub build; update
+it with `wrangler deploy --config notification-worker/wrangler.jsonc` when its
+code changes. Its checked-in configuration disables public and preview URLs.
+
+For local backend testing, build the site and run `wrangler pages dev dist` with
+a local D1 binding. Apply the migration to that same local database. Leave
+`TOUR_EMAIL_ENABLED` unset so tests do not send real email. `npm test` exercises
+storage, duplicate retries, failure handling, rate limits, notification retries,
+and authorization against an in-memory SQLite database (Node 22.13+).
 
 ## Editing content
 
@@ -88,7 +135,7 @@ GitHub. It can also be edited by hand in `src/content/`.
 
 The **"Sign in with GitHub"** button does not work. `public/admin/config.yml`
 has no `base_url`, so Sveltia falls back to Netlify's OAuth service and the
-popup 404s against `api.netlify.com` — this site is on GitHub Pages, not Netlify.
+popup 404s against `api.netlify.com` — the live site is hosted on Cloudflare.
 
 **Use "Sign In Using Access Token"** instead, with a classic GitHub personal
 access token (`repo` scope). That talks directly to the GitHub API and needs no

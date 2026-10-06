@@ -1,0 +1,32 @@
+---
+import '../../styles/requests-admin.css';
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="robots" content="noindex,nofollow"/><meta name="referrer" content="same-origin"/>
+  <title>Tour requests | GetFlexSpace Admin</title><link rel="icon" href="/favicon.svg"/>
+</head>
+<body>
+  <header class="admin-header"><a href="/admin/" class="admin-brand">GetFlexSpace <span>Admin</span></a><nav aria-label="Admin navigation"><a href="/admin/">Content manager</a><a href="/">View site ↗</a><button id="sign-out" hidden>Sign out</button></nav></header>
+  <main>
+    <div class="inbox-heading"><div><p class="eyebrow">LEASING INBOX</p><h1>Tour requests.</h1><p>Saved requests and waitlist inquiries, all in one place.</p></div></div>
+    <section id="admin-login" class="login-card" aria-labelledby="login-title">
+      <h2 id="login-title">Sign in to your inbox</h2>
+      <p>Use the GitHub access token you use for the content manager. It must have permission to edit the GetFlexSpace repository.</p>
+      <form id="admin-login-form"><label for="github-token">GitHub access token</label><input id="github-token" type="password" required autocomplete="off" spellcheck="false" placeholder="Paste your GitHub access token"/><button type="submit" class="primary">Open tour requests</button></form>
+      <p class="login-note">Your token stays in this tab’s memory and is cleared when you sign out or leave. Requests are never stored in the public GitHub repository.</p>
+    </section>
+    <p id="admin-message" role="status" aria-live="polite" hidden></p>
+    <section id="admin-inbox" hidden aria-label="Saved tour requests">
+      <div class="inbox-stats"><div><strong id="new-count">0</strong><span>New requests</span></div><div><strong id="scheduled-count">0</strong><span>Tours scheduled</span></div><div><strong id="total-count">0</strong><span>Total requests</span></div></div>
+      <div class="inbox-toolbar"><label for="status-filter">Show<select id="status-filter"><option value="">All requests</option><option value="new">New</option><option value="contacted">Contacted</option><option value="tour_scheduled">Tour scheduled</option><option value="closed">Closed</option></select></label><button id="refresh-inbox">Refresh</button><span>Notifications: jim@rothcapital.com</span></div>
+      <div id="requests-list"></div>
+      <p id="empty-inbox" class="empty-state" hidden>No requests here yet. New tour and waitlist requests will appear here.</p>
+      <div class="inbox-pagination"><button id="previous-page" disabled>← Previous</button><span id="page-description"></span><button id="next-page" disabled>Next →</button></div>
+    </section>
+  </main>
+  <script src="../../scripts/requests-admin.ts"></script>
+</body>
+</html>

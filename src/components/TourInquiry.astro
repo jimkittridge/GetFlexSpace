@@ -1,0 +1,68 @@
+---
+import '../styles/tour-inquiry.css';
+interface Props {
+  markets: { name: string; fullName: string; available: boolean }[];
+  phone: string;
+  phoneHref: string;
+  email: string;
+}
+const { markets, phone, phoneHref, email } = Astro.props;
+---
+
+<dialog id="inquiry-dialog" class="tour-dialog" aria-labelledby="inquiry-title" aria-describedby="inquiry-intro">
+  <button class="close-dialog" aria-label="Close tour request">×</button>
+  <div class="tour-columns">
+    <div class="tour-main">
+      <div id="tour-form-content">
+        <p class="eyebrow">COME SEE YOUR NEXT SPACE</p>
+        <h2 id="inquiry-title">Request a tour.</h2>
+        <p id="inquiry-intro">A few details, and you’re on your way. We’ll call or text to confirm availability and a time.</p>
+        <form id="tour-request-form" method="POST" action="/api/tour-requests">
+          <div class="tour-fields">
+            <label for="tour-location">Location
+              <select id="tour-location" name="location" required>
+                <option value="">Choose your location</option>
+                {markets.map(market => <option value={market.name} data-available={String(market.available)}>{market.fullName}{market.available ? '' : ' — waitlist'}</option>)}
+              </select>
+            </label>
+            <label for="tour-name">Your name
+              <input id="tour-name" name="name" autocomplete="name" required minlength="2" maxlength="100" placeholder="First and last name"/>
+            </label>
+            <label for="tour-business">Business name or website
+              <input id="tour-business" name="business" autocomplete="organization" required minlength="2" maxlength="200" placeholder="Your business or website URL"/>
+            </label>
+            <label for="tour-phone">Cell phone
+              <input id="tour-phone" name="cell_phone" type="tel" inputmode="tel" autocomplete="tel" required minlength="10" maxlength="40" placeholder="(555) 555-0123" aria-describedby="tour-phone-hint"/>
+              <span id="tour-phone-hint" class="field-hint">The best number for a call or text about your space.</span>
+            </label>
+          </div>
+          <div class="tour-honeypot" aria-hidden="true"><label>Leave this blank<input name="website_confirm" tabindex="-1" autocomplete="off"/></label></div>
+          <p id="tour-availability" class="tour-availability" hidden></p>
+          <p id="tour-form-error" class="tour-form-error" role="alert" hidden></p>
+          <button id="tour-submit" class="button orange" type="submit"><span id="tour-submit-label">Request my tour</span><span aria-hidden="true">↗</span></button>
+          <p class="tour-form-note">No obligation. Your tour time is confirmed by our leasing team.</p>
+          <noscript><p class="tour-form-error">Please enable JavaScript to send this form, or use the call and text options.</p></noscript>
+        </form>
+      </div>
+      <div id="tour-success" class="tour-success" hidden tabindex="-1" role="status" aria-live="polite">
+        <div class="tour-success-icon" aria-hidden="true">✓</div>
+        <p class="eyebrow">YOU’RE ONE STEP CLOSER</p>
+        <h2 id="tour-success-title">Request received.</h2>
+        <p id="tour-success-message"></p>
+        <p class="tour-success-reference"></p>
+        <button type="button" class="button dark" id="tour-done">Back to exploring <span aria-hidden="true">↗</span></button>
+      </div>
+    </div>
+    <aside class="tour-contact" aria-labelledby="tour-contact-title">
+      <p class="eyebrow">LET’S TALK SPACE</p>
+      <h3 id="tour-contact-title">Rather talk<br/> to a person?</h3>
+      <p>Questions about a space or your business? Reach our leasing team directly.</p>
+      <div class="tour-contact-buttons">
+        <a class="tour-contact-button tour-call" href={`tel:${phoneHref}`}><svg aria-hidden="true"><use href="#phone"/></svg><span>Call leasing<strong>{phone}</strong></span><span aria-hidden="true">↗</span></a>
+        <a class="tour-contact-button tour-text" href={`sms:${phoneHref}`}><svg aria-hidden="true"><use href="#message"/></svg><span>Text leasing<strong>Send us a question</strong></span><span aria-hidden="true">↗</span></a>
+      </div>
+      <a class="tour-email" href={`mailto:${email}`}>Prefer email? <span>{email}</span></a>
+      <p class="tour-contact-note">Tell us what you need. We’ll help you find the right fit.</p>
+    </aside>
+  </div>
+</dialog>

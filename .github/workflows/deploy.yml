@@ -35,6 +35,12 @@ jobs:
       - name: Build with Astro
         run: npm run build
 
+      - name: Test request storage and admin access
+        run: npm test
+
+      - name: Check Cloudflare Functions
+        run: npx wrangler pages functions build --outdir /tmp/getflexspace-functions --compatibility-date 2026-03-17
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
