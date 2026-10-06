@@ -81,9 +81,10 @@ const structuredData = {
       <div class="hero-actions"><a class="button orange" href="#locations">Find your space <span aria-hidden="true">↗</span></a><a class="text-link" href={smsHref}>Text us a question <svg aria-hidden="true"><use href="#message"/></svg></a></div>
       <p class="hero-note">{markets.length} Carolina markets. One next step.</p>
     </div>
-    <div class="hero-photo">
+    <div class="hero-photo" role="group" aria-roledescription="carousel" aria-label="Our locations">
+      <button class="photo-rotation" type="button" aria-label="Pause location slideshow" hidden><svg class="rotation-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg><svg class="rotation-play" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7Z"/></svg><span>Pause</span></button>
       <img src={featured.image} alt={`${featured.fullName} warehouse and flex suites with drive-in access`} width="1200" height="900" fetchpriority="high">
-      <div class="photo-top"><span><i></i>EXPLORE OUR SPACES</span><span>01 / {String(markets.length).padStart(2, '0')}</span></div>
+      <div class="photo-top"><span><i></i>EXPLORE OUR SPACES</span><span id="photo-count">01 / {String(markets.length).padStart(2, '0')}</span></div>
       <div class="photo-caption"><div><p>{featured.name.toUpperCase()}, {featured.stateName.toUpperCase()}</p><strong>Your business belongs here.</strong></div><a href={featured.url} class="round-button" data-property={featured.name} aria-label={`Explore ${featured.name}`}><span aria-hidden="true">↗</span></a></div>
       <div class="photo-switch" role="group" aria-label="Choose property photo">{markets.map((market, i) => <button class:list={{active: i === 0}} data-hero={market.name} aria-pressed={i === 0}>{market.name}</button>)}</div>
     </div>
