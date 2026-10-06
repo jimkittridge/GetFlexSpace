@@ -97,7 +97,14 @@ const structuredData = {
         <div class="property-heading"><h3>{market.fullName}</h3><span>{market.index}</span></div>
         <p class="property-description">{market.description}</p>
         <div class="property-facts"><span>{market.range}</span><span>Drive-in access</span></div>
-        <div class="property-bottom"><a class="text-link property-page-link" href={market.url}>Warehouse &amp; flex space in {market.name} <span aria-hidden="true">↗</span></a><a href="/contact/" class="small-link" data-tour={market.available ? 'tour' : 'waitlist'} data-location={market.name}>{market.available ? 'Request a tour' : 'Join waitlist'}</a></div>
+        <div class="property-bottom">
+          <a href="/contact/" class="property-cta property-cta-primary" data-tour={market.available ? 'tour' : 'waitlist'} data-location={market.name} aria-label={market.available ? `Request a tour in ${market.name}` : `Join the waitlist in ${market.name}`}>
+            {market.available ? 'Request a tour' : 'Join the waitlist'} <span aria-hidden="true">↗</span>
+          </a>
+          <a class="property-cta property-cta-secondary" href={market.url} aria-label={`View ${market.name} property — warehouse and flex space`}>
+            View {market.name} property <span aria-hidden="true">↗</span>
+          </a>
+        </div>
       </article>)}
     </div>
     <div class="location-help"><span>Not sure where to start? Tell us what your business needs.</span><a class="text-link" href={smsHref}>Let’s talk <span aria-hidden="true">↗</span></a></div>

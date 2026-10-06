@@ -42,3 +42,38 @@ dialog{border:0;padding:0;border-radius:8px;max-width:590px;width:calc(100% - 32
 @media(max-width:380px){.hero .hero-display{font-size:60px}.hero .hero-search-title{font-size:16px}.space-specs{grid-template-columns:1fr}.space-specs p{font-size:13px}.locations .section-heading h2{font-size:34px}}
 
 .preserve-lines{white-space:pre-line}.business h2 .business-headline{color:var(--ink)}.round-button{display:grid;place-items:center}.property-image{display:block}.inquiry-options{display:grid;gap:14px;margin:28px 0}.inquiry-options .text-link{justify-content:center}.photo-switch{flex-wrap:wrap;gap:8px 25px}.footer-bottom a:hover{text-decoration:underline}
+
+/* Keep the next step unmistakable on every property card. */
+.property { display: flex; flex-direction: column; }
+.property-image { flex-shrink: 0; }
+.property-bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+  justify-content: stretch;
+  gap: 12px;
+  align-items: stretch;
+  margin-top: auto;
+  padding-top: 22px;
+}
+.property-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 16px 20px;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-decoration: none;
+}
+.property-cta > span { flex-shrink: 0; font-size: 26px; line-height: 1; }
+.property-cta-primary { min-height: 64px; background: var(--orange); }
+.property-cta-primary:hover { background: #fbb67b; }
+.property-cta-secondary { min-height: 56px; background: #fff; font-size: 16px; }
+.property-cta-secondary:hover { background: var(--soft); }
+.property .property-cta:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
