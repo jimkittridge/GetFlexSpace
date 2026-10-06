@@ -1,3 +1,19 @@
+/* Shared dialog foundations: usable without the homepage stylesheet. */
+.tour-dialog { --ink: #202925; --orange: #f7a65c; width: calc(100% - 32px); max-height: 90dvh; margin: auto; padding: 0; border: 0; background: #f7f5f1; color: var(--ink); overflow: auto; box-shadow: 0 24px 100px #0004; font-family: Inter, sans-serif; line-height: 1.5; }
+.tour-dialog::backdrop { background: #17231dcc; backdrop-filter: blur(4px); }
+.tour-dialog [hidden] { display: none !important; }
+.tour-dialog .close-dialog { position: absolute; z-index: 2; display: grid; place-items: center; background: #f7f5f1; color: var(--ink); border: 1px solid #cbd2c3; border-radius: 50%; font-size: 25px; line-height: 1; cursor: pointer; }
+.tour-dialog .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; line-height: 1.5; }
+.tour-dialog h2, .tour-dialog h3 { font-weight: 500; line-height: 1.1; }
+.tour-dialog label, .tour-dialog input, .tour-dialog select { display: block; }
+.tour-dialog input, .tour-dialog select { width: 100%; min-width: 0; background: white; color: var(--ink); font-family: inherit; font-weight: 400; }
+.tour-dialog svg { width: 22px; height: 22px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.tour-dialog a { text-decoration: none; }
+.tour-dialog .button { display: inline-flex; align-items: center; justify-content: space-between; gap: 24px; padding: 18px 22px; min-height: 52px; border-radius: 4px; font-size: 16px; font-weight: 600; line-height: 1.2; cursor: pointer; }
+.tour-dialog .button.orange { background: var(--orange); color: var(--ink); }
+.tour-dialog .button.dark { background: var(--ink); color: white; }
+.tour-dialog .button:hover { filter: brightness(1.05); }
+.tour-dialog :is(button,a,input,select):focus-visible { outline: 3px solid #9c4719; outline-offset: 3px; }
 .tour-dialog { max-width: 960px; border-radius: 12px; }
 .tour-dialog .close-dialog { width: 44px; height: 44px; right: 16px; top: 16px; }
 .tour-columns { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); }

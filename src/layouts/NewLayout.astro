@@ -8,9 +8,12 @@ interface Props {
   description: string;
   canonicalUrl?: string;
   schemaMarkup?: string;
+  bodyClass?: string;
+  leasingLocation?: string;
+  leasingAvailable?: boolean;
 }
 
-const { title, description, canonicalUrl, schemaMarkup } = Astro.props;
+const { title, description, canonicalUrl, schemaMarkup, bodyClass, leasingLocation, leasingAvailable } = Astro.props;
 const canonical = canonicalUrl || Astro.url.href;
 ---
 
@@ -36,8 +39,8 @@ const canonical = canonicalUrl || Astro.url.href;
   {schemaMarkup && <Fragment set:html={`<script type="application/ld+json">${schemaMarkup}</script>`} />}
   <slot name="head" />
 </head>
-<body class="min-h-screen bg-[#f7f5f1] text-[#111111]" style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
-  <HeaderNew />
+<body class:list={["min-h-screen bg-[#f7f5f1] text-[#111111]", bodyClass]} style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+  <HeaderNew leasingLocation={leasingLocation} leasingAvailable={leasingAvailable} />
   <main>
     <slot />
   </main>

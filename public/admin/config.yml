@@ -59,6 +59,7 @@ collections:
         name: availability
         widget: select
         options: [available, full]
+        hint: "Full makes every suite waitlist-only on the property page. Set Available and mark the open suites available to accept tours."
       - { label: Available Units, name: availableUnits, widget: string, required: false, default: "" }
       - { label: City Image, name: image, widget: image, required: false, default: "" }
       - label: Gallery
@@ -132,7 +133,7 @@ collections:
         widget: list
         fields:
           - { label: Question, name: question, widget: string }
-          - { label: Answer, name: answer, widget: text }
+          - { label: Answer, name: answer, widget: text, hint: "Use {{availabilitySummary}}, {{suiteRange}}, or {{ceilingHeight}} to keep answers consistent with this location’s current listing." }
       - label: Schema / Address
         name: schema
         widget: object
