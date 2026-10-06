@@ -1,11 +1,12 @@
 ---
 import NewLayout from '../../layouts/NewLayout.astro';
+import RetailFeature from '../../components/RetailFeature.astro';
 import LeadForm from '../../components/LeadForm.astro';
 import { getCollection } from 'astro:content';
 
 const allLocations = await getCollection('locations');
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
-const title = 'Flex Space Locations in NC & SC | GetFlexSpace';
+const title = 'Flex & Retail Space Locations in NC & SC | GetFlexSpace';
 const description = 'Find small bay flex space for lease in Asheville NC, Durham NC, and Columbia SC. 1,000–3,000 SF suites with drive-in doors, high ceilings, and 24/7 access.';
 
 const breadcrumbSchema = JSON.stringify({
@@ -39,7 +40,7 @@ const breadcrumbSchema = JSON.stringify({
       <div class="max-w-3xl">
         <div class="text-sm uppercase tracking-[0.16em] text-black/45">Locations</div>
         <h1 class="mt-3 text-5xl font-semibold tracking-[-0.03em] text-[#111] sm:text-6xl" style="color: #111;">
-          Small bay flex space across the Carolinas.
+          Flex and retail space across the Carolinas.
         </h1>
         <p class="mt-6 text-xl leading-8 text-black/64">
           Browse current markets, check availability status, and find the right flex industrial space for your business.
@@ -47,6 +48,8 @@ const breadcrumbSchema = JSON.stringify({
       </div>
     </div>
   </section>
+
+  <RetailFeature />
 
   <!-- Location Cards -->
   <section class="pb-20 lg:pb-28">

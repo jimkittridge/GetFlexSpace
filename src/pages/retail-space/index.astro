@@ -1,0 +1,52 @@
+---
+import { getEntry } from 'astro:content';
+import NewLayout from '../../layouts/NewLayout.astro';
+import LeasingContact from '../../components/LeasingContact.astro';
+const property = (await getEntry('retail', 'morganton-nc'))!.data;
+const sizes = property.sizes.map(size => size.toLocaleString('en-US'));
+const sizeRange = `${sizes[0]}–${sizes[sizes.length - 1]} sq ft`;
+const logo = (await getEntry('pages', 'homepage'))!.data.logo || '/images/brand/getflexspace-color.svg';
+const address = `${property.address}, ${property.city}, ${property.state}`;
+const mapQuery = encodeURIComponent(address);
+const categories = ['Storefronts', 'Interiors', 'Floor plans', 'Parking', 'Neighborhood'];
+const schema = JSON.stringify({ '@context': 'https://schema.org', '@type': 'Place', name: property.name,
+  address: {'@type': 'PostalAddress', streetAddress: property.address, addressLocality: property.city, addressRegion: property.state, addressCountry: 'US'},
+  url: 'https://getflexspace.com/retail-space/' });
+---
+<NewLayout title="Retail Space for Lease in Morganton, NC | GetFlexSpace" description={`Retail space for lease at ${address}. Both ${sizes.join(" sq ft and ")} sq ft units available. Contact GetFlexSpace for pricing and a tour.`} schemaMarkup={schema}>
+  <div class="retail-page">
+    <section class="retail-hero">
+      <div class="retail-wrap">
+        <nav aria-label="Breadcrumb"><a href="/">Home</a> / <span>Retail Space</span></nav>
+        <p class="kicker">Retail Space · Morganton, NC</p>
+        <h1>RETAIL SPACE<br/>FOR LEASE</h1>
+        <p class="size-range">{sizeRange}</p>
+        <img class="retail-logo" src={logo} alt="GetFlexSpace" width="1243" height="228"/>
+        <p class="address">{property.address}<br/>{property.city}, {property.state}</p>
+        <p class="availability"><span aria-hidden="true">●</span> Both sizes available</p>
+        <div class="retail-actions"><a class="retail-button" href="#leasing">Ask about availability &amp; pricing ↗</a><a href="#property-tour">Explore the property ↓</a></div>
+      </div>
+    </section>
+    <section class="retail-wrap retail-section" aria-labelledby="units-title">
+      <p class="kicker">Choose your space</p><h2 id="units-title">Two sizes. Your next storefront.</h2>
+      <div class="unit-grid">{property.sizes.map(size => <article class="retail-card"><p class="availability">Available</p><h3>{size.toLocaleString('en-US')} <span>sq ft</span></h3><p>Retail space at {property.address}.</p><a href="#leasing">Ask about this size ↗</a></article>)}</div>
+      <p class="retail-note">Contact leasing for suite layouts, pricing, lease terms, and suitability for your intended use.</p>
+    </section>
+    <section class="retail-wrap retail-section" aria-labelledby="strengths-title">
+      <p class="kicker">A place for your business</p><h2 id="strengths-title">Get to know this location.</h2>
+      <div class="strength-grid">{property.highlights.map(item => <article><h3>{item.title}</h3><p>{item.description}</p></article>)}</div>
+    </section>
+    <section class="retail-wrap retail-section" id="property-tour" aria-labelledby="tour-title">
+      <p class="kicker">Property tour</p><h2 id="tour-title">See how the space fits.</h2>
+      <div class="gallery-groups">{categories.map(category => {
+        const media = property.media.filter(item => item.category === category);
+        return <section class="media-group"><h3>{category}</h3>{media.length ? <div class="media-grid">{media.map(item => <figure><a href={item.image} target="_blank" rel="noopener"><img src={item.image} alt={item.alt} loading="lazy"/></a><figcaption>{item.alt}</figcaption></figure>)}</div> : category === 'Neighborhood' ? <><p>Explore the surrounding streets, homes, and businesses.</p><iframe title={`Neighborhood map — ${address}`} src={`https://www.google.com/maps?q=${mapQuery}&output=embed`} width="100%" height="420" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe><a href={`https://www.google.com/maps/search/?api=1&query=${mapQuery}`} target="_blank" rel="noopener">Open map &amp; directions ↗</a></> : <p class="media-pending">{category === 'Floor plans' ? 'Floor plans will be added here. Contact leasing to discuss the layout of each available size.' : `${category} photos will be added here. Arrange a tour to see the property in person.`}</p>}</section>;
+      })}</div>
+    </section>
+    <section class="retail-wrap retail-section" id="leasing"><div class="leasing-panel"><div><p class="kicker">Let’s talk retail</p><h2>Your business.<br/>Your next space.</h2><p>{address}</p><p>Tell us whether you need 1,200 or 2,400 sq ft, your business type, and your preferred move-in timing.</p></div><LeasingContact/></div></section>
+  </div>
+</NewLayout>
+<style>
+.retail-page{color:#202925}.retail-wrap{max-width:1200px;margin:auto;padding-left:24px;padding-right:24px}.retail-hero{background:#eaece4;padding:24px 0 64px}.retail-hero nav{font-size:16px;margin-bottom:44px}.retail-page a{color:inherit;text-underline-offset:4px}.kicker{font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin:0 0 18px}.retail-hero h1{color:#202925;font-size:clamp(46px,9vw,112px);font-weight:800;line-height:.95;letter-spacing:-.05em;margin:0}.size-range{font-size:clamp(26px,4vw,42px);font-weight:600;margin:24px 0}.retail-logo{width:250px;max-width:100%;height:auto;margin:0 0 32px}.address{font-size:22px;font-weight:600;line-height:1.5}.availability{color:#326044;font-weight:600}.retail-actions{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:28px}.retail-page .retail-button{background:#202925;color:white;padding:16px 22px;border-radius:10px;text-decoration:none;font-weight:600}.retail-section{padding-top:64px;padding-bottom:24px;scroll-margin-top:100px}.retail-page h2{font-size:clamp(30px,4vw,46px);font-weight:600;line-height:1.15;letter-spacing:-.03em;margin:0 0 28px;color:#202925}.retail-page h3{font-size:23px;font-weight:600;line-height:1.3;margin:0 0 12px;color:#202925}.retail-page p{line-height:1.65}.unit-grid,.strength-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.retail-card{background:white;border:1px solid #d5d8ce;padding:28px;border-radius:18px}.retail-card h3{font-size:40px}.retail-card h3 span{font-size:24px}.retail-card a{font-weight:600}.retail-note{color:#5e665f}.strength-grid article{border-top:1px solid #c6cdbf;padding:24px 0}.media-group{padding:28px 0;border-top:1px solid #d5d8ce}.media-pending{color:#5e665f}.media-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.media-grid figure{margin:0}.media-grid img{width:100%;height:auto;border-radius:12px}.media-grid figcaption{margin-top:10px;font-size:16px}.media-group iframe{border:0;border-radius:18px;margin:20px 0}.leasing-panel{background:#eaece4;border-radius:24px;padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:48px}.retail-page a:focus-visible{outline:3px solid #b5611e;outline-offset:4px}
+@media(max-width:767px){.retail-page p,.retail-page a{font-size:18px}.retail-page .size-range{font-size:30px}.retail-page .kicker{font-size:14px}.unit-grid,.strength-grid,.media-grid,.leasing-panel{grid-template-columns:1fr}.retail-section{padding-top:44px}.leasing-panel{padding:24px;gap:12px}.retail-actions{align-items:stretch;flex-direction:column}.retail-logo{width:220px}}
+</style>

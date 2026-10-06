@@ -181,4 +181,17 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { locations, pages, blog };
+const retail = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/retail' }),
+  schema: z.object({
+    name: z.string(), address: z.string(), city: z.string(), state: z.string(),
+    sizes: z.array(z.number().positive()),
+    highlights: z.array(z.object({ title: z.string(), description: z.string() })),
+    media: z.array(z.object({
+      category: z.enum(['Storefronts', 'Interiors', 'Floor plans', 'Parking', 'Neighborhood']),
+      image: z.string(), alt: z.string(),
+    })).nullish().transform(v => v ?? []),
+  }),
+});
+
+export const collections = { locations, pages, blog, retail };
