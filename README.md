@@ -72,8 +72,10 @@ not verify the live domain. The live redesign was verified in October 2026.
 ## Leasing inquiries
 
 The homepage tour/waitlist pop-out collects location, name, business name or
-website, and cell phone. Large call and text links sit beside it on desktop and
-below it on mobile. Public contact details still come from
+website, and cell phone. Large call and text links sit beside it on desktop;
+compact buttons share a row below the form on mobile. The mobile form fits in
+one phone viewport, with scrolling available for the keyboard or enlarged text.
+Public contact details still come from
 `src/content/pages/contact.md`; notifications go to **jim@rothcapital.com**.
 
 Requests are saved in a private Cloudflare D1 database before success is shown.
