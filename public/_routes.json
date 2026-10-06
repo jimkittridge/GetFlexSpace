@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "include": ["/api/tour-requests", "/api/admin/requests", "/api/admin/requests/*"],
+  "exclude": []
+}

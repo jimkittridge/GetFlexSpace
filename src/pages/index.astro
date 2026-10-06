@@ -2,6 +2,7 @@
 import { getCollection, getEntry } from 'astro:content';
 import { homepageImage, portfolioRange, scriptJson } from '../lib/homepage';
 import '../styles/homepage.css';
+import TourInquiry from '../components/TourInquiry.astro';
 
 const cms = (await getEntry('pages', 'homepage'))!.data;
 const contact = (await getEntry('pages', 'contact'))!.data;
@@ -30,7 +31,6 @@ const logo = await homepageImage(cms.logo || '/images/logo.png', 420);
 const telHref = `tel:${contact.phoneHref}`;
 const smsHref = `sms:${contact.phoneHref}`;
 const emailHref = `mailto:${contact.email}`;
-const tourEmailHref = `${emailHref}?subject=${encodeURIComponent('GetFlexSpace tour request')}`;
 const canonical = 'https://getflexspace.com/';
 const structuredData = {
   '@context': 'https://schema.org', '@graph': [
@@ -141,7 +141,7 @@ const structuredData = {
 <div class="mobile-contact" aria-label="Contact leasing"><a class="button orange" href="/contact/" data-tour>Request a tour <span aria-hidden="true">↗</span></a><a href={telHref}><svg aria-hidden="true"><use href="#phone"/></svg>Call</a><a href={smsHref}><svg aria-hidden="true"><use href="#message"/></svg>Text</a></div>
 
 <dialog id="property-dialog" class="property-dialog" aria-labelledby="detail-title"><button class="close-dialog" aria-label="Close property details">×</button><img id="detail-image" src={featured.image} alt=""><div class="dialog-content"><p class="eyebrow" id="detail-status"></p><h2 id="detail-title"></h2><p id="detail-description"></p><dl id="detail-facts"></dl><p class="fine-print">Suite sizes and features vary. Ask leasing to confirm current availability, pricing, and the specifications of your preferred space.</p><div class="dialog-actions"><button class="button orange" id="detail-action">Request a tour <span aria-hidden="true">↗</span></button><a class="text-link" id="detail-link" href={featured.url}>See property details ↗</a></div></div></dialog>
-<dialog id="inquiry-dialog" aria-labelledby="inquiry-title"><button class="close-dialog" aria-label="Close inquiry">×</button><div class="dialog-content"><p class="eyebrow">LET’S TALK SPACE</p><h2 id="inquiry-title">Come take a look.</h2><p id="inquiry-intro">Call, text, or email leasing to arrange your tour. We’ll confirm availability and a time that works.</p><div class="inquiry-options"><a class="button orange" href={telHref}>Call {contact.phone}<span aria-hidden="true">↗</span></a><a class="button dark" href={smsHref}>Text the leasing team<svg aria-hidden="true"><use href="#message"/></svg></a><a class="text-link inquiry-email" href={tourEmailHref}>Email a tour request <span aria-hidden="true">↗</span></a></div><p class="fine-print">Share your preferred location, space needs, and timing. A tour is confirmed once you hear back from leasing.</p></div></dialog>
+<TourInquiry markets={markets} phone={contact.phone!} phoneHref={contact.phoneHref!} email={contact.email!} />
 <script type="application/json" id="homepage-data" set:html={scriptJson({markets, email: contact.email})}/>
 <script src="../scripts/homepage.ts"></script>
 <svg class="svg-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>

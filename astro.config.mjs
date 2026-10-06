@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://getflexspace.com',
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: page => !new URL(page).pathname.startsWith('/admin/') })],
   vite: {
     plugins: [tailwindcss()],
   },
