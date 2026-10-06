@@ -99,7 +99,7 @@ schema:
   geo:
     lat: 35.5951
     lng: -82.5515
-  phone: +1 7046003839
+  phone: '+19806002520'
 heroH1: Flex Space, Small Warehouse & Contractor Bay Space for Lease in Asheville, NC
 heroSubtitle: Small warehouse and flex space for lease near Asheville in Fletcher, NC. 1,000–3,000 SF suites with 10' × 14' drive-in doors, 14–20 ft clear height, and 24/7 access. Minutes from AVL airport, I-26, and I-40.
 suitesHeading: Asheville warehouse suites and unit sizes

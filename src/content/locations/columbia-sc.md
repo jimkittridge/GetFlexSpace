@@ -88,7 +88,7 @@ schema:
   geo:
     lat: 34.0007
     lng: -81.0348
-  phone: '+17046003839'
+  phone: '+19806002520'
 ---
 
 Columbia sits at the intersection of I-26, I-77, and I-20—three major interstates that make it one of the best-connected logistics points in the Southeast. Businesses in these suites can reach Charlotte, Charleston, Atlanta, and Savannah within a few hours, making it a practical base for regional distribution and service operations.
