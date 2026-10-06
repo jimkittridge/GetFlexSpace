@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: jimkittridge/TestGithub
+  repo: jimkittridge/getflexspace
   branch: claude/build-flexspace-site-dSsmL
 
 media_folder: public/images
@@ -184,6 +184,13 @@ collections:
             name: bullets
             widget: list
             field: { label: Bullet, name: bullet, widget: string }
+          - label: Stats
+            name: stats
+            widget: list
+            hint: "Key stats shown as cards below the hero (e.g. Markets, Response time)"
+            fields:
+              - { label: Label, name: label, widget: string, hint: "e.g. Markets, Response time" }
+              - { label: Value, name: value, widget: string, hint: "e.g. 3, < 1 business day" }
           - label: City Section
             name: citySection
             widget: object

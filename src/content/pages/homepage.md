@@ -1,12 +1,14 @@
 ---
 seo:
-  title: "Small Warehouse & Flex Space for Lease in NC & SC | GetFlexSpace"
-  description: "Lease flex space, small warehouse units, and contractor bay space in Asheville NC, Durham NC, and Columbia SC. 950–4,000 SF suites with drive-in doors, clear height, 24/7 access, and office-ready layouts for contractors, service businesses, e-commerce, and light industrial users."
+  title: Small Warehouse & Flex Space for Lease in NC & SC | GetFlexSpace
+  description: Lease flex space, small warehouse units, and contractor bay space in Asheville NC, Durham NC, and Columbia SC. 950–4,000 SF suites with drive-in doors, clear height, 24/7 access, and office-ready layouts for contractors, service businesses, e-commerce, and light industrial users.
 heroBackgroundImage: /images/Durham Flex Space.png
+heroOverlayColor: ''
+heroOverlayOpacity: null
 logo: /images/Screenshot 2026-03-17 at 10.03.28 PM-1.png
 hero:
-  headline: "Small Warehouse, Flex Space & Contractor Bay Space for Lease in the Carolinas"
-  subheadline: "Flex space and small warehouse units for contractors, service businesses, e-commerce operators, and light industrial users in NC and SC."
+  headline: Small Warehouse, Flex Space & Contractor Bay Space for Lease in the Carolinas
+  subheadline: Flex space and small warehouse units for contractors, service businesses, e-commerce operators, and light industrial users in NC and SC.
 bullets:
   - '3 markets: Asheville, Durham, Columbia'
   - Drive-in doors, 14–20 ft clear height, 24/7 access
@@ -16,8 +18,8 @@ citySection:
   heading: Find Flex Space or a Small Warehouse by City
   subheading: Three markets across the Carolinas. Contractor bay space, small warehouse units, and flex industrial suites built for real operators.
 useCases:
-  heading: "Businesses that use this type of warehouse and flex space"
-  subheading: "These suites are built for businesses that need functional industrial space, drive-in access, and a layout that supports storage, workspace, dispatch, or office use."
+  heading: Businesses that use this type of warehouse and flex space
+  subheading: These suites are built for businesses that need functional industrial space, drive-in access, and a layout that supports storage, workspace, dispatch, or office use.
   items:
     - title: Contractor bay space
       description: Ideal for electricians, plumbers, HVAC companies, painters, landscapers, and other trades that need room for tools, materials, vehicles, and daily dispatch.
@@ -58,7 +60,7 @@ process:
     - title: Get Matched
       description: We'll send you current and upcoming openings that fit your business. No obligation.
     - title: Tour & Apply
-      description: Walk the space, review the lease, and get your keys. Move-in can happen in as little as two weeks.
+      description: Walk the space, review the lease, and get your keys. Move-in can happen in as fast as the same week.
 leadStrip:
   heading: Tell Us What You Need
   subheading: We'll match you with current and upcoming openings across all three markets. No obligation.

@@ -26,12 +26,7 @@ const orgSchema = JSON.stringify({
   })),
 });
 
-const stats = [
-  { label: 'Markets', value: '3' },
-  { label: 'Response time', value: '< 1 business day' },
-  { label: 'Typical suites', value: '1,000–3,000 SF' },
-  { label: 'Fast move-in', value: 'As fast as 2 weeks' },
-];
+const stats = cms.stats ?? [];
 
 const heroTags = ['3 locations', 'Small-bay industrial', 'NC + SC', 'Fast response'];
 

@@ -8,34 +8,13 @@ availableUnits: ''
 image: /images/city-asheville-photo.jpeg
 gallery:
   - /images/city-asheville-photo.jpeg
-  - /images/exterior-front.svg
-  - /images/exterior-full.svg
-  - /images/exterior-wide.svg
-  - /images/exterior-angle.svg
-  - /images/exterior-closeup.svg
+  - /images/452-Butler-Bridge-Rd-Fletcher-NC-Primary-Photo-1-LargeHighDefinition.jpg
+  - /images/73432740dd982fe95b619642f6d06306.jpg
+  - /images/e8a120867c40bdeb5553d09f278eac37.jpg
 tagline: Small warehouse and flex space for lease near Asheville, NC. 1,000–3,000 SF suites with drive-in doors, 14–20 ft clear height, and 24/7 access off I-26 and I-40.
-heroH1: "Flex Space, Small Warehouse & Contractor Bay Space for Lease in Asheville, NC"
-heroSubtitle: "Small warehouse and flex space for lease near Asheville in Fletcher, NC. 1,000–3,000 SF suites with 10' × 14' drive-in doors, 14–20 ft clear height, and 24/7 access. Minutes from AVL airport, I-26, and I-40."
-suitesHeading: "Asheville warehouse suites and unit sizes"
-suitesSubheading: "3 suite types from 1,000–3,000 SF. Join the waitlist to be notified when space becomes available."
-tenantProfilesLabel: "Who it's for"
-tenantProfilesHeading: "A good fit for Asheville businesses that need warehouse space without leasing a big-box building"
-tenantProfilesSubheading: "These flex and warehouse suites are built for businesses that need functional industrial space, drive-in access, and a layout that supports storage, workspace, dispatch, light production, or office use."
-specsHeading: "Built for businesses that need practical industrial space near Asheville"
-specsSubheading: "If you are comparing small warehouse space, contractor shop space, or flex industrial units near Asheville, here are the specs that matter most."
-faqHeading: "Asheville flex space, warehouse, and contractor bay FAQ"
-ctaHeading: "Looking for flex space or a small warehouse near Asheville?"
-ctaSubheading: "Get waitlist access, pricing, and next steps for Asheville flex space, small warehouse units, and contractor bay space. 1,000–3,000 SF suites with drive-in loading, clear height, and 24/7 access."
-galleryAltTexts:
-  - "small warehouse space for lease near Asheville NC"
-  - "Asheville flex warehouse with drive in door"
-  - "contractor bay space near Asheville NC"
-  - "flex space interior Asheville NC"
-  - "Asheville NC industrial space exterior"
-  - "Fletcher NC flex warehouse property"
 seo:
-  title: "Small Warehouse & Flex Space for Lease in Asheville, NC | GetFlexSpace"
-  description: "Lease flex space and small warehouse units near Asheville in Fletcher, NC. 1,000–3,000 SF suites with drive-in doors, 14–20 ft clear height, 24/7 access, and office-ready layouts for contractors, service businesses, and light industrial users."
+  title: Small Warehouse & Flex Space for Lease in Asheville, NC | GetFlexSpace
+  description: Lease flex space and small warehouse units near Asheville in Fletcher, NC. 1,000–3,000 SF suites with drive-in doors, 14–20 ft clear height, 24/7 access, and office-ready layouts for contractors, service businesses, and light industrial users.
 specs:
   ceilingHeight: 14–20 ft clear
   power: 200A
@@ -45,7 +24,7 @@ specs:
   lease: 1–3 years
 mapEmbedUrl: https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d104379.1!2d-82.6!3d35.6!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8859f36e2a989!2sAsheville%2C+NC!5e0!3m2!1sen!2sus!4v1
 localGuide:
-  heading: "Why rent flex or small warehouse space near Asheville, NC"
+  heading: Why rent flex or small warehouse space near Asheville, NC
   nearbyHighways:
     - I-26
     - I-40
@@ -66,17 +45,20 @@ localGuide:
     - Ideal for businesses needing 1,000–3,000 SF
 suites:
   - name: Standard Suite
-    size: "1,000 SF"
+    size: 1,000 SF
     status: waitlist
     description: Compact flex space for small operators, storage, and light workspace needs.
+    baseRent: ''
   - name: Mid-Size Suite
-    size: "2,000 SF"
+    size: 2,000 SF
     status: waitlist
     description: Room for equipment, inventory, and combined warehouse plus office operations.
+    baseRent: ''
   - name: Large Suite
-    size: "3,000 SF"
+    size: 3,000 SF
     status: waitlist
     description: Full-size bay for contractors, fulfillment, and light manufacturing operations.
+    baseRent: ''
 tenantProfiles:
   - title: Contractor bay space
     description: Ideal for electricians, plumbers, HVAC companies, painters, landscapers, and other trades that need room for tools, materials, vehicles, and daily dispatch.
@@ -117,6 +99,23 @@ schema:
     lat: 35.5951
     lng: -82.5515
   phone: +1 7046003839
+heroH1: Flex Space, Small Warehouse & Contractor Bay Space for Lease in Asheville, NC
+heroSubtitle: Small warehouse and flex space for lease near Asheville in Fletcher, NC. 1,000–3,000 SF suites with 10' × 14' drive-in doors, 14–20 ft clear height, and 24/7 access. Minutes from AVL airport, I-26, and I-40.
+suitesHeading: Asheville warehouse suites and unit sizes
+suitesSubheading: 3 suite types from 1,000–3,000 SF. Join the waitlist to be notified when space becomes available.
+tenantProfilesLabel: Who it's for
+tenantProfilesHeading: A good fit for Asheville businesses that need warehouse space without leasing a big-box building
+tenantProfilesSubheading: These flex and warehouse suites are built for businesses that need functional industrial space, drive-in access, and a layout that supports storage, workspace, dispatch, light production, or office use.
+specsHeading: Built for businesses that need practical industrial space near Asheville
+specsSubheading: If you are comparing small warehouse space, contractor shop space, or flex industrial units near Asheville, here are the specs that matter most.
+faqHeading: Asheville flex space, warehouse, and contractor bay FAQ
+ctaHeading: Looking for flex space or a small warehouse near Asheville?
+ctaSubheading: Get waitlist access, pricing, and next steps for Asheville flex space, small warehouse units, and contractor bay space. 1,000–3,000 SF suites with drive-in loading, clear height, and 24/7 access.
+galleryAltTexts:
+  - small warehouse space for lease near Asheville NC
+  - 452 Butler Bridge Rd Fletcher NC flex warehouse exterior
+  - contractor bay space near Asheville NC
+  - flex space interior Asheville NC
 ---
 
 Fletcher is a strong location for businesses that need small warehouse, flex industrial, or contractor-ready space with convenient access to Asheville and Western North Carolina. These suites are well suited for contractors, service businesses, local distribution, light industrial users, and growing companies that don't need a large warehouse footprint.
