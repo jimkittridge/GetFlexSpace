@@ -1,6 +1,7 @@
 ---
 import { getEntry } from 'astro:content';
 
+const contact = (await getEntry('pages', 'contact'))!.data;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const year = new Date().getFullYear();
 const homepage = await getEntry('pages', 'homepage');
@@ -25,7 +26,7 @@ const logo = homepage?.data?.logo || '';
           )}
         </a>
         <p class="mt-4 max-w-xs text-sm leading-6 text-black/55">
-          Small-bay flex industrial space for lease in North Carolina and South Carolina. 1,000–3,000 SF suites built for contractors, e-commerce, light industrial, and growing businesses.
+          Warehouse and flex space for lease in North Carolina and South Carolina. Space for contractors, e-commerce, light industrial, and growing businesses.
         </p>
       </div>
 
@@ -54,8 +55,8 @@ const logo = homepage?.data?.logo || '';
       <div>
         <div class="text-xs font-semibold uppercase tracking-[0.14em] text-black/45 mb-4">Contact</div>
         <ul class="space-y-3 list-none p-0 m-0">
-          <li><a href="tel:+18285551234" class="text-sm text-black/60 no-underline hover:text-black transition">(828) 555-1234</a></li>
-          <li><a href="mailto:leasing@getflexspace.com" class="text-sm text-black/60 no-underline hover:text-black transition">leasing@getflexspace.com</a></li>
+          <li><a href={`tel:${contact.phoneHref}`} class="text-sm text-black/60 no-underline hover:text-black transition">{contact.phone}</a></li>
+          <li><a href={`mailto:${contact.email}`} class="text-sm text-black/60 no-underline hover:text-black transition">{contact.email}</a></li>
         </ul>
       </div>
     </div>

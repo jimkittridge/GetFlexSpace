@@ -1,6 +1,7 @@
 ---
 import { getEntry } from 'astro:content';
 
+const contact = (await getEntry('pages', 'contact'))!.data;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const homepage = await getEntry('pages', 'homepage');
 const logo = homepage?.data?.logo || '';
@@ -31,7 +32,7 @@ const logo = homepage?.data?.logo || '';
     </nav>
 
     <div class="hidden items-center gap-3 md:flex">
-      <a href="tel:+18285551234" class="rounded-xl px-4 py-2 text-sm text-black/68 hover:bg-black/5 hover:text-black no-underline transition">
+      <a href={`tel:${contact.phoneHref}`} class="rounded-xl px-4 py-2 text-sm text-black/68 hover:bg-black/5 hover:text-black no-underline transition">
         Call leasing
       </a>
       <a href={`${base}contact/`} class="rounded-xl bg-black px-4 py-2 text-sm text-white hover:bg-black/85 no-underline transition">
@@ -53,7 +54,7 @@ const logo = homepage?.data?.logo || '';
         <a href={`${base}about/`} class="block px-4 py-3 text-sm text-black/70 hover:text-black hover:bg-black/5 rounded-xl no-underline">About</a>
         <a href={`${base}contact/`} class="block px-4 py-3 text-sm text-black/70 hover:text-black hover:bg-black/5 rounded-xl no-underline">Contact</a>
         <hr class="border-black/10 my-1" />
-        <a href="tel:+18285551234" class="block px-4 py-3 text-sm text-black/70 hover:text-black hover:bg-black/5 rounded-xl no-underline">Call leasing</a>
+        <a href={`tel:${contact.phoneHref}`} class="block px-4 py-3 text-sm text-black/70 hover:text-black hover:bg-black/5 rounded-xl no-underline">Call leasing</a>
         <a href={`${base}contact/`} class="block px-4 py-3 text-sm font-medium text-white bg-black rounded-xl no-underline text-center">Get availability</a>
       </nav>
     </details>

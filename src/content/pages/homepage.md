@@ -1,83 +1,65 @@
 ---
 seo:
-  title: Small Warehouse & Flex Space for Lease in NC & SC | GetFlexSpace
-  description: Lease flex space, small warehouse units, and contractor bay space in Asheville NC, Durham NC, and Columbia SC. 950–4,000 SF suites with drive-in doors, clear height, 24/7 access, and office-ready layouts for contractors, service businesses, e-commerce, and light industrial users.
+  title: Warehouse & Flex Space for Lease in NC & SC | GetFlexSpace
+  description: Explore warehouse and flex space for lease in Durham, Asheville, and Columbia. Compare suite sizes, drive-in access, office options, and request a tour.
 heroBackgroundImage: /images/Durham Flex Space.png
-heroOverlayColor: ''
-heroOverlayOpacity: null
 logo: /images/Screenshot 2026-03-17 at 10.03.28 PM-1.png
 hero:
-  headline: Small Warehouse, Flex Space & Contractor Bay Space for Lease in the Carolinas
-  subheadline: Flex space and small warehouse units for contractors, service businesses, e-commerce operators, and light industrial users in NC and SC.
-bullets:
-  - '3 markets: Asheville, Durham, Columbia'
-  - Drive-in doors, 14–20 ft clear height, 24/7 access
-  - Flexible 1 to 5 year lease terms
-  - Response within 1 business day
+  headline: Warehouse & flex space for lease in North Carolina & South Carolina.
+  subheadline: Find your home base in Durham, Asheville, or Columbia. Space for contractors, service businesses, e-commerce, and light industrial operations.
 citySection:
-  heading: Find Flex Space or a Small Warehouse by City
-  subheading: Three markets across the Carolinas. Contractor bay space, small warehouse units, and flex industrial suites built for real operators.
+  heading: |-
+    Warehouse & flex space.
+    Three Carolina markets.
+  subheading: Compare suite sizes, local access, and availability. Explore each property for the details that matter to your business.
 useCases:
-  heading: Businesses that use this type of warehouse and flex space
-  subheading: These suites are built for businesses that need functional industrial space, drive-in access, and a layout that supports storage, workspace, dispatch, or office use.
+  heading: |-
+    You bring
+    the ambition.
+  subheading: Equipment. Inventory. Your next big idea. Bring it all under one roof, with space that works as hard as you do.
   items:
-    - title: Contractor bay space
-      description: Ideal for electricians, plumbers, HVAC companies, painters, landscapers, and other trades that need room for tools, materials, vehicles, and daily dispatch.
-      icon: hammer
-    - title: E-commerce and fulfillment space
-      description: Useful for inventory storage, packing, shipping, and local distribution across NC and SC markets.
-      icon: package
-    - title: Light industrial and assembly
-      description: Works for businesses that need clear height, power, drive-in loading, and flexible floor area for manufacturing, assembly, or fabrication.
+    - title: Contractor bays & trade businesses
+      description: A home base for electricians, plumbers, HVAC companies, and other trades. Keep tools and materials together, stage equipment, and organize your crew’s daily operations.
+      icon: tools
+    - title: E-commerce & distribution
+      description: Bring inventory storage, order packing, shipping, and returns into one warehouse workspace. Discuss delivery access and the layout your fulfillment operation needs.
+      icon: box
+    - title: Warehouse space with an office
+      description: Combine administrative work with equipment storage and team operations. Explore office-and-warehouse layouts for service businesses that need both in one location.
+      icon: building
+    - title: Makers & light industrial
+      description: Explore flex industrial space for assembly, light production, or a showroom alongside your warehouse. Confirm power, ventilation, and permitted uses with leasing.
       icon: gear
-    - title: Brewery and food production
-      description: Purpose-built bays with HVAC, plumbing access, and drive-in doors for delivery and production.
-      icon: beer
-    - title: Showroom + warehouse users
-      description: A fit for businesses that want industrial functionality with room for client visits, samples, or product display.
-      icon: palette
-    - title: Small warehouse with office
-      description: A strong fit for service businesses and operators who need warehouse space plus a front office or customer-facing area in one unit.
-      icon: briefcase
-highlights:
-  heading: What You Get
-  subheading: Brick-and-metal construction. Drive-in doors. Dedicated parking. Built for contractors, warehouse users, and light industrial operators.
-  items:
-    - number: 14–20 ft
-      label: Clear ceiling height
-    - number: 10'–14'
-      label: Grade-level drive-in doors
-    - number: 24/7
-      label: Secure key card access
-    - number: 1–5 yr
-      label: Flexible lease terms
 process:
-  heading: How It Works
-  subheading: Three steps to your new space.
+  heading: Let’s get you moving.
+  subheading: From your first question to your first day.
   steps:
-    - title: Submit Requirements
-      description: Tell us your size, use, and timing. We'll review your needs and identify matching suites.
-    - title: Get Matched
-      description: We'll send you current and upcoming openings that fit your business. No obligation.
-    - title: Tour & Apply
-      description: Walk the space, review the lease, and get your keys. Move-in can happen in as fast as the same week.
-leadStrip:
-  heading: Tell Us What You Need
-  subheading: We'll match you with current and upcoming openings across all three markets. No obligation.
+    - title: Start with your location.
+      description: Explore our markets and the space options at each property.
+    - title: See it for yourself.
+      description: Ask questions, discuss your needs, and arrange a tour with leasing.
+    - title: Make your next move.
+      description: Confirm your suite, lease terms, and move-in timing with our team.
 faq:
-  - question: What size suites do you offer?
-    answer: Our suites range from 1,000 to 3,000 square feet depending on location. We specialize in small bay flex space—the right size for businesses that need more room than an office but less than a full warehouse.
-  - question: What are the lease terms?
-    answer: We offer 1-year, 2-year, 3-year, and 5-year lease terms. Longer terms may qualify for reduced rates. Contact us to discuss what works best for your business.
-  - question: What utilities are included?
-    answer: Utilities are typically metered individually per suite. HVAC is included in some suites. Specific inclusions vary by location.
-  - question: Can I customize my suite?
-    answer: Yes. Many tenants add epoxy floors, specialized lighting, racking, or accent walls.
-  - question: How fast can I move in?
-    answer: Once approved, you can have keys in as little as one week. Start by submitting your requirements and we'll guide you through the process.
-  - question: What if all suites are currently leased?
-    answer: Our spaces fill up fast but we often know of a unit that is coming available soon. Submit your information and we'll match you with current or upcoming openings—often before they hit the market.
+  - question: What is warehouse and flex space?
+    answer: Warehouse space provides room for inventory, equipment, materials, and business operations. Flex space combines that warehouse footprint with office, showroom, or other workspace. GetFlexSpace offers warehouse and flex suites in North Carolina and South Carolina; layouts and permitted uses vary by property.
+  - question: Where can I lease warehouse space in NC and SC?
+    answer: Explore GetFlexSpace in Durham, North Carolina; Fletcher near Asheville, North Carolina; and Columbia, South Carolina. Each location page lists its suite sizes, features, and availability. Choose the market that fits your customers, team, deliveries, and service area.
+  - question: What sizes of warehouse and flex space do you offer?
+    answer: "Suite sizes across our properties: {{suiteRanges}}. These are the sizes across each property, not a promise that every size is currently available. Contact leasing for current openings."
+  - question: Can I lease warehouse space with an office?
+    answer: Warehouse-plus-office layouts are available within the portfolio. The amount of office space, HVAC coverage, restroom facilities, and interior finish depend on the suite. Tell leasing how your office and warehouse will work together so you can compare appropriate options.
+  - question: Is flex space suitable for contractors or my business?
+    answer: Contractors, service businesses, e-commerce operators, and light industrial users are common fits. Explain your day-to-day operation, equipment, vehicles, deliveries, and any customer visits. Leasing can help confirm property rules and whether your proposed use fits a particular suite.
+  - question: What does the monthly rent include?
+    answer: Request a breakdown of base rent, additional property charges, utilities, and any other recurring costs for the suite. When a listing uses NNN, ask for the estimated charges for property taxes, insurance, and common-area maintenance in addition to base rent. Confirm whether a quoted per-square-foot rate is annual or monthly.
+  - question: What lease terms and move-in dates are available?
+    answer: Lease terms and move-in timing depend on the property, suite availability, and any work needed before occupancy. Tell leasing your preferred start date and lease length. The team can confirm the options for the specific space you are considering.
+  - question: Can I tour a space before deciding?
+    answer: Yes. Request a tour of an available space and the leasing team will confirm a time. Use the tour to check loading access, clear height, power, office layout, parking, and the details important to your operation. For a waitlisted location, ask about upcoming openings and viewing options.
+  - question: What if my preferred location is full?
+    answer: Join the location’s waitlist and share your preferred size, intended use, and timing. Leasing can discuss upcoming availability and other options. A waitlist request is an expression of interest and does not reserve a suite.
 finalCta:
-  heading: Ready to Find Your Space?
-  subheading: Our small bays move fast. Get in touch today to check availability and pricing.
+  heading: Let’s find your space.
+  subheading: Have a location in mind? Ready for a tour? We’re here to help you take the next step.
 ---

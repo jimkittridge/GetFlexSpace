@@ -2,7 +2,9 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [claude/build-flexspace-site-dSsmL, master]
+    branches: [master]
+  pull_request:
+    branches: [master]
   workflow_dispatch:
 
 permissions:
@@ -31,7 +33,7 @@ jobs:
         run: npm ci
 
       - name: Build with Astro
-        run: npx astro build
+        run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -39,6 +41,7 @@ jobs:
           path: dist
 
   deploy:
+    if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     environment:

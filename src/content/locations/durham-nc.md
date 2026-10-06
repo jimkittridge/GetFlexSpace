@@ -1,4 +1,5 @@
 ---
+homepageDescription: "Warehouse and flex space for lease in Durham, NC, with {{suiteRange}} suites. Explore a base for contractors, service teams, and inventory operations serving Durham and the Research Triangle."
 name: Durham
 state: NC
 fullName: Durham, NC

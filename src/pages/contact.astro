@@ -1,6 +1,6 @@
 ---
 import NewLayout from '../layouts/NewLayout.astro';
-import LeadForm from '../components/LeadForm.astro';
+import LeasingContact from '../components/LeasingContact.astro';
 import { getEntry } from 'astro:content';
 
 const page = await getEntry('pages', 'contact');
@@ -62,54 +62,11 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           </div>
         </div>
 
-        <!-- Right: Form -->
+        <!-- Direct leasing contact -->
         <div class="rounded-[28px] border border-black/10 bg-white p-6 shadow-[0_18px_50px_rgba(0,0,0,0.06)] lg:p-8">
           <h2 class="text-xl font-semibold tracking-[-0.02em] text-[#111]">Get Availability & Pricing</h2>
           <p class="mt-2 text-sm text-black/55">Tell us what you need. We'll respond within 1 business day.</p>
-          <form name="contact" method="POST" data-netlify="true" class="mt-6 grid gap-4">
-            <input type="hidden" name="form-name" value="contact" />
-            <div class="grid gap-4 sm:grid-cols-2">
-              <input type="text" name="name" required placeholder="Your name *" class="h-12 rounded-2xl border border-black/10 bg-[#fbfaf8] px-4 text-black placeholder:text-black/35 focus:outline-none focus:ring-2 focus:ring-black/20" />
-              <input type="text" name="business" required placeholder="Business name *" class="h-12 rounded-2xl border border-black/10 bg-[#fbfaf8] px-4 text-black placeholder:text-black/35 focus:outline-none focus:ring-2 focus:ring-black/20" />
-            </div>
-            <div class="grid gap-4 sm:grid-cols-2">
-              <input type="email" name="email" required placeholder="Email *" class="h-12 rounded-2xl border border-black/10 bg-[#fbfaf8] px-4 text-black placeholder:text-black/35 focus:outline-none focus:ring-2 focus:ring-black/20" />
-              <input type="tel" name="phone" required placeholder="Phone *" class="h-12 rounded-2xl border border-black/10 bg-[#fbfaf8] px-4 text-black placeholder:text-black/35 focus:outline-none focus:ring-2 focus:ring-black/20" />
-            </div>
-            <div class="grid gap-4 sm:grid-cols-2">
-              <select name="size" class="h-12 rounded-2xl border border-black/10 bg-[#fbfaf8] px-4 text-black/55 focus:outline-none focus:ring-2 focus:ring-black/20">
-                <option value="">Size needed...</option>
-                <option value="1000">~1,000 SF</option>
-                <option value="1500">~1,500 SF</option>
-                <option value="2000">~2,000 SF</option>
-                <option value="2500">~2,500 SF</option>
-                <option value="3000">~3,000 SF</option>
-              </select>
-              <select name="timing" class="h-12 rounded-2xl border border-black/10 bg-[#fbfaf8] px-4 text-black/55 focus:outline-none focus:ring-2 focus:ring-black/20">
-                <option value="">Move-in timing...</option>
-                <option value="immediately">Immediately</option>
-                <option value="30-60">30-60 days</option>
-                <option value="60-120">60-120 days</option>
-                <option value="120+">120+ days</option>
-                <option value="exploring">Just exploring</option>
-              </select>
-            </div>
-            <select name="use-case" class="h-12 rounded-2xl border border-black/10 bg-[#fbfaf8] px-4 text-black/55 focus:outline-none focus:ring-2 focus:ring-black/20">
-              <option value="">Intended use...</option>
-              <option value="contractor">Contractor / Trades</option>
-              <option value="ecommerce">E-Commerce / Fulfillment</option>
-              <option value="manufacturing">Light Manufacturing</option>
-              <option value="brewery">Brewery / Food Production</option>
-              <option value="creative">Creative Studio / Showroom</option>
-              <option value="warehouse">General Warehouse</option>
-              <option value="other">Other</option>
-            </select>
-            <textarea name="message" rows="3" placeholder="Anything else we should know? (optional)" class="rounded-2xl border border-black/10 bg-[#fbfaf8] px-4 py-3 text-black placeholder:text-black/35 focus:outline-none focus:ring-2 focus:ring-black/20 resize-none"></textarea>
-            <button type="submit" class="h-12 cursor-pointer rounded-2xl bg-black px-6 font-medium text-white transition hover:bg-black/85">
-              Get Availability & Pricing
-            </button>
-            <p class="text-center text-xs text-black/45">No obligation. Direct to leasing team.</p>
-          </form>
+          <LeasingContact />
         </div>
       </div>
     </div>

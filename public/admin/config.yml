@@ -36,6 +36,7 @@ collections:
         required: false
         hint: "Property photos shown in the gallery section on the location page"
       - { label: Tagline, name: tagline, widget: string, required: false, default: "", hint: "Short tagline shown on city cards" }
+      - { label: Homepage Description, name: homepageDescription, widget: text, required: false, hint: "Use {{suiteRange}} to include the current suite range automatically." }
       - label: SEO
         name: seo
         widget: object
@@ -170,9 +171,6 @@ collections:
             fields:
               - { label: Title, name: title, widget: string }
               - { label: Description, name: description, widget: text }
-          - { label: Hero Background Image, name: heroBackgroundImage, widget: image, required: false, hint: "Background image for the homepage hero section" }
-          - { label: Hero Overlay Color, name: heroOverlayColor, widget: color, required: false, default: "#000000", hint: "Color of the overlay on top of the hero background image" }
-          - { label: Hero Overlay Opacity, name: heroOverlayOpacity, widget: number, required: false, default: 55, min: 0, max: 100, value_type: int, hint: "Opacity of the hero overlay (0 = transparent, 100 = solid)" }
           - { label: Logo, name: logo, widget: image, required: false, hint: "Site logo shown in header and footer" }
           - label: Hero
             name: hero
@@ -180,28 +178,17 @@ collections:
             fields:
               - { label: Headline, name: headline, widget: string }
               - { label: Subheadline, name: subheadline, widget: string }
-          - label: Hero Bullets
-            name: bullets
-            widget: list
-            field: { label: Bullet, name: bullet, widget: string }
-          - label: Stats
-            name: stats
-            widget: list
-            hint: "Key stats shown as cards below the hero (e.g. Markets, Response time)"
-            fields:
-              - { label: Label, name: label, widget: string, hint: "e.g. Markets, Response time" }
-              - { label: Value, name: value, widget: string, hint: "e.g. 3, < 1 business day" }
           - label: City Section
             name: citySection
             widget: object
             fields:
-              - { label: Heading, name: heading, widget: string }
+              - { label: Heading, name: heading, widget: text }
               - { label: Subheading, name: subheading, widget: string }
           - label: Use Cases
             name: useCases
             widget: object
             fields:
-              - { label: Heading, name: heading, widget: string }
+              - { label: Heading, name: heading, widget: text }
               - { label: Subheading, name: subheading, widget: string }
               - label: Items
                 name: items
@@ -212,24 +199,12 @@ collections:
                   - label: Icon
                     name: icon
                     widget: select
-                    options: [hammer, package, gear, beer, palette, briefcase]
-          - label: Highlights
-            name: highlights
-            widget: object
-            fields:
-              - { label: Heading, name: heading, widget: string }
-              - { label: Subheading, name: subheading, widget: string }
-              - label: Items
-                name: items
-                widget: list
-                fields:
-                  - { label: Number/Value, name: number, widget: string }
-                  - { label: Label, name: label, widget: string }
+                    options: [tools, box, building, gear]
           - label: Process
             name: process
             widget: object
             fields:
-              - { label: Heading, name: heading, widget: string }
+              - { label: Heading, name: heading, widget: text }
               - { label: Subheading, name: subheading, widget: string }
               - label: Steps
                 name: steps
@@ -237,23 +212,17 @@ collections:
                 fields:
                   - { label: Title, name: title, widget: string }
                   - { label: Description, name: description, widget: text }
-          - label: Lead Strip
-            name: leadStrip
-            widget: object
-            fields:
-              - { label: Heading, name: heading, widget: string }
-              - { label: Subheading, name: subheading, widget: string }
           - label: FAQ
             name: faq
             widget: list
             fields:
               - { label: Question, name: question, widget: string }
-              - { label: Answer, name: answer, widget: text }
+              - { label: Answer, name: answer, widget: text, hint: "Use {{suiteRanges}} for current size ranges from the location records." }
           - label: Final CTA
             name: finalCta
             widget: object
             fields:
-              - { label: Heading, name: heading, widget: string }
+              - { label: Heading, name: heading, widget: text }
               - { label: Subheading, name: subheading, widget: string }
 
       # ─── About ───
