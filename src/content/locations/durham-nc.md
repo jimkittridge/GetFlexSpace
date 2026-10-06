@@ -96,7 +96,7 @@ schema:
   geo:
     lat: 36.03841781616211
     lng: -78.885
-  phone: '+17046003839'
+  phone: '+19806002520'
 heroH1: Flex Space, Small Warehouse & Contractor Bay Space for Lease in Durham, NC
 heroSubtitle: Small warehouse and flex space for lease in Durham, NC for contractors, service businesses, e-commerce operators, and light industrial users. 950–3,000 SF, 10'–14' drive-in doors, 14–20 ft clear height, and 24/7 access, with HVAC available in some units.
 suitesHeading: 'Available now: 950 SF warehouse suite in Durham'

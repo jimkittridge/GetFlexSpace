@@ -119,7 +119,7 @@ export const cities: CityData[] = [
     schema: {
       address: { street: '100 Flex Way', city: 'Asheville', state: 'NC', zip: '28801' },
       geo: { lat: 35.5951, lng: -82.5515 },
-      phone: '+18285551234',
+      phone: '+19806002520',
     },
   },
   {
@@ -190,7 +190,7 @@ export const cities: CityData[] = [
     schema: {
       address: { street: '200 Industrial Blvd', city: 'Durham', state: 'NC', zip: '27701' },
       geo: { lat: 35.994, lng: -78.8986 },
-      phone: '+19195551234',
+      phone: '+19806002520',
     },
   },
   {
@@ -260,7 +260,7 @@ export const cities: CityData[] = [
     schema: {
       address: { street: '300 Commerce Dr', city: 'Columbia', state: 'SC', zip: '29201' },
       geo: { lat: 34.0007, lng: -81.0348 },
-      phone: '+18035551234',
+      phone: '+19806002520',
     },
   },
 ];
