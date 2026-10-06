@@ -36,16 +36,6 @@ collections:
         field: { label: Image, name: image, widget: image }
         required: false
         hint: "Property photos shown in the gallery section on the location page"
-      - label: Floor Plans
-        name: floorPlans
-        widget: list
-        required: false
-        fields:
-          - { label: Title, name: title, widget: string }
-          - { label: Floor Plan Image, name: image, widget: image }
-          - { label: Description, name: description, widget: text, required: false }
-          - { label: Brochure PDF, name: brochure, widget: file, required: false }
-          - { label: Source URL, name: sourceUrl, widget: string, required: false }
       - { label: Tagline, name: tagline, widget: string, required: false, default: "", hint: "Short tagline shown on city cards" }
       - { label: Homepage Description, name: homepageDescription, widget: text, required: false, hint: "Use {{suiteRange}} to include the current suite range automatically." }
       - label: SEO
@@ -91,6 +81,15 @@ collections:
             required: false
             default: ""
             hint: "e.g. '$12.95 / SF NNN' — leave blank to show 'Contact for current rate'"
+          - label: Unit Photos and Floor Plans
+            name: media
+            widget: list
+            required: false
+            fields:
+              - { label: Image, name: image, widget: image }
+              - { label: Caption, name: label, widget: string }
+              - { label: Type, name: type, widget: select, options: [photo, floor-plan], default: photo }
+          - { label: Brochure PDF, name: brochure, widget: file, required: false }
       - label: Tenant Profiles
         name: tenantProfiles
         widget: list

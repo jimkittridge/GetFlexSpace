@@ -12,13 +12,6 @@ const locations = defineCollection({
     availableUnits: z.string().optional().default(''),
     image: z.string().optional().default(''),
     gallery: z.array(z.string()).optional().default([]),
-    floorPlans: z.array(z.object({
-      title: z.string(),
-      image: z.string(),
-      description: z.string().nullish(),
-      brochure: z.string().nullish(),
-      sourceUrl: z.string().url().nullish(),
-    })).nullish().transform(v => v ?? []),
     seo: z.object({
       title: z.string(),
       description: z.string(),
@@ -49,6 +42,12 @@ const locations = defineCollection({
       status: z.enum(['available', 'waitlist']),
       description: z.string(),
       baseRent: z.string().optional().default(''),
+      media: z.array(z.object({
+        image: z.string(),
+        label: z.string(),
+        type: z.enum(['photo', 'floor-plan']).default('photo'),
+      })).nullish().transform(v => v ?? []),
+      brochure: z.string().nullish(),
     })).optional().default([]),
     faq: z.array(z.object({
       question: z.string(),

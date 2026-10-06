@@ -26,12 +26,6 @@ gallery:
   - /images/DSC00318.JPG
   - /images/DJI_0210.JPG
   - /images/IMG_9519.JPG
-floorPlans:
-  - title: Warehouse and office floor plan
-    image: /images/1320-old-oxford-road/floor-plan.webp
-    description: Floor plan from the Pickett Sprouse brochure for 1320 Old Oxford Road. Confirm the applicable suite and current layout with our leasing team.
-    brochure: /images/1320-old-oxford-road/property-brochure.pdf
-    sourceUrl: https://pickettsprouse.com/properties/866781
 tagline: Small warehouse and flex space for lease in Durham, NC for contractors, service businesses, e-commerce operators, and light industrial users. 950–3,000 SF suites with 10'–14' drive-in doors, 14–20 ft clear height, and 24/7 access near RTP and RDU.
 seo:
   title: Small Warehouse & Flex Space for Lease in Durham, NC | GetFlexSpace
@@ -70,6 +64,26 @@ suites:
     status: available
     description: Great fit for contractors, warehouse users, service businesses, and light industrial operations.
     baseRent: $22.00 / SF NNN
+    media:
+      - image: /images/1320-old-oxford-road/floor-plan.webp
+        label: Floor plan
+        type: floor-plan
+      - image: /images/1320-old-oxford-road/warehouse-interior.webp
+        label: Warehouse interior
+        type: photo
+      - image: /images/1320-old-oxford-road/office-entry.webp
+        label: Office entrance
+        type: photo
+      - image: /images/1320-old-oxford-road/warehouse-office.webp
+        label: Warehouse and office
+        type: photo
+      - image: /images/1320-old-oxford-road/open-drive-in-doors.webp
+        label: Drive-in loading access
+        type: photo
+      - image: /images/1320-old-oxford-road/office-interior.webp
+        label: Office interior
+        type: photo
+    brochure: /images/1320-old-oxford-road/property-brochure.pdf
   - name: Coming Soon!
     size: 1,200 SF
     status: waitlist
@@ -117,7 +131,7 @@ schema:
   phone: '+19806002520'
 heroH1: Flex Space, Small Warehouse & Contractor Bay Space for Lease in Durham, NC
 heroSubtitle: Small warehouse and flex space for lease in Durham, NC for contractors, service businesses, e-commerce operators, and light industrial users. 950–3,000 SF, 10'–14' drive-in doors, 14–20 ft clear height, and 24/7 access, with HVAC available in some units.
-suitesHeading: 'Available now: 950 SF warehouse suite in Durham'
+suitesHeading: 'Available spaces in Durham'
 suitesSubheading: A good fit for contractors and trades, service businesses, small warehouse users, e-commerce and fulfillment, and light industrial operations.
 tenantProfilesLabel: Who it's for
 tenantProfilesHeading: A good fit for Durham businesses that need warehouse space without leasing a big-box building
