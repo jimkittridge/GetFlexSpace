@@ -231,7 +231,7 @@ const galleryAltTexts = city.galleryAltTexts || [];
         </div>
       </div>
 
-      <script define:vars={{ galleryImages: gallery, cityName: city.fullName }}>
+      <script define:vars={{ galleryImages: gallery, galleryDescriptions: galleryAltTexts, cityName: city.fullName }}>
         (function() {
           const lightbox = document.getElementById('gallery-lightbox');
           const lightboxImg = document.getElementById('lightbox-img');
@@ -242,7 +242,7 @@ const galleryAltTexts = city.galleryAltTexts || [];
           function showImage(index) {
             currentIndex = ((index % galleryImages.length) + galleryImages.length) % galleryImages.length;
             lightboxImg.src = galleryImages[currentIndex];
-            lightboxImg.alt = `Photo ${currentIndex + 1} of flex warehouse space in ${cityName}`;
+            lightboxImg.alt = galleryDescriptions[currentIndex] || `Photo ${currentIndex + 1} of flex warehouse space in ${cityName}`;
             counter.textContent = `${currentIndex + 1} / ${galleryImages.length}`;
             thumbstrip.querySelectorAll('.lightbox-strip-thumb').forEach((t, i) => {
               t.classList.toggle('active', i === currentIndex);
@@ -287,6 +287,32 @@ const galleryAltTexts = city.galleryAltTexts || [];
           });
         })();
       </script>
+    </section>
+  )}
+
+  {city.floorPlans.length > 0 && (
+    <section id="floor-plans" class="py-12 lg:py-16">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="text-sm uppercase tracking-[0.16em] text-black/45">Explore the layout</div>
+        <h2 class="mt-3 text-3xl font-semibold tracking-[-0.03em]">Floor plans</h2>
+        <p class="mt-3 text-lg text-black/64">{city.schema.address.street}, {city.fullName}</p>
+        {city.floorPlans.map(plan => (
+          <figure class="mt-8 overflow-hidden rounded-3xl border border-black/10 bg-white">
+            <a href={plan.image} target="_blank" rel="noopener" aria-label={`Open full-size ${plan.title.toLowerCase()}`} class="block">
+              <img src={plan.image} alt={`${plan.title} at ${city.schema.address.street}, ${city.fullName}`} loading="lazy" class="mx-auto h-auto w-full max-w-4xl" />
+            </a>
+            <figcaption class="border-t border-black/10 p-6 lg:p-8">
+              <h3 class="text-xl font-semibold">{plan.title}</h3>
+              {plan.description && <p class="mt-3 max-w-3xl text-lg leading-8 text-black/64">{plan.description}</p>}
+              <div class="mt-4 flex flex-wrap gap-x-6 gap-y-3 text-base font-medium">
+                <a href={plan.image} target="_blank" rel="noopener" class="inline-flex min-h-11 items-center underline underline-offset-4">View full-size plan ↗</a>
+                {plan.brochure && <a href={plan.brochure} target="_blank" rel="noopener" class="inline-flex min-h-11 items-center underline underline-offset-4">View property brochure (PDF) ↗</a>}
+                {plan.sourceUrl && <a href={plan.sourceUrl} target="_blank" rel="noopener" class="inline-flex min-h-11 items-center text-black/60 underline underline-offset-4">Source: Pickett Sprouse ↗</a>}
+              </div>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
     </section>
   )}
 

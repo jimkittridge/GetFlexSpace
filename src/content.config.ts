@@ -12,6 +12,13 @@ const locations = defineCollection({
     availableUnits: z.string().optional().default(''),
     image: z.string().optional().default(''),
     gallery: z.array(z.string()).optional().default([]),
+    floorPlans: z.array(z.object({
+      title: z.string(),
+      image: z.string(),
+      description: z.string().nullish(),
+      brochure: z.string().nullish(),
+      sourceUrl: z.string().url().nullish(),
+    })).nullish().transform(v => v ?? []),
     seo: z.object({
       title: z.string(),
       description: z.string(),
