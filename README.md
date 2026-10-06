@@ -56,6 +56,12 @@ The approved homepage design lives in `src/pages/index.astro`, with styles in
 are optimized at build time from CMS-selected images. The other pages retain
 their existing layouts.
 
+The homepage location photo rotates every seven seconds while at least half of
+it is visible. Visitors can pause/play or choose a location directly. Hover,
+hidden tabs, and open dialogs suspend rotation; keyboard focus and manual
+selection pause it until Play is requested. Reduced-motion users start paused.
+Photos are decoded before their image, caption, and property link change together.
+
 ## Publishing
 
 Work on `claude/build-flexspace-site-dSsmL`, build locally, and open a PR to
