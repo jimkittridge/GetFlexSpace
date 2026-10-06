@@ -59,13 +59,15 @@ their existing layouts.
 ## Publishing
 
 Work on `claude/build-flexspace-site-dSsmL`, build locally, and open a PR to
-`master`. Merging to `master` triggers Cloudflare and the GitHub Pages mirror.
-The Pages workflow builds PRs but deploys only `master`, so preview work cannot
-overwrite that mirror. CMS edits still land on the development branch and need
-to be merged to publish to production. Verify the Cloudflare check and the actual
-`https://getflexspace.com/` page after merging; do not rely on the GitHub Pages
-status alone. The live domain and Cloudflare production deployment were checked
-during the October 2026 redesign launch.
+`master`. Cloudflare's Git integration creates deployments for repository
+changes. Its production-branch configuration is managed in the Cloudflare
+project, separately from GitHub Actions. The GitHub Pages mirror deploys only
+`master`; its workflow builds PRs without publishing them.
+
+CMS edits still land on the development branch. Keep `master` in sync through
+PRs. Verify the Cloudflare check and the actual `https://getflexspace.com/` page
+after publishing; a successful branch preview or GitHub Pages status alone does
+not verify the live domain. The live redesign was verified in October 2026.
 
 ## Leasing inquiries
 
