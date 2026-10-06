@@ -9,14 +9,14 @@ import '../../styles/requests-admin.css';
   <title>Tour requests | GetFlexSpace Admin</title><link rel="icon" href="/favicon.svg"/>
 </head>
 <body>
-  <header class="admin-header"><a href="/admin/" class="admin-brand">GetFlexSpace <span>Admin</span></a><nav aria-label="Admin navigation"><a href="/admin/">Content manager</a><a href="/">View site ↗</a><button id="sign-out" hidden>Sign out</button></nav></header>
+  <header class="admin-header"><a href="/admin/?view=tours" class="admin-brand">GetFlexSpace <span>Admin</span></a><nav aria-label="Admin navigation"><a href="/admin/">Content manager</a><a href="/">View site ↗</a></nav></header>
   <main>
     <div class="inbox-heading"><div><p class="eyebrow">LEASING INBOX</p><h1>Tour requests.</h1><p>Saved requests and waitlist inquiries, all in one place.</p></div></div>
     <section id="admin-login" class="login-card" aria-labelledby="login-title">
-      <h2 id="login-title">Sign in to your inbox</h2>
-      <p>Use the GitHub access token you use for the content manager. It must have permission to edit the GetFlexSpace repository.</p>
-      <form id="admin-login-form"><label for="github-token">GitHub access token</label><input id="github-token" type="password" required autocomplete="off" spellcheck="false" placeholder="Paste your GitHub access token"/><button type="submit" class="primary">Open tour requests</button></form>
-      <p class="login-note">Your token stays in this tab’s memory and is cleared when you sign out or leave. Requests are never stored in the public GitHub repository.</p>
+      <h2 id="login-title">One sign-in for your admin</h2>
+      <p>Sign in to the content manager to manage your website and tour requests. Your inbox uses that same session automatically.</p>
+      <a id="cms-sign-in" class="primary login-link" href="/admin/?view=tours">Open content manager</a>
+      <p class="login-note">Tour requests stay private. Sign out from the content manager’s account menu to sign out of both.</p>
     </section>
     <p id="admin-message" role="status" aria-live="polite" hidden></p>
     <section id="admin-inbox" hidden aria-label="Saved tour requests">

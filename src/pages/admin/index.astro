@@ -1,0 +1,38 @@
+---
+import '../../styles/admin-workspace.css';
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="referrer" content="same-origin" />
+  <title>GetFlexSpace Admin</title>
+  <link rel="icon" href="/favicon.svg" />
+</head>
+<body>
+  <div class="admin-workspace">
+    <header class="workspace-header">
+      <a class="workspace-brand" href="/admin/" aria-label="GetFlexSpace Admin"><img src="/images/brand/getflexspace-color.svg" alt="GetFlexSpace" width="1243" height="228"/><span>Admin</span></a>
+      <nav class="workspace-tabs" aria-label="Admin sections">
+        <button type="button" id="content-tab" aria-current="page" aria-controls="content-panel">Content</button>
+        <button type="button" id="tours-tab" aria-controls="tours-panel">Tour requests</button>
+      </nav>
+      <a class="workspace-site" href="/" target="_blank" rel="noopener">View site ↗</a>
+    </header>
+    <p id="workspace-notice" class="workspace-notice" role="status" hidden></p>
+    <main class="workspace-main">
+      <section id="content-panel" aria-label="Website content" class="workspace-panel">
+        <p id="cms-loading" class="workspace-loading" role="status">Loading content manager…</p>
+        <div id="nc-root"></div>
+      </section>
+      <section id="tours-panel" aria-label="Tour requests" class="workspace-panel" hidden>
+        <iframe id="tours-frame" src="/admin/requests/?embedded=1" title="Tour requests inbox" referrerpolicy="same-origin"></iframe>
+      </section>
+    </main>
+  </div>
+  <noscript><p>Enable JavaScript to sign in and manage your website and tour requests.</p></noscript>
+  <script src="../../scripts/admin-workspace.ts"></script>
+</body>
+</html>
