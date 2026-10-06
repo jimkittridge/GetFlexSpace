@@ -18,15 +18,12 @@ function updateMode() {
   const waitlist = mode === 'waitlist';
   document.querySelector('#inquiry-title')!.textContent = waitlist ? 'Get on the list.' : 'Request a tour.';
   document.querySelector('#inquiry-intro')!.textContent = waitlist
-    ? 'Tell us what your business needs. We’ll follow up about upcoming space.'
-    : 'A few details, and you’re on your way. We’ll call or text to confirm availability and a time.';
+    ? `${location.value} is full. We’ll contact you when space opens.`
+    : 'We’ll call or text to confirm a tour time.';
   submitLabel.textContent = waitlist ? 'Join the waitlist' : 'Request my tour';
-  const notice = document.querySelector<HTMLElement>('#tour-availability')!;
-  notice.hidden = !waitlist;
-  notice.textContent = waitlist ? `${location.value} is currently full. Send your request to hear about upcoming availability.` : '';
   document.querySelector('.tour-form-note')!.textContent = waitlist
-    ? 'No obligation. Joining the waitlist does not reserve a suite.'
-    : 'No obligation. Your tour time is confirmed by our leasing team.';
+    ? 'No obligation. A suite isn’t reserved.'
+    : 'No obligation. We’ll confirm your tour time.';
 }
 
 export function openTourInquiry(city = '') {

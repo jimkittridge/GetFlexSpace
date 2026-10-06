@@ -16,7 +16,7 @@ const { markets, phone, phoneHref, email } = Astro.props;
       <div id="tour-form-content">
         <p class="eyebrow">COME SEE YOUR NEXT SPACE</p>
         <h2 id="inquiry-title">Request a tour.</h2>
-        <p id="inquiry-intro">A few details, and you’re on your way. We’ll call or text to confirm availability and a time.</p>
+        <p id="inquiry-intro">We’ll call or text to confirm a tour time.</p>
         <form id="tour-request-form" method="POST" action="/api/tour-requests">
           <div class="tour-fields">
             <label for="tour-location">Location
@@ -37,10 +37,9 @@ const { markets, phone, phoneHref, email } = Astro.props;
             </label>
           </div>
           <div class="tour-honeypot" aria-hidden="true"><label>Leave this blank<input name="website_confirm" tabindex="-1" autocomplete="off"/></label></div>
-          <p id="tour-availability" class="tour-availability" hidden></p>
           <p id="tour-form-error" class="tour-form-error" role="alert" hidden></p>
           <button id="tour-submit" class="button orange" type="submit"><span id="tour-submit-label">Request my tour</span><span aria-hidden="true">↗</span></button>
-          <p class="tour-form-note">No obligation. Your tour time is confirmed by our leasing team.</p>
+          <p class="tour-form-note">No obligation. We’ll confirm your tour time.</p>
           <noscript><p class="tour-form-error">Please enable JavaScript to send this form, or use the call and text options.</p></noscript>
         </form>
       </div>
