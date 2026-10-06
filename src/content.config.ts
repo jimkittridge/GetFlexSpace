@@ -61,6 +61,7 @@ const locations = defineCollection({
       phone: z.string(),
     }),
     tagline: z.string().optional().default(''),
+    homepageDescription: z.string().nullish().transform(v => v || ''),
     heroH1: z.string().optional().default(''),
     heroSubtitle: z.string().optional().default(''),
     suitesHeading: z.string().optional().default(''),

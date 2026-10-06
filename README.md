@@ -12,7 +12,8 @@ Live at **https://getflexspace.com**
 | Framework | [Astro](https://astro.build) static site |
 | Styling | Tailwind, via `@tailwindcss/vite` |
 | CMS | [Sveltia CMS](https://github.com/sveltia/sveltia-cms) at `/admin/`, GitHub backend |
-| Hosting | GitHub Pages, via `.github/workflows/deploy.yml` |
+| Live hosting | Cloudflare Pages (`testgithub-14s.pages.dev`), connected to GitHub |
+| Secondary mirror | GitHub Pages, via `.github/workflows/deploy.yml` |
 
 ## Local development
 
@@ -44,9 +45,37 @@ oauth-proxy/          hand-rolled Cloudflare Worker for CMS auth (see below)
 ```
 
 Location pages are driven entirely by `src/content/locations/*.md`. The homepage
-pulls its stats, featured suite card, and hero location pills **dynamically**
-from the locations collection — edit the location markdown, don't hardcode suite
-specs into the homepage.
+pulls its property cards, photos, availability, suite ranges, and property details
+**dynamically** from the locations collection. Edit location markdown, not suite
+specs in the homepage. `homepageDescription` supplies card copy; `{{suiteRange}}`
+in that field uses the current location size range. Homepage FAQ answers can use
+`{{suiteRanges}}` to list all location ranges. Visible FAQs and JSON-LD use the same data.
+
+The approved homepage design lives in `src/pages/index.astro`, with styles in
+`src/styles/homepage.css` and interactions in `src/scripts/homepage.ts`. Its photos
+are optimized at build time from CMS-selected images. The other pages retain
+their existing layouts.
+
+## Publishing
+
+Work on `claude/build-flexspace-site-dSsmL`, build locally, and open a PR to
+`master`. Merging to `master` triggers Cloudflare and the GitHub Pages mirror.
+The Pages workflow builds PRs but deploys only `master`, so preview work cannot
+overwrite that mirror. CMS edits still land on the development branch and need
+to be merged to publish to production. Verify the Cloudflare check and the actual
+`https://getflexspace.com/` page after merging; do not rely on the GitHub Pages
+status alone. The live domain and Cloudflare production deployment were checked
+during the October 2026 redesign launch.
+
+## Leasing inquiries
+
+The homepage tour/waitlist dialog and active leasing cards use direct call, SMS,
+and email links. Phone and email come from `src/content/pages/contact.md`. There
+is no form submission backend or automatic tour booking. The old Netlify forms
+were not compatible with the live host and have been removed from active pages.
+A future booking/form integration must confirm successful receipt before
+showing a submitted message. Calls and messages are sent by the visitor in
+their phone, messaging, or email app.
 
 ## Editing content
 
@@ -97,14 +126,11 @@ specs — they were deduplicated deliberately.
 
 ## Known issues
 
-- `master` is behind `claude/build-flexspace-site-dSsmL`, and `deploy.yml`
-  triggers on **both** branches — whichever run finishes last overwrites the
-  live site. Needs merging, and one trigger removed.
 - `public/admin/index.html` loads Sveltia **unpinned** from a CDN, so upstream
   releases change the admin UI with no change here. Worth pinning (last known
   good: 0.208.2).
 - Three deploy configs coexist: `.github/workflows/deploy.yml` (GitHub Pages),
-  `netlify.toml`, and an earlier Cloudflare Pages setup. Only the Pages workflow
-  is known to be live; the others are probably dead weight.
+  `netlify.toml`, and the connected Cloudflare Pages project. Cloudflare serves
+  the live domain; the Netlify configuration is legacy.
 - Blog posts link to `/durham/`, `/asheville/`, `/columbia/`, but the real routes
   are `/locations/<slug>/`. Those internal links likely 404 — unverified.

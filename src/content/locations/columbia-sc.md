@@ -1,4 +1,5 @@
 ---
+homepageDescription: "Warehouse and flex space in Columbia, SC, with {{suiteRange}} suites. Explore workspace for service businesses, storage, and distribution in the I-26, I-77, and I-20 corridor."
 name: Columbia
 state: SC
 fullName: Columbia, SC

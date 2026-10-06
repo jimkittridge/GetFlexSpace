@@ -1,0 +1,26 @@
+---
+import { getEntry } from 'astro:content';
+
+interface Props { compact?: boolean; }
+const { compact = false } = Astro.props;
+const contact = (await getEntry('pages', 'contact'))!.data;
+const subject = `GetFlexSpace availability and tour request — ${Astro.url.pathname}`;
+---
+
+<div class:list={['leasing-contact', { compact }]}>
+  <a class="leasing-call" href={`tel:${contact.phoneHref}`}>Call {contact.phone} <span aria-hidden="true">↗</span></a>
+  <a class="leasing-text" href={`sms:${contact.phoneHref}`}>Text the leasing team <span aria-hidden="true">↗</span></a>
+  <a class="leasing-email" href={`mailto:${contact.email}?subject=${encodeURIComponent(subject)}`}>Email your space needs <span aria-hidden="true">↗</span></a>
+  <p>Share your preferred location, size, intended use, and timing. We’ll help with availability, pricing, and arranging a tour.</p>
+</div>
+
+<style>
+  .leasing-contact{display:grid;gap:12px;margin-top:20px}
+  .leasing-contact a{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:48px;padding:13px 18px;border-radius:12px;font-size:14px;font-weight:600;text-decoration:none}
+  .leasing-call{background:#202925;color:white}.leasing-call:hover{background:#344a3b}
+  .leasing-text{background:#f3a45e;color:#202925}.leasing-text:hover{background:#fbb67b}
+  .leasing-email{color:#202925;border:1px solid #d5d8ce}.leasing-email:hover{background:#f5f3ee}
+  .leasing-contact a:focus-visible{outline:3px solid #b5611e;outline-offset:4px}
+  .leasing-contact p{font-size:12px;line-height:1.75;color:#626a64;margin:2px 0 0}
+  .compact{margin-top:0}
+</style>

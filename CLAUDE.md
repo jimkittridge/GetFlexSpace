@@ -18,9 +18,9 @@ Everything there applies — this file only adds the working conventions.
 
 ## Environment limits
 
-- The sandbox **cannot reach `getflexspace.com`** (egress blocked), so a deploy
-  cannot be verified from here. Say the deploy is unverified rather than
-  assuming it landed.
+- Network access varies by environment. The October 2026 redesign session could
+  reach `getflexspace.com` after network permission was granted. Verify the live
+  domain when access is available; otherwise report the deploy as unverified.
 - Repository **settings** writes (rename, visibility, etc.) are blocked by the
   GitHub proxy. Read access and git push work; settings changes must be done by
   hand in the GitHub UI.
