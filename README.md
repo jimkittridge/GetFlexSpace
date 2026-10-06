@@ -200,3 +200,21 @@ specs — they were deduplicated deliberately.
   the live domain; the Netlify configuration is legacy.
 - Blog posts link to `/durham/`, `/asheville/`, `/columbia/`, but the real routes
   are `/locations/<slug>/`. Those internal links likely 404 — unverified.
+
+## Retail space
+
+The `/retail-space/` page and Retail Space sections on the homepage and locations
+page use `src/content/retail/morganton-nc.md`. The CMS has a separate Retail Space
+collection with categorized images and floor plans; warehouse specifications do
+not apply to these listings. Both 1,200 and 2,400 sq ft sizes are available per
+the owner. Fleming Drive frontage is documented in the listing broker's record:
+https://www.coldwellbankerhomes.com/nc/morganton/408-w-fleming-dr/pid_73311855/
+
+Property photos were provided by the owner in the local `408 w fleming` folder
+on 2026-10-06. Nine images are optimized as WebP in `public/images/morganton/`,
+with EXIF metadata removed. They cover storefronts, covered entrances, interiors,
+and the paved frontage. The neighborhood is shown with a Google Maps embed.
+The owner confirmed no floor plans are available; the page states this and
+invites visitors to tour the layouts. Interior photos depict existing furnishings,
+not a commitment about what comes with the leased space. Signage rights,
+parking counts, traffic counts, and nearby resident counts are not asserted.

@@ -25,13 +25,14 @@ const logo = homepage?.data?.logo || '';
       )}
     </a>
 
-    <nav class="hidden items-center gap-8 text-sm text-black/68 md:flex">
+    <nav class="hidden items-center gap-8 text-sm text-black/68 lg:flex">
       <a href={`${base}locations/`} class="transition hover:text-black no-underline text-black/68">Locations</a>
+      <a href={`${base}retail-space/`} class="transition hover:text-black no-underline text-black/68">Retail Space</a>
       <a href={`${base}about/`} class="transition hover:text-black no-underline text-black/68">About</a>
       <a href={`${base}contact/`} class="transition hover:text-black no-underline text-black/68">Contact</a>
     </nav>
 
-    <div class="hidden items-center gap-3 md:flex">
+    <div class="hidden items-center gap-3 lg:flex">
       <a href={`tel:${contact.phoneHref}`} class="rounded-xl px-4 py-2 text-sm text-black/68 hover:bg-black/5 hover:text-black no-underline transition">
         Call leasing
       </a>
@@ -41,7 +42,7 @@ const logo = homepage?.data?.logo || '';
     </div>
 
     <!-- Mobile menu -->
-    <details class="md:hidden relative">
+    <details class="lg:hidden relative">
       <summary class="flex items-center justify-center w-11 h-11 text-black cursor-pointer list-none rounded-lg hover:bg-black/5" aria-label="Toggle navigation menu">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="3" y1="6" x2="21" y2="6"/>
@@ -51,6 +52,7 @@ const logo = homepage?.data?.logo || '';
       </summary>
       <nav class="absolute top-full right-0 mt-2 bg-white border border-black/10 rounded-2xl shadow-lg min-w-[220px] p-3 flex flex-col gap-1 z-50">
         <a href={`${base}locations/`} class="block px-4 py-3 text-sm text-black/70 hover:text-black hover:bg-black/5 rounded-xl no-underline">Locations</a>
+      <a href={`${base}retail-space/`} class="block px-4 py-3 text-black/70 no-underline">Retail Space</a>
         <a href={`${base}about/`} class="block px-4 py-3 text-sm text-black/70 hover:text-black hover:bg-black/5 rounded-xl no-underline">About</a>
         <a href={`${base}contact/`} class="block px-4 py-3 text-sm text-black/70 hover:text-black hover:bg-black/5 rounded-xl no-underline">Contact</a>
         <hr class="border-black/10 my-1" />

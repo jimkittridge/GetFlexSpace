@@ -158,3 +158,10 @@ dialog{border:0;padding:0;border-radius:8px;max-width:590px;width:calc(100% - 32
   .photo-switch { gap: 8px 16px; }
   .photo-switch button { font-size: .9375rem; }
 }
+
+/* Make room for the Retail Space link on tablet-sized screens. */
+@media (min-width:761px) and (max-width:960px) {
+  .site-header nav { display:none; position:absolute; left:0; right:0; top:90px; background:var(--paper); padding:20px 24px; border-bottom:1px solid var(--line); gap:8px; flex-direction:column; }
+  .site-header nav.open { display:flex; }
+  .menu { display:block; }
+}
