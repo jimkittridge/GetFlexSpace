@@ -1,0 +1,82 @@
+---
+interface Props {
+  media: { image: string; label: string; type: 'photo' | 'floor-plan' }[];
+  name: string;
+  brochure?: string | null;
+}
+const { media, name, brochure } = Astro.props;
+---
+<section class="suite-gallery" aria-label={`${name} photos and floor plan`} aria-roledescription="carousel" data-suite-gallery>
+  <div class="suite-slides" tabindex="0" aria-label="Unit images. Swipe or use the arrow buttons to browse.">
+    {media.map((item, i) => (
+      <a class="suite-slide" href={item.image} target="_blank" rel="noopener" aria-label={`Open full-size ${item.label.toLowerCase()}`} data-label={item.label}>
+        <img src={item.image} alt={item.label} loading="lazy" class:list={{ 'is-plan': item.type === 'floor-plan' }} width="1800" height="1350" />
+      </a>
+    ))}
+  </div>
+  <div class="suite-controls">
+    <button type="button" data-prev aria-label="Previous unit image">←</button>
+    <p aria-live="polite" aria-atomic="true"><span data-caption>{media[0].label}</span><span class="suite-count" data-count>1 / {media.length}</span></p>
+    <button type="button" data-next aria-label="Next unit image">→</button>
+  </div>
+  <div class="suite-thumbs" aria-label="Choose a unit image">
+    {media.map((item, i) => (
+      <button type="button" data-index={i} aria-label={`Show ${item.label.toLowerCase()}`} aria-pressed={i === 0}>
+        <img src={item.image} alt="" loading="lazy" />
+        {item.type === 'floor-plan' && <span>Floor plan</span>}
+      </button>
+    ))}
+  </div>
+  <div class="suite-links">
+    <a data-full-size href={media[0].image} target="_blank" rel="noopener">View full size ↗</a>
+    {brochure && <a href={brochure} target="_blank" rel="noopener">Property brochure (PDF) ↗</a>}
+  </div>
+</section>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-suite-gallery]').forEach(gallery => {
+    const track = gallery.querySelector<HTMLElement>('.suite-slides')!;
+    const slides = Array.from(track.querySelectorAll<HTMLAnchorElement>('.suite-slide'));
+    const thumbs = Array.from(gallery.querySelectorAll<HTMLButtonElement>('[data-index]'));
+    let current = 0;
+    function update() {
+      current = Math.max(0, Math.min(slides.length - 1, Math.round(track.scrollLeft / track.clientWidth)));
+      gallery.querySelector('[data-caption]')!.textContent = slides[current].dataset.label!;
+      gallery.querySelector('[data-count]')!.textContent = `${current + 1} / ${slides.length}`;
+      gallery.querySelector<HTMLAnchorElement>('[data-full-size]')!.href = slides[current].href;
+      thumbs.forEach((thumb, i) => thumb.setAttribute('aria-pressed', String(i === current)));
+    }
+    function go(index: number) {
+      const next = (index + slides.length) % slides.length;
+      track.scrollTo({ left: next * track.clientWidth, behavior: 'instant' });
+      update();
+    }
+    gallery.querySelector('[data-prev]')!.addEventListener('click', () => go(current - 1));
+    gallery.querySelector('[data-next]')!.addEventListener('click', () => go(current + 1));
+    thumbs.forEach((thumb, i) => thumb.addEventListener('click', () => go(i)));
+    track.addEventListener('scroll', update, { passive: true });
+    track.addEventListener('keydown', event => {
+      if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+        event.preventDefault(); go(current + (event.key === 'ArrowRight' ? 1 : -1));
+      }
+    });
+  });
+</script>
+<style>
+  .suite-gallery { min-width: 0; margin: 1.5rem 0; }
+  .suite-slides { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; border-radius: 18px; background: #f7f5f1; }
+  .suite-slide { flex: 0 0 100%; min-width: 0; scroll-snap-align: start; }
+  .suite-slide img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+  .suite-slide img.is-plan { object-fit: contain; background: white; }
+  .suite-controls { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+  .suite-controls button { width: 44px; height: 44px; flex-shrink: 0; border: 1px solid #ddd; border-radius: 50%; background: white; font-size: 22px; cursor: pointer; }
+  .suite-controls p { flex: 1; text-align: center; font-size: 16px; line-height: 1.4; margin: 0; }
+  .suite-count { display: block; color: #666; font-size: 14px; margin-top: 3px; }
+  .suite-thumbs { display: flex; gap: 8px; overflow-x: auto; padding: 8px 2px; }
+  .suite-thumbs button { position: relative; flex: 0 0 76px; height: 60px; border: 2px solid transparent; padding: 2px; border-radius: 10px; background: white; cursor: pointer; overflow: hidden; }
+  .suite-thumbs button[aria-pressed=true] { border-color: #111; }
+  .suite-thumbs img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
+  .suite-thumbs span { position: absolute; bottom: 2px; left: 2px; right: 2px; background: #111; color: white; font-size: 11px; }
+  .suite-links { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 8px; font-size: 16px; }
+  .suite-links a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 4px; }
+  button:focus-visible, a:focus-visible, .suite-slides:focus-visible { outline: 3px solid #267365; outline-offset: 3px; }
+</style>
