@@ -250,9 +250,11 @@ the owner has not identified which photos belong to each available unit size.
 ## Portfolio groups and draft listings
 
 The shared navigation groups Locations into Small Bay Spaces (Durham, Concord,
-Fletcher / Asheville, Columbia), Larger Warehouses (High Point / Archdale), and
-Retail Space (Morganton). The main Locations link opens the directory. Desktop
-and mobile use the same grouped data; `navigationOrder` sets the order within
+Fletcher / Asheville, Columbia), Larger Warehouses (High Point), and
+Retail Space (Morganton). The main Locations link opens the directory. On desktop,
+hovering over Locations or its arrow opens the submenu; clicking the arrow and
+keyboard controls also work. Mobile keeps its tap-to-open menu. Desktop and
+mobile use the same grouped data; `navigationOrder` sets the order within
 each navigation group. The existing Fletcher URL remains `/locations/asheville-nc/`.
 
 The homepage leads with small-bay cards, followed by larger warehouses. Morganton
@@ -272,8 +274,10 @@ shows an ownership/acquisition disclaimer and permits interest inquiries only,
 even if someone accidentally marks its location or a suite available.
 
 Concord is 3,400 SF with a half-acre paved storage yard, available at $15/SF base
-rent. High Point / Archdale is 11,700 SF with a 1.3-acre storage yard, coming soon
-after renovation and upfit at $8/SF base rent. Rent periods, additional charges,
+rent. High Point is 11,700 SF with a 1.3-acre storage yard, coming soon
+after renovation and upfit at $8/SF base rent. Market this property as High Point;
+Archdale appears only in its postal address and address-based map/directions data.
+Rent periods, additional charges,
 access, and permitted uses require confirmation. Edit `yard`, `yardNotes`,
 `highlights`, and `pricingNote` in the CMS to keep those details consistent.
 Every property page includes a permanent canonical URL, a native-share/copy-link
