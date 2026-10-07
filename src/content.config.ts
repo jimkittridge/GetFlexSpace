@@ -9,6 +9,7 @@ const locations = defineCollection({
     fullName: z.string(),
     slug: z.string(),
     propertyType: z.enum(['flex', 'warehouse', 'retail']).nullish().transform(v => v ?? 'flex'),
+    homepageGroup: z.enum(['auto', 'flex', 'warehouse', 'retail']).nullish().transform(v => v ?? 'auto'),
     published: z.boolean().nullish().transform(v => v ?? true),
     navigationOrder: z.number().nullish().transform(v => v ?? 100),
     marketingStage: z.enum(['standard', 'subject-to-acquisition']).nullish().transform(v => v ?? 'standard'),

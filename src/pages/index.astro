@@ -2,7 +2,7 @@
 import ArrowIcon from '../components/ArrowIcon.astro';
 import HomePropertyCard from '../components/HomePropertyCard.astro';
 import HeaderNew from '../components/HeaderNew.astro';
-import { isPublished, isRenderingImage, comparePortfolio, propertyTypeLabel, propertyViewLabel, propertyHighlights } from '../lib/portfolio.js';
+import { isPublished, homepageGroup, isRenderingImage, comparePortfolio, propertyTypeLabel, propertyViewLabel, propertyHighlights } from '../lib/portfolio.js';
 import { getCollection, getEntry } from 'astro:content';
 import { homepageImage, portfolioRange, scriptJson } from '../lib/homepage';
 import '../styles/homepage.css';
@@ -12,9 +12,12 @@ import { propertyAvailability, publicAvailability, locationStatus } from '../lib
 const cms = (await getEntry('pages', 'homepage'))!.data;
 const contact = (await getEntry('pages', 'contact'))!.data;
 const locations = await getCollection('locations', isPublished);
-locations.sort((a, b) => comparePortfolio(a.data, b.data));
+locations.sort((a, b) => comparePortfolio(
+  { ...a.data, propertyType: homepageGroup(a.data) },
+  { ...b.data, propertyType: homepageGroup(b.data) },
+));
 const markets = await Promise.all(locations.map(async ({data}, i) => ({
-  imageIsRendering: isRenderingImage(data), type: data.propertyType, typeLabel: propertyTypeLabel(data.propertyType), features: propertyHighlights(data),
+  group: homepageGroup(data), imageIsRendering: isRenderingImage(data), type: data.propertyType, typeLabel: propertyTypeLabel(data.propertyType), features: propertyHighlights(data),
   name: data.name, fullName: data.fullName, state: data.state,
   cardTitle: data.homepageCardTitle || data.fullName,
   viewLabel: propertyViewLabel(data),
@@ -27,12 +30,13 @@ const markets = await Promise.all(locations.map(async ({data}, i) => ({
   lease: data.specs.lease, url: `/locations/${data.slug}/`,
   description: (data.homepageDescription || `Explore warehouse and flex space in ${data.fullName}, with {{suiteRange}} suites. Contact leasing for current availability and property details.`).replaceAll('{{suiteRange}}', data.specs.suiteRange),
 })));
-const smallBayMarkets = markets.filter(market => market.type === 'flex');
-const heroMarkets = smallBayMarkets.filter(market => market.image).map((market, i) => ({ ...market, index: String(i + 1).padStart(2, '0') }));
+const smallBayMarkets = markets.filter(market => market.group === 'flex');
+const smallBayIndustrial = smallBayMarkets.filter(market => market.type === 'flex');
+const heroMarkets = smallBayIndustrial.filter(market => market.image).map((market, i) => ({ ...market, index: String(i + 1).padStart(2, '0') }));
 const featured = heroMarkets[0];
-const suiteRange = portfolioRange(smallBayMarkets.map(market => market.range));
-const suiteRanges = smallBayMarkets.map(market => `${market.name}: ${market.range}`).join('; ');
-const faq = (cms.faq || []).map(item => ({...item, answer: item.answer.replaceAll('{{suiteRanges}}', suiteRanges).replaceAll('{{smallBayLocations}}', smallBayMarkets.map(m => m.fullName).join('; '))}));
+const suiteRange = portfolioRange(smallBayIndustrial.map(market => market.range));
+const suiteRanges = smallBayIndustrial.map(market => `${market.name}: ${market.range}`).join('; ');
+const faq = (cms.faq || []).map(item => ({...item, answer: item.answer.replaceAll('{{suiteRanges}}', suiteRanges).replaceAll('{{smallBayLocations}}', smallBayIndustrial.map(m => m.fullName).join('; '))}));
 const logo = await homepageImage(cms.logo || '/images/brand/getflexspace-color.svg', 420);
 const telHref = `tel:${contact.phoneHref}`;
 const smsHref = `sms:${contact.phoneHref}`;
@@ -77,7 +81,7 @@ const structuredData = {
       <p class="eyebrow"><span class="orange-mark"></span>YOUR BUSINESS. YOUR NEXT CHAPTER.</p>
       <p class="hero-display">Space for<br> your next<br> <em>move.</em></p>
       <h1 id="hero-title" class="hero-search-title">{cms.hero?.headline}</h1>
-      <p class="hero-description">{cms.hero?.subheadline?.replaceAll('{{smallBayLocations}}', smallBayMarkets.map(m => m.name).join(', '))}</p>
+      <p class="hero-description">{cms.hero?.subheadline?.replaceAll('{{smallBayLocations}}', smallBayIndustrial.map(m => m.name).join(', '))}</p>
       <div class="hero-actions"><a class="button orange" href="#locations">Find your space <span aria-hidden="true"><ArrowIcon/></span></a><a class="text-link" href={smsHref}>Text us a question <svg aria-hidden="true"><use href="#message"/></svg></a></div>
       <p class="hero-note">{markets.length} Carolina locations. One next step.</p>
     </div>
@@ -104,7 +108,7 @@ const structuredData = {
 
 
   {['warehouse', 'retail'].map(type => {
-    const groupMarkets = markets.filter(market => market.type === type);
+    const groupMarkets = markets.filter(market => market.group === type);
     return groupMarkets.length > 0 && <section class="section secondary-property-section" id={type === 'warehouse' ? 'larger-warehouses' : 'retail-space'} aria-labelledby={`${type}-title`}>
       <div class="section-heading"><div><p class="eyebrow">{type === 'warehouse' ? 'MORE ROOM FOR YOUR OPERATION' : 'A PLACE TO WELCOME CUSTOMERS'}</p><h2 id={`${type}-title`}>{type === 'warehouse' ? 'Larger Warehouses & Yards' : 'Retail space.'}</h2></div><p>{type === 'warehouse' ? 'Explore a larger building and storage yard for your next move. Confirm the right layout, yard use, and timing with leasing.' : 'Explore storefront space in Morganton, with its own customer entrances and retail setting.'}</p></div>
       <div class="property-grid">{groupMarkets.map(market => <HomePropertyCard market={market}/>)}</div>
