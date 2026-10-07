@@ -33,7 +33,7 @@ src/
   content/            markdown + frontmatter, typed by content.config.ts (Zod)
     locations/        one file per market — drives the whole location page
     blog/             blog posts
-    pages/            homepage, about, contact, faq
+    pages/            homepage, contact, faq
   layouts/
     NewLayout.astro   current design (cream #f7f5f1, Inter, rounded cards)
     BaseLayout.astro  legacy — still used by faq.astro
@@ -78,9 +78,15 @@ Public action arrows use `ArrowIcon.astro` SVGs rather than Unicode characters,
 which iOS Safari can display as emoji. Property links name the city and space type.
 The homepage mobile contact bar stays hidden while the hero is visible, then
 appears below the hero and hides again when visitors scroll back to it.
-The homepage header uses the standard Locations, About, and Contact page links.
+The homepage header uses the standard Locations and Contact page links.
 Its mobile/tablet hamburger also offers Request a tour; the hero and content
 sections retain their in-page links for browsing locations and leasing questions.
+
+The Locations directory uses the same availability order, with large property cards,
+availability and space-type filters, and the shared tour/waitlist dialog. Content
+comes from the location records; the directory builds crawlable property links
+and an ItemList schema. The retired About page redirects to `/locations/` and is
+removed from navigation, the CMS, and the sitemap.
 
 ## Publishing
 

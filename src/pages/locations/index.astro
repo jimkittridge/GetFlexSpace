@@ -1,125 +1,100 @@
 ---
 import NewLayout from '../../layouts/NewLayout.astro';
-import LeadForm from '../../components/LeadForm.astro';
-import { getCollection } from 'astro:content';
-import { compareLocationAvailability, locationStatus } from '../../lib/property.js';
+import ArrowIcon from '../../components/ArrowIcon.astro';
+import TourInquiry from '../../components/TourInquiry.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { compareLocationAvailability, locationStatus, propertyAvailability } from '../../lib/property.js';
+import { homepageImage, portfolioRange, scriptJson } from '../../lib/homepage';
+import '../../styles/locations.css';
 
 const allLocations = (await getCollection('locations')).sort((a, b) => compareLocationAvailability(a.data, b.data));
-const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
-const title = 'Flex & Retail Space Locations in NC & SC | GetFlexSpace';
-const description = 'Explore warehouse, flex, and retail space for lease in Durham, Asheville, Morganton, and Columbia. View property photos, suite sizes, and current availability.';
-
-const breadcrumbSchema = JSON.stringify({
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://getflexspace.com/' },
-    { '@type': 'ListItem', position: 2, name: 'Locations' },
+const contact = (await getEntry('pages', 'contact'))!.data;
+const markets = await Promise.all(allLocations.map(async ({ data }) => ({
+  ...data,
+  image: await homepageImage(data.image, 960),
+  available: propertyAvailability(data).acceptingTours,
+  typeLabel: data.propertyType === 'retail' ? 'Retail space' : 'Warehouse & flex space',
+  viewLabel: `View ${data.name} ${data.propertyType === 'retail' ? 'Retail' : 'Flex Space'}`,
+  description: (data.homepageDescription || data.tagline).replaceAll('{{suiteRange}}', data.specs.suiteRange),
+  url: `/locations/${data.slug}/`,
+})));
+const range = portfolioRange(markets.map(market => market.specs.suiteRange));
+const filters = [
+  { value: 'all', label: 'All locations', count: markets.length },
+  ...['available', 'coming-soon', 'full'].map(value => ({
+    value, label: locationStatus(value).label, count: markets.filter(market => market.availability === value).length,
+  })).filter(filter => filter.count > 0),
+];
+const title = 'Warehouse, Flex & Retail Space Locations in NC & SC | GetFlexSpace';
+const description = 'Find warehouse, flex, and retail space for lease in Durham, Asheville, Morganton, and Columbia. Compare locations, suite sizes, and availability. Request a tour or join a waitlist.';
+const canonical = 'https://getflexspace.com/locations/';
+const schema = {
+  '@context': 'https://schema.org', '@graph': [
+    { '@type': 'CollectionPage', '@id': canonical, name: title, description, url: canonical, mainEntity: { '@id': `${canonical}#properties` } },
+    { '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://getflexspace.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Locations', item: canonical },
+    ] },
+    { '@type': 'ItemList', '@id': `${canonical}#properties`, name: 'GetFlexSpace locations', numberOfItems: markets.length,
+      itemListElement: markets.map((market, index) => ({ '@type': 'ListItem', position: index + 1, name: `${market.typeLabel} in ${market.fullName}`, url: new URL(market.url, canonical).href })) },
   ],
-});
-
-/* Images come from CMS loc.data.image */
+};
 ---
+<NewLayout title={title} description={description} canonicalUrl={canonical} schemaMarkup={scriptJson(schema)} bodyClass="locations-page" leasingLocation="" leasingAvailable={true}>
+  <a class="directory-skip" href="#property-list">Skip to properties</a>
+  <div class="directory-wrap">
+    <nav class="directory-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Locations</span></nav>
+    <section class="directory-hero" aria-labelledby="directory-title">
+      <div>
+        <p class="directory-eyebrow">WAREHOUSE, FLEX & RETAIL SPACE</p>
+        <h1 id="directory-title">Find your space<br/>in the <em>Carolinas.</em></h1>
+        <p class="directory-intro">Compare warehouse, flex, and retail space for lease in North Carolina and South Carolina. Find your location and request a tour.</p>
+      </div>
+      <aside class="directory-overview" aria-label="Our locations at a glance">
+        <p class="directory-eyebrow">ROOM FOR WHAT’S NEXT</p>
+        <dl><div><dt>Carolina locations</dt><dd>{markets.length}</dd></div><div><dt>Suite sizes across our locations</dt><dd>{range}</dd></div></dl>
+        <a href={`sms:${contact.phoneHref}`} class="directory-text-link">Need a hand? Text leasing <ArrowIcon/></a>
+      </aside>
+    </section>
 
-<NewLayout title={title} description={description} schemaMarkup={breadcrumbSchema}>
+    <section class="directory-list" id="property-list" aria-labelledby="property-list-title">
+      <div class="directory-list-heading"><h2 id="property-list-title">Explore our locations.</h2><p>Now leasing first. Your next move, made easier.</p></div>
+      <div class="directory-filters" hidden>
+        <div class="directory-status-filters" role="group" aria-label="Filter by availability">{filters.map((filter, index) => <button type="button" data-location-status={filter.value} aria-pressed={index === 0} aria-label={`${filter.label}, ${filter.count} locations`} aria-controls="location-results">{filter.label}<span>{filter.count}</span></button>)}</div>
+        <label class="directory-type-filter" for="location-type">Space type<select id="location-type" aria-controls="location-results"><option value="all">All space types</option><option value="flex">Warehouse & flex</option><option value="retail">Retail space</option></select></label>
+      </div>
+      <p class="directory-result-count" id="location-result-count" role="status" aria-live="polite" aria-atomic="true">Showing all {markets.length} locations</p>
+      <div class="directory-grid" id="location-results">
+        {markets.map((market, index) => <article class="location-card" data-location-card data-availability={market.availability} data-space-type={market.propertyType} aria-labelledby={`location-${market.slug}`}>
+          <a class="location-card-image" href={market.url} aria-label={market.viewLabel}>
+            <img src={market.image} alt={`${market.typeLabel} at ${market.schema.address.street}, ${market.schema.address.city}, ${market.state}`} width="960" height="640" loading={index === 0 ? 'eager' : 'lazy'} decoding="async"/>
+            <span class:list={['location-status', market.availability]}><i aria-hidden="true"></i>{locationStatus(market.availability).label}</span>
+            <span class="location-photo-arrow"><ArrowIcon/></span>
+          </a>
+          <div class="location-card-body">
+            <div class="location-card-heading"><div><p class="directory-eyebrow">{market.typeLabel}</p><h3 id={`location-${market.slug}`}><a href={market.url}>{market.fullName}</a></h3></div><span class="location-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span></div>
+            <address>{market.schema.address.street}<br/>{market.schema.address.city}, {market.schema.address.state} {market.schema.address.zip}</address>
+            <p class="location-description">{market.description}</p>
+            <dl class="location-card-facts"><div><dt>Suite sizes</dt><dd>{market.specs.suiteRange}</dd></div><div><dt>{market.propertyType === 'retail' ? 'Customer access' : 'Loading access'}</dt><dd>{market.specs.doorSize}</dd></div></dl>
+            <div class="location-card-actions">
+              <a class="directory-button" href="/contact/" data-property-inquiry={market.name} data-request-type={market.available ? 'tour' : 'waitlist'} aria-label={`${market.available ? 'Request a tour' : 'Join the waitlist'} in ${market.name}`}>{market.available ? 'Request a tour' : 'Join the waitlist'}<ArrowIcon/></a>
+              <a class="directory-button secondary" href={market.url}>{market.viewLabel}<ArrowIcon/></a>
+            </div>
+          </div>
+        </article>)}
+      </div>
+      <div class="directory-empty" hidden><h3>No locations match those filters.</h3><p>Try another availability or space type, or show all locations.</p><button class="directory-button" type="button" id="reset-location-filters">Show all locations <ArrowIcon/></button></div>
+      <p class="directory-availability-note">Availability can change. Our leasing team will confirm the right suite, pricing, and timing for your business.</p>
+    </section>
 
-  <!-- Breadcrumb -->
-  <div class="bg-[#f7f5f1] border-b border-black/5">
-    <div class="mx-auto max-w-7xl px-6 py-3 lg:px-8">
-      <nav class="flex items-center gap-2 text-sm text-black/45">
-        <a href={base} class="no-underline text-black/45 hover:text-black transition">Home</a>
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-        <span class="text-black/70 font-medium">Locations</span>
-      </nav>
-    </div>
+    <section class="directory-guide" aria-labelledby="directory-guide-title">
+      <div><p class="directory-eyebrow">FIND THE RIGHT FIT</p><h2 id="directory-guide-title">The space is just<br/>the starting point.</h2><p>Choose the location that works for your customers, your team, and the way you do business.</p></div>
+      <div class="directory-guide-options"><div><h3>Warehouse & flex space</h3><p>Explore Durham, the Asheville area, and Columbia for equipment, inventory, trade businesses, and warehouse-plus-office needs. Check each property for loading access and suite details.</p></div><div><h3>Retail space</h3><p>Explore Morganton for storefront space on W Fleming Drive. Review available sizes and speak with leasing about your business, layout, and signage needs.</p></div></div>
+    </section>
+
+    <section class="directory-help" aria-labelledby="directory-help-title"><div><p class="directory-eyebrow">LET’S TALK SPACE</p><h2 id="directory-help-title">Tell us what you need.</h2><p>Share your preferred location, size, and move-in timing. We’ll help you explore the options.</p></div><div class="directory-help-actions"><a class="directory-button" href="/contact/" data-property-inquiry="">Request a tour <ArrowIcon/></a><div><a href={`tel:${contact.phoneHref}`}>Call {contact.phone}</a><a href={`sms:${contact.phoneHref}`}>Text leasing <ArrowIcon size={18}/></a></div></div></section>
   </div>
-
-  <!-- Header -->
-  <section class="py-16 lg:py-24">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8">
-      <div class="max-w-3xl">
-        <div class="text-sm uppercase tracking-[0.16em] text-black/45">Locations</div>
-        <h1 class="mt-3 text-5xl font-semibold tracking-[-0.03em] text-[#111] sm:text-6xl" style="color: #111;">
-          Flex and retail space across the Carolinas.
-        </h1>
-        <p class="mt-6 text-xl leading-8 text-black/64">
-          Browse current markets, check availability status, and find the right space for your business.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Location Cards -->
-  <section class="pb-20 lg:pb-28">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8">
-      <div class="grid gap-6 lg:grid-cols-3">
-        {allLocations.map(loc => {
-          const isAvailable = loc.data.availability === 'available';
-          const image = loc.data.image || '';
-          return (
-            <a href={`${base}locations/${loc.data.slug}/`} class="block overflow-hidden rounded-[30px] border border-black/10 bg-white shadow-[0_15px_40px_rgba(0,0,0,0.05)] no-underline transition hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
-              <div class="aspect-[4/3] overflow-hidden">
-                <img src={image} alt={`${loc.data.propertyType === 'retail' ? 'Retail space' : 'Flex warehouse space'} in ${loc.data.fullName}`} class="h-full w-full object-cover transition duration-500 hover:scale-[1.03]" loading="lazy" />
-              </div>
-              <div class="p-6">
-                <div class="flex items-start justify-between gap-4">
-                  <div>
-                    <div class="text-2xl font-semibold tracking-[-0.02em] text-[#111]">{loc.data.fullName}</div>
-                    <div class="mt-1 text-sm text-black/50">{loc.data.specs.suiteRange}</div>
-                  </div>
-                  <span class:list={[
-                    'rounded-full px-3 py-1 text-xs font-medium shrink-0',
-                    isAvailable
-                      ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200'
-                      : 'bg-zinc-100 text-zinc-700 ring-1 ring-zinc-200'
-                  ]}>
-                    {locationStatus(loc.data.availability).label}
-                  </span>
-                </div>
-                <p class="mt-4 text-sm leading-6 text-black/60">{loc.data.tagline}</p>
-                <div class="mt-4 grid grid-cols-2 gap-2">
-                  <div class="rounded-xl border border-black/8 bg-[#fbfaf8] px-3 py-2">
-                    <div class="text-[10px] uppercase tracking-[0.12em] text-black/40">Ceiling</div>
-                    <div class="text-xs font-medium text-[#111]">{loc.data.specs.ceilingHeight}</div>
-                  </div>
-                  <div class="rounded-xl border border-black/8 bg-[#fbfaf8] px-3 py-2">
-                    <div class="text-[10px] uppercase tracking-[0.12em] text-black/40">Power</div>
-                    <div class="text-xs font-medium text-[#111]">{loc.data.specs.power}</div>
-                  </div>
-                </div>
-                <div class="mt-5 flex items-center justify-between rounded-2xl border border-black/10 bg-[#fbfaf8] px-4 py-3 text-sm text-black/70">
-                  <span>Rent {loc.data.propertyType === 'retail' ? 'Retail' : 'Flex'} Space in {loc.data.name}</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                </div>
-              </div>
-            </a>
-          );
-        })}
-      </div>
-    </div>
-  </section>
-
-
-  <!-- CTA -->
-  <section class="pb-20 lg:pb-24">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8">
-      <div class="rounded-[36px] border border-black/10 bg-black p-8 text-white lg:p-10">
-        <div class="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-          <div>
-            <div class="text-sm uppercase tracking-[0.16em] text-white/45">Not sure which location?</div>
-            <h2 class="mt-3 text-4xl font-semibold tracking-[-0.03em] text-white" style="color: white; font-size: clamp(1.75rem, 1.3rem + 2.25vw, 2.5rem);">
-              Tell us what you need.
-            </h2>
-            <p class="mt-4 max-w-2xl text-lg leading-8 text-white/72">
-              We'll match you with the best suite across all three markets and respond within 1 business day.
-            </p>
-          </div>
-          <div class="w-full max-w-sm rounded-[28px] bg-white p-5 text-black">
-            <LeadForm compact buttonLabel="Get matched" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  <TourInquiry markets={markets} phone={contact.phone!} phoneHref={contact.phoneHref!} email={contact.email!}/>
+  <svg class="directory-icon-definitions" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs><symbol id="phone" viewBox="0 0 24 24"><path d="M6 3h3l2 5-2 2c1.5 3 2 3.5 5 5l2-2 5 2v3c0 2-2 3-4 2C9 18 6 15 3 7c-1-2 1-4 3-4Z"/></symbol><symbol id="message" viewBox="0 0 24 24"><path d="M4 4h16v12H9l-5 4V4Z"/><path d="M8 8h8M8 12h5"/></symbol></defs></svg>
+  <script src="../../scripts/locations.ts"></script>
 </NewLayout>

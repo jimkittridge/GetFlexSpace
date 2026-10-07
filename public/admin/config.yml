@@ -244,38 +244,6 @@ collections:
               - { label: Heading, name: heading, widget: text }
               - { label: Subheading, name: subheading, widget: string }
 
-      # ─── About ───
-      - label: About
-        name: about
-        file: src/content/pages/about.md
-        fields:
-          - label: SEO
-            name: seo
-            widget: object
-            fields:
-              - { label: Title, name: title, widget: string }
-              - { label: Description, name: description, widget: text }
-          - label: Hero
-            name: hero
-            widget: object
-            fields:
-              - { label: Headline, name: headline, widget: string }
-              - { label: Subheadline, name: subheadline, widget: string }
-          - { label: Hero Image, name: heroImage, widget: image, required: false }
-          - label: Values
-            name: values
-            widget: list
-            fields:
-              - { label: Title, name: title, widget: string }
-              - { label: Description, name: description, widget: text }
-          - label: CTA
-            name: cta
-            widget: object
-            fields:
-              - { label: Heading, name: heading, widget: string }
-              - { label: Subheading, name: subheading, widget: string }
-          - { label: "Story Content (markdown)", name: body, widget: markdown }
-
       # ─── FAQ ───
       - label: FAQ Page
         name: faq
