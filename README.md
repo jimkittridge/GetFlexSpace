@@ -55,7 +55,9 @@ The approved homepage design lives in `src/pages/index.astro`, with styles in
 `src/styles/homepage.css` and interactions in `src/scripts/homepage.ts`. Its photos
 are optimized at build time from CMS-selected images. Warehouse property pages share `PropertyPage.astro`, `property.css`, and
 `property.ts`: photo/floor-plan viewer, suite filtering, address-based maps, and
-the same tour/waitlist dialog with the location preselected. Full locations
+the same tour/waitlist dialog with the location preselected. The optional
+`mapEmbedUrl` uses a Google Maps share/embed URL; leave it blank to show an
+address-based map. Maps remain responsive and lazy-loaded. Full locations
 are waitlist-only even if an individual suite has a stale available flag.
 Location FAQ answers support `{{availabilitySummary}}`, `{{suiteRange}}`, and
 `{{ceilingHeight}}`; visible answers and FAQ structured data resolve together.

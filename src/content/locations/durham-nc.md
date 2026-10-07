@@ -37,7 +37,7 @@ specs:
   hvac: HVAC available in some warehouses
   suiteRange: 950–3,000 sq ft
   lease: 1–5 years
-mapEmbedUrl: https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d103574.8!2d-78.9!3d35.99!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89ace46d3bdb!2sDurham%2C+NC!5e0!3m2!1sen!2sus!4v1
+mapEmbedUrl: https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1795.15350152575!2d-78.8721468748429!3d36.05328846680474!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89ace2e4bb14b553%3A0x7030ec32f9ca4fe9!2s1320%20Old%20Oxford%20Rd%2C%20Durham%2C%20NC%2027704!5e0!3m2!1sen!2sus!4v1791333877870!5m2!1sen!2sus
 localGuide:
   heading: Why rent flex or warehouse space in Durham, NC
   nearbyHighways:
@@ -124,7 +124,7 @@ schema:
     street: 1320 Old Oxford Rd
     city: Durham
     state: NC
-    zip: '27701'
+    zip: '27704'
   geo:
     lat: 36.03841781616211
     lng: -78.885
