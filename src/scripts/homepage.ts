@@ -8,13 +8,9 @@ type Market = {
   door: string; height: string; power: string; lease: string; url: string;
 };
 
-const { markets }: { markets: Market[] } = JSON.parse(
+const { heroMarkets }: { heroMarkets: Market[] } = JSON.parse(
   document.querySelector('#homepage-data')!.textContent!,
 );
-const propertyDialog = document.querySelector<HTMLDialogElement>('#property-dialog')!;
-const detailAction = document.querySelector<HTMLButtonElement>('#detail-action')!;
-let currentMarket = markets[0];
-
 const hero = document.querySelector<HTMLElement>('.hero')!;
 const mobileContact = document.querySelector<HTMLElement>('.mobile-contact')!;
 function updateMobileContact() {
@@ -49,7 +45,7 @@ let imageRequest = 0;
 
 async function showHero(index: number, signal?: AbortSignal) {
   const version = ++imageRequest;
-  const market = markets[index];
+  const market = heroMarkets[index];
   const nextImage = new Image();
   nextImage.src = market.image;
   // Keep the current photo and caption together until the next photo is ready.
@@ -59,7 +55,7 @@ async function showHero(index: number, signal?: AbortSignal) {
   heroImage.src = market.image;
   heroImage.alt = `${market.typeLabel} in ${market.fullName}`;
   heroPhoto.querySelector('.photo-caption p')!.textContent = `${market.name}, ${market.stateName}`.toUpperCase();
-  heroPhoto.querySelector('#photo-count')!.textContent = `${market.index} / ${String(markets.length).padStart(2, '0')}`;
+  heroPhoto.querySelector('#photo-count')!.textContent = `${market.index} / ${String(heroMarkets.length).padStart(2, '0')}`;
   const link = heroPhoto.querySelector<HTMLAnchorElement>('.photo-caption [data-property]')!;
   link.dataset.property = market.name;
   link.href = market.url;
@@ -72,15 +68,15 @@ async function showHero(index: number, signal?: AbortSignal) {
 
 const slideshow = createSlideshow({
   reducedMotion: reducedMotion.matches,
-  advance: (signal: AbortSignal) => showHero((heroIndex + 1) % markets.length, signal),
+  advance: (signal: AbortSignal) => showHero((heroIndex + 1) % heroMarkets.length, signal),
   onChange: (enabled: boolean) => {
     rotationButton.title = enabled ? 'Pause location slideshow' : 'Play location slideshow';
     rotationButton.setAttribute('aria-label', enabled ? 'Pause location slideshow' : 'Play location slideshow');
     rotationButton.classList.toggle('is-playing', enabled);
   },
 });
-rotationButton.hidden = markets.length < 2;
-slideshow.setBlocked('single-location', markets.length < 2);
+rotationButton.hidden = heroMarkets.length < 2;
+slideshow.setBlocked('single-location', heroMarkets.length < 2);
 heroButtons.forEach((button, index) => {
   button.addEventListener('click', () => { slideshow.pause(); void showHero(index); });
 });
@@ -113,44 +109,7 @@ document.querySelectorAll('dialog').forEach(dialog => dialogVisibility.observe(d
 window.addEventListener('pagehide', () => slideshow.setBlocked('pagehide', true));
 window.addEventListener('pageshow', () => slideshow.setBlocked('pagehide', false));
 
-document.querySelectorAll<HTMLAnchorElement>('[data-property]').forEach(link => {
-  link.addEventListener('click', event => {
-    // Preserve opening the real property URL in a new tab.
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    event.preventDefault();
-    currentMarket = markets.find(item => item.name === link.dataset.property)!;
-    const image = document.querySelector<HTMLImageElement>('#detail-image')!;
-    image.src = currentMarket.image;
-    image.alt = `${currentMarket.typeLabel} in ${currentMarket.fullName}`;
-    document.querySelector('#detail-status')!.textContent = currentMarket.statusLabel.toUpperCase();
-    document.querySelector('#detail-title')!.textContent = currentMarket.fullName;
-    document.querySelector('#detail-description')!.textContent = currentMarket.description;
-    const facts = document.querySelector('#detail-facts')!;
-    facts.replaceChildren();
-    for (const [label, value] of [
-      ['Suite sizes', currentMarket.range], [currentMarket.type === 'retail' ? 'Customer access' : 'Loading', currentMarket.door],
-      ['Clear height', currentMarket.height], ['Power', currentMarket.power],
-      ['Lease terms', currentMarket.lease], ['Office layout', 'Confirm by suite'],
-    ]) {
-      const wrap = document.createElement('div');
-      const term = document.createElement('dt');
-      const description = document.createElement('dd');
-      term.textContent = label;
-      description.textContent = value;
-      wrap.append(term, description);
-      facts.append(wrap);
-    }
-    document.querySelector<HTMLAnchorElement>('#detail-link')!.href = currentMarket.url;
-    document.querySelector('#detail-action-label')!.textContent = currentMarket.available ? 'Request a tour' : 'Join the waitlist';
-    document.querySelector('#detail-link-label')!.textContent = currentMarket.viewLabel;
-    propertyDialog.showModal();
-  });
-});
-
-function showInquiry(city = '') {
-  if (propertyDialog.open) propertyDialog.close();
-  openTourInquiry(city);
-}
+function showInquiry(city = '') { openTourInquiry(city); }
 
 document.querySelectorAll<HTMLAnchorElement>('[data-tour], header [data-property-inquiry]').forEach(link => {
   link.addEventListener('click', event => {
@@ -159,7 +118,6 @@ document.querySelectorAll<HTMLAnchorElement>('[data-tour], header [data-property
     showInquiry(link.dataset.location || '');
   });
 });
-detailAction.addEventListener('click', () => showInquiry(currentMarket.name));
 document.querySelectorAll('dialog').forEach(dialog => {
   dialog.querySelector('.close-dialog')!.addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', event => {

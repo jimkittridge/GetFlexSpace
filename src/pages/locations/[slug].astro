@@ -1,8 +1,9 @@
 ---
+import { isPublished, comparePortfolio, propertyTypeLabel, propertyViewLabel, propertyHighlights } from '../../lib/portfolio.js';
 import { getCollection } from 'astro:content';
 import PropertyPage from '../../components/PropertyPage.astro';
 export async function getStaticPaths() {
-  const locations = await getCollection('locations');
+  const locations = await getCollection('locations', isPublished);
   return locations.map(location => ({ params: { slug: location.data.slug }, props: { location } }));
 }
 const { location } = Astro.props;

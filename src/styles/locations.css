@@ -134,3 +134,12 @@
   .directory-button { gap:12px; padding:14px; }
 }
 @media(prefers-reduced-motion:reduce) { .locations-page { scroll-behavior:auto; } .location-card-image img { transition:none; } }
+
+.location-image-placeholder { height:100%; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:16px; padding:40px 32px; background:#e5eade; color:#233b30; }
+.location-image-placeholder strong { font-size:48px; font-weight:500; letter-spacing:-1.5px; }
+.location-image-placeholder span { font-size:17px; line-height:1.5; }
+@media(max-width:600px) { .location-image-placeholder { padding:40px 24px; } .location-image-placeholder strong { font-size:38px; } }
+
+.card-marketing-note { display:block; margin-top:12px; font-weight:600; }
+
+.rendering-label { position:absolute; left:12px; bottom:12px; max-width:calc(100% - 90px); padding:7px 10px; border-radius:3px; color:white; background:#202925ee; font:500 13px/1.4 Arial,Helvetica,sans-serif; }

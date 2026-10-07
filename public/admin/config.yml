@@ -24,8 +24,20 @@ collections:
       - { label: State, name: state, widget: string, hint: "State abbreviation (e.g. NC)" }
       - { label: Full Name, name: fullName, widget: string, hint: "City, State (e.g. Asheville, NC)" }
       - { label: Slug, name: slug, widget: string, hint: "URL slug (e.g. asheville-nc)" }
-      - { label: Property Type, name: propertyType, widget: select, options: [flex, retail], default: flex }
-      - { label: Tenant Access, name: tenantAccess, widget: string, required: false, default: "24/7" }
+      - { label: Property Type, name: propertyType, widget: select, options: [{ label: Small Bay Spaces, value: flex }, { label: Larger Warehouses, value: warehouse }, { label: Retail Space, value: retail }], default: flex }
+      - { label: Published on Website, name: published, widget: boolean, default: false, hint: "Only enable when the property is approved for public marketing. Unpublished properties have no public page and do not appear in navigation, forms, or the sitemap." }
+      - { label: Navigation Order, name: navigationOrder, widget: number, default: 100, required: false, value_type: int }
+      - label: Marketing Stage
+        name: marketingStage
+        widget: select
+        default: standard
+        options: [{ label: Standard offering, value: standard }, { label: Subject to acquisition, value: subject-to-acquisition }]
+        hint: "Subject to acquisition adds a clear disclosure and only collects interest; it does not imply ownership or confirmed availability."
+      - { label: Card Highlights, name: highlights, widget: list, required: false, hint: "One or two confirmed features, such as a paved storage yard." }
+      - { label: Storage Yard, name: yard, widget: string, required: false, hint: "e.g. ½-acre paved storage yard" }
+      - { label: Yard Details, name: yardNotes, widget: text, required: false, hint: "State only confirmed access, condition, and permitted-use information." }
+      - { label: Pricing Note, name: pricingNote, widget: text, required: false, hint: "Clarify pricing conditions, such as after renovation. Do not assume rent includes additional charges." }
+      - { label: Tenant Access, name: tenantAccess, widget: string, required: false, default: "Confirm with leasing" }
       - { label: Hero Logo, name: heroLogo, widget: image, required: false }
       - label: Availability
         name: availability
@@ -143,6 +155,12 @@ collections:
       - { label: FAQ Heading, name: faqHeading, widget: string, required: false, default: "" }
       - { label: CTA Heading, name: ctaHeading, widget: string, required: false, default: "" }
       - { label: CTA Subheading, name: ctaSubheading, widget: text, required: false, default: "" }
+      - label: Gallery Image Types
+        name: galleryImageTypes
+        widget: list
+        required: false
+        field: { label: Type, name: type, widget: select, options: [photo, rendering], default: photo }
+        hint: "Match the gallery order. Rendering images receive a visible proposed-renovation label. Unspecified images are treated as photos."
       - label: Gallery Alt Texts
         name: galleryAltTexts
         widget: list
@@ -289,4 +307,16 @@ collections:
           - { label: Phone (display), name: phone, widget: string }
           - { label: Phone (href), name: phoneHref, widget: string }
           - { label: Office Hours, name: officeHours, widget: string }
-          - { label: Tenant Access, name: tenantAccess, widget: string }
+          - { label: Published on Website, name: published, widget: boolean, default: false, hint: "Only enable when the property is approved for public marketing. Unpublished properties have no public page and do not appear in navigation, forms, or the sitemap." }
+      - { label: Navigation Order, name: navigationOrder, widget: number, default: 100, required: false, value_type: int }
+      - label: Marketing Stage
+        name: marketingStage
+        widget: select
+        default: standard
+        options: [{ label: Standard offering, value: standard }, { label: Subject to acquisition, value: subject-to-acquisition }]
+        hint: "Subject to acquisition adds a clear disclosure and only collects interest; it does not imply ownership or confirmed availability."
+      - { label: Card Highlights, name: highlights, widget: list, required: false, hint: "One or two confirmed features, such as a paved storage yard." }
+      - { label: Storage Yard, name: yard, widget: string, required: false, hint: "e.g. ½-acre paved storage yard" }
+      - { label: Yard Details, name: yardNotes, widget: text, required: false, hint: "State only confirmed access, condition, and permitted-use information." }
+      - { label: Pricing Note, name: pricingNote, widget: text, required: false, hint: "Clarify pricing conditions, such as after renovation. Do not assume rent includes additional charges." }
+      - { label: Tenant Access, name: tenantAccess, widget: string }

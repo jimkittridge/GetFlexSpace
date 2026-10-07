@@ -15,17 +15,18 @@ let mode = 'tour';
 let requestedMode: 'tour' | 'waitlist' | undefined;
 
 function updateMode() {
+  const preAcquisition = location.selectedOptions[0]?.dataset.marketingStage === 'subject-to-acquisition';
   const comingSoon = location.selectedOptions[0]?.dataset.availability === 'coming-soon';
   const full = location.selectedOptions[0]?.dataset.available === 'false';
-  mode = full ? 'waitlist' : requestedMode || 'tour';
+  mode = full || preAcquisition ? 'waitlist' : requestedMode || 'tour';
   const waitlist = mode === 'waitlist';
   document.querySelector('#inquiry-title')!.textContent = waitlist ? 'Get on the list.' : 'Request a tour.';
-  document.querySelector('#inquiry-intro')!.textContent = waitlist
+  document.querySelector('#inquiry-intro')!.textContent = preAcquisition ? `${location.value} is a potential future offering, subject to acquisition and availability. GetFlexSpace does not yet own this property.` : waitlist
     ? comingSoon ? `${location.value} is coming soon. We’ll contact you about opening dates and availability.`
       : full ? `${location.value} is full. We’ll contact you when space opens.` : `We’ll contact you about upcoming space in ${location.value}.`
     : 'We’ll call or text to confirm a tour time.';
-  submitLabel.textContent = waitlist ? 'Join the waitlist' : 'Request my tour';
-  document.querySelector('.tour-form-note')!.textContent = waitlist
+  submitLabel.textContent = preAcquisition ? 'Register interest' : waitlist ? 'Join the waitlist' : 'Request my tour';
+  document.querySelector('.tour-form-note')!.textContent = preAcquisition ? 'Interest only. Timing and availability are not confirmed.' : waitlist
     ? 'No obligation. A suite isn’t reserved.'
     : 'No obligation. We’ll confirm your tour time.';
 }

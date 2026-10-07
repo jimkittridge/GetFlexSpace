@@ -9,11 +9,13 @@ interface Props {
   canonicalUrl?: string;
   schemaMarkup?: string;
   bodyClass?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
   leasingLocation?: string;
   leasingAvailable?: boolean;
 }
 
-const { title, description, canonicalUrl, schemaMarkup, bodyClass, leasingLocation, leasingAvailable } = Astro.props;
+const { title, description, canonicalUrl, schemaMarkup, bodyClass, ogImage, ogImageAlt, leasingLocation, leasingAvailable } = Astro.props;
 const canonical = canonicalUrl || Astro.url.href;
 ---
 
@@ -32,6 +34,7 @@ const canonical = canonicalUrl || Astro.url.href;
   <meta property="og:type" content="website" />
   <meta property="og:url" content={canonical} />
 
+  {ogImage && <><meta property="og:image" content={new URL(ogImage, canonical).href}/><meta property="og:image:alt" content={ogImageAlt || title}/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:image" content={new URL(ogImage, canonical).href}/></>}
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />

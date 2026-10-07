@@ -1,7 +1,8 @@
 # GetFlexSpace
 
 Marketing and lead-generation site for small-bay flex and warehouse space in
-North Carolina and South Carolina — Durham, Asheville (Fletcher), and Columbia.
+North Carolina and South Carolina, with larger warehouses and retail space alongside
+the primary small-bay portfolio.
 
 Live at **https://getflexspace.com**
 
@@ -50,7 +51,7 @@ pulls its property cards, photos, availability, suite ranges, and property detai
 specs in the homepage. `homepageCardTitle` overrides the homepage card heading;
 blank or cleared values use `fullName`. `homepageDescription` supplies card copy; `{{suiteRange}}`
 in that field uses the current location size range. Homepage FAQ answers can use
-`{{suiteRanges}}` to list all location ranges. Visible FAQs and JSON-LD use the same data.
+`{{suiteRanges}}` to list published small-bay location ranges; `{{smallBayLocations}}` lists those locations. Visible FAQs and JSON-LD use the same data.
 
 The approved homepage design lives in `src/pages/index.astro`, with styles in
 `src/styles/homepage.css` and interactions in `src/scripts/homepage.ts`. Its photos
@@ -63,7 +64,7 @@ are waitlist-only even if an individual suite has a stale available flag.
 Location FAQ answers support `{{availabilitySummary}}`, `{{suiteRange}}`, and
 `{{ceilingHeight}}`; visible answers and FAQ structured data resolve together.
 
-Location cards, filters, and the hero slideshow share an availability order:
+Within each homepage property group, cards and the small-bay hero slideshow share an availability order:
 Now Leasing, Coming Soon, then Join the Waitlist, with city names breaking ties.
 The location admin exposes all three options; Coming Soon collects waitlist
 requests and shows opening-update copy instead of claiming the property is full.
@@ -242,3 +243,39 @@ Unverified specifications and tenant access direct visitors to leasing. The nine
 owner-provided photos remain in `public/images/morganton/`. No floor plans were
 provided, and the listing states that clearly. Photos are property-level because
 the owner has not identified which photos belong to each available unit size.
+
+## Portfolio groups and draft listings
+
+The shared navigation groups Locations into Small Bay Spaces (Durham, Concord,
+Fletcher / Asheville, Columbia), Larger Warehouses (High Point / Archdale), and
+Retail Space (Morganton). The main Locations link opens the directory. Desktop
+and mobile use the same grouped data; `navigationOrder` sets the order within
+each navigation group. The existing Fletcher URL remains `/locations/asheville-nc/`.
+
+The homepage leads with small-bay cards, followed by separate larger-warehouse
+and retail sections. Small-bay size claims exclude larger warehouses and retail.
+The directory remains sorted by availability and supports all three type filters.
+
+`published: false` excludes a property from generated pages, navigation, homepage,
+directory, related-property links, inquiry options, and sitemap. CMS new entries
+default to unpublished; existing records without this field stay published for
+backward compatibility. West Asheville / Candler is an unpublished draft with
+separate 5,000, 7,000, and 10,000 SF units. Do not enable publication until marketing
+and acquisition timing are confirmed. Its `marketingStage: subject-to-acquisition`
+shows an ownership/acquisition disclaimer and permits interest inquiries only,
+even if someone accidentally marks its location or a suite available.
+
+Concord is 3,400 SF with a half-acre paved storage yard, available at $15/SF base
+rent. High Point / Archdale is 11,700 SF with a 1.3-acre storage yard, coming soon
+after renovation and upfit at $8/SF base rent. Rent periods, additional charges,
+access, and permitted uses require confirmation. Edit `yard`, `yardNotes`,
+`highlights`, and `pricingNote` in the CMS to keep those details consistent.
+Every property page includes a permanent canonical URL, a native-share/copy-link
+button, and social image metadata for sending directly to prospects.
+
+The seven replacement, owner-provided edited Concord photos are in
+`public/images/concord/`; the public address is 101 Corban Ave SW. High Point assets
+are in `public/images/high-point/`: the original interior photo shows the building
+before renovation; the three supplied PNGs are owner-confirmed proposed-renovation
+renderings. `galleryImageTypes` mirrors gallery order and visibly labels renderings
+on cards and photo galleries. Social previews prefer an actual property photo.

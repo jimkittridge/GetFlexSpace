@@ -1,4 +1,6 @@
 ---
+published: true
+navigationOrder: 70
 name: Morganton
 state: NC
 fullName: Morganton, NC

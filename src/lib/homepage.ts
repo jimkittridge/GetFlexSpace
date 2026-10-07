@@ -3,7 +3,7 @@ import type { ImageMetadata } from 'astro';
 
 // Keep the CMS-selected image as the source, and ship compressed, sized images.
 const images = import.meta.glob<{ default: ImageMetadata }>(
-  '/public/images/*.{png,jpg,jpeg,JPG,PNG,webp}', { eager: true },
+  '/public/images/**/*.{png,jpg,jpeg,JPG,PNG,webp}', { eager: true },
 );
 
 export async function homepageImage(path: string, width = 1200) {
