@@ -23,7 +23,7 @@ specs:
   hvac: HVAC in Office
   suiteRange: 1,000–3,000 sq ft
   lease: 1–3 years
-mapEmbedUrl: https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d104379.1!2d-82.6!3d35.6!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8859f36e2a989!2sAsheville%2C+NC!5e0!3m2!1sen!2sus!4v1
+mapEmbedUrl: ''
 localGuide:
   heading: Why rent flex or warehouse space near Asheville, NC
   nearbyHighways:

@@ -27,7 +27,7 @@ const locations = defineCollection({
       suiteRange: z.string(),
       lease: z.string().optional().default('1–3 years'),
     }),
-    mapEmbedUrl: z.string(),
+    mapEmbedUrl: z.string().nullish().transform(v => v?.trim() || ''),
     localGuide: z.object({
       heading: z.string(),
       nearbyHighways: z.array(z.string()),
