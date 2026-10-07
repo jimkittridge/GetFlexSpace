@@ -46,7 +46,7 @@ faq:
   - question: Where can I lease warehouse space in NC and SC?
     answer: Our small-bay locations include {{smallBayLocations}}. Explore larger warehouse space in the High Point / Archdale area and retail space in Morganton. Each property page lists its size, features, and current status.
   - question: What sizes of warehouse and flex space do you offer?
-    answer: "Small-bay warehouse and flex sizes: {{suiteRanges}}. Larger warehouse offerings have their own building sizes and yard details; retail space is listed separately. Sizes describe the properties, not a promise of current availability. Contact leasing for current openings."
+    answer: "Small-bay warehouse and flex sizes: {{suiteRanges}}. Larger warehouse offerings have their own building sizes and yard details; retail suites are available in Morganton. Sizes describe the properties, not a promise of current availability. Contact leasing for current openings."
   - question: Can I lease warehouse space with an office?
     answer: Warehouse-plus-office layouts are available within the portfolio. The amount of office space, HVAC coverage, restroom facilities, and interior finish depend on the suite. Tell leasing how your office and warehouse will work together so you can compare appropriate options.
   - question: Is flex space suitable for contractors or my business?

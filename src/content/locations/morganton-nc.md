@@ -6,6 +6,7 @@ state: NC
 fullName: Morganton, NC
 slug: morganton-nc
 propertyType: retail
+homepageGroup: flex
 tenantAccess: 24/7
 heroLogo: /images/brand/getflexspace-color.svg
 availability: available

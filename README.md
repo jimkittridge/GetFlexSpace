@@ -252,8 +252,11 @@ Retail Space (Morganton). The main Locations link opens the directory. Desktop
 and mobile use the same grouped data; `navigationOrder` sets the order within
 each navigation group. The existing Fletcher URL remains `/locations/asheville-nc/`.
 
-The homepage leads with small-bay cards, followed by separate larger-warehouse
-and retail sections. Small-bay size claims exclude larger warehouses and retail.
+The homepage leads with small-bay cards, followed by larger warehouses. Morganton
+Retail joins the main small-bay card section using `homepageGroup: flex` (Homepage
+Section in the CMS). This override affects homepage cards only: Morganton stays
+under Retail Space in the menu and directory filters, and keeps its retail labels.
+Small-bay industrial size claims and the hero slideshow exclude retail.
 The directory remains sorted by availability and supports all three type filters.
 
 `published: false` excludes a property from generated pages, navigation, homepage,

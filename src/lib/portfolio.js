@@ -33,3 +33,7 @@ export function isRenderingImage(data) {
   const index = (data.gallery || []).indexOf(data.image);
   return index >= 0 && data.galleryImageTypes?.[index] === 'rendering';
 }
+
+export function homepageGroup(data) {
+  return data.homepageGroup && data.homepageGroup !== 'auto' ? data.homepageGroup : data.propertyType || 'flex';
+}
