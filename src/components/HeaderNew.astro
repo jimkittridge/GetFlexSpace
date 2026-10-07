@@ -3,7 +3,7 @@ import { getEntry } from 'astro:content';
 
 interface Props { leasingLocation?: string; leasingAvailable?: boolean; }
 const { leasingLocation, leasingAvailable } = Astro.props;
-const leasingAction = leasingLocation ? (leasingAvailable ? 'Request a tour' : 'Join the waitlist') : 'Get availability';
+const leasingAction = leasingLocation !== undefined ? (leasingAvailable === false ? 'Join the waitlist' : 'Request a tour') : 'Get availability';
 const contact = (await getEntry('pages', 'contact'))!.data;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const homepage = await getEntry('pages', 'homepage');
@@ -28,9 +28,8 @@ const logo = homepage?.data?.logo || '';
       )}
     </a>
 
-    <nav class="hidden items-center gap-8 text-sm text-black/68 lg:flex">
+    <nav aria-label="Main navigation" class="hidden items-center gap-8 text-sm text-black/68 lg:flex">
       <a href={`${base}locations/`} class="transition hover:text-black no-underline text-black/68">Locations</a>
-      <a href={`${base}about/`} class="transition hover:text-black no-underline text-black/68">About</a>
       <a href={`${base}contact/`} class="transition hover:text-black no-underline text-black/68">Contact</a>
     </nav>
 
@@ -52,9 +51,8 @@ const logo = homepage?.data?.logo || '';
           <line x1="3" y1="18" x2="21" y2="18"/>
         </svg>
       </summary>
-      <nav class="absolute top-full right-0 mt-2 bg-white border border-black/10 rounded-2xl shadow-lg min-w-[220px] p-3 flex flex-col gap-1 z-50">
+      <nav aria-label="Mobile navigation" class="absolute top-full right-0 mt-2 bg-white border border-black/10 rounded-2xl shadow-lg min-w-[220px] p-3 flex flex-col gap-1 z-50">
         <a href={`${base}locations/`} class="block px-4 py-3 text-sm text-black/70 hover:text-black hover:bg-black/5 rounded-xl no-underline">Locations</a>
-        <a href={`${base}about/`} class="block px-4 py-3 text-sm text-black/70 hover:text-black hover:bg-black/5 rounded-xl no-underline">About</a>
         <a href={`${base}contact/`} class="block px-4 py-3 text-sm text-black/70 hover:text-black hover:bg-black/5 rounded-xl no-underline">Contact</a>
         <hr class="border-black/10 my-1" />
         <a href={`tel:${contact.phoneHref}`} class="block px-4 py-3 text-sm text-black/70 hover:text-black hover:bg-black/5 rounded-xl no-underline">Call leasing</a>
