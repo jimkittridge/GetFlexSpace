@@ -177,3 +177,6 @@ dialog{border:0;padding:0;border-radius:8px;max-width:590px;width:calc(100% - 32
   .photo-controls .photo-switch button { text-align: left; }
   .photo-caption { bottom: 134px; }
 }
+
+/* Dynamic labels must keep button typography while their SVG arrows stay intact. */
+#detail-action-label, #detail-link-label { font: inherit; }

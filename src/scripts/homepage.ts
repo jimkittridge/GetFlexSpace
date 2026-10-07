@@ -2,7 +2,7 @@ import { openTourInquiry } from './tour-inquiry';
 import { createSlideshow } from '../lib/slideshow.js';
 
 type Market = {
-  type: string; typeLabel: string; statusLabel: string;
+  type: string; typeLabel: string; statusLabel: string; viewLabel: string;
   name: string; fullName: string; stateName: string; index: string;
   image: string; range: string; available: boolean; description: string;
   door: string; height: string; power: string; lease: string; url: string;
@@ -130,7 +130,8 @@ document.querySelectorAll<HTMLAnchorElement>('[data-property]').forEach(link => 
       facts.append(wrap);
     }
     document.querySelector<HTMLAnchorElement>('#detail-link')!.href = currentMarket.url;
-    detailAction.textContent = currentMarket.available ? 'Request a tour ↗' : 'Join the waitlist ↗';
+    document.querySelector('#detail-action-label')!.textContent = currentMarket.available ? 'Request a tour' : 'Join the waitlist';
+    document.querySelector('#detail-link-label')!.textContent = currentMarket.viewLabel;
     propertyDialog.showModal();
   });
 });
