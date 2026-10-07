@@ -2,13 +2,11 @@
 import { getCollection, getEntry } from 'astro:content';
 import { homepageImage, portfolioRange, scriptJson } from '../lib/homepage';
 import '../styles/homepage.css';
-import RetailFeature from '../components/RetailFeature.astro';
 import TourInquiry from '../components/TourInquiry.astro';
 
 const cms = (await getEntry('pages', 'homepage'))!.data;
 const contact = (await getEntry('pages', 'contact'))!.data;
 const locations = await getCollection('locations');
-const retailProperties = await getCollection('retail');
 const preferredOrder = ['durham-nc', 'asheville-nc', 'columbia-sc'];
 locations.sort((a, b) => {
   const aIndex = preferredOrder.indexOf(a.data.slug);
@@ -16,6 +14,7 @@ locations.sort((a, b) => {
   return (aIndex < 0 ? 99 : aIndex) - (bIndex < 0 ? 99 : bIndex) || a.data.name.localeCompare(b.data.name);
 });
 const markets = await Promise.all(locations.map(async ({data}, i) => ({
+  type: data.propertyType, typeLabel: data.propertyType === 'retail' ? 'Retail space' : 'Warehouse & flex space',
   name: data.name, fullName: data.fullName, state: data.state,
   stateName: data.state === 'NC' ? 'North Carolina' : data.state === 'SC' ? 'South Carolina' : data.state,
   index: String(i + 1).padStart(2, '0'),
@@ -41,7 +40,7 @@ const structuredData = {
       telephone: contact.phoneHref, email: contact.email,
       areaServed: ['North Carolina', 'South Carolina'].map(name => ({'@type': 'State', name}))},
     {'@type': 'ItemList', name: 'GetFlexSpace locations', itemListElement: markets.map((market, i) => ({
-      '@type': 'ListItem', position: i + 1, name: `Warehouse & flex space in ${market.fullName}`,
+      '@type': 'ListItem', position: i + 1, name: `${market.typeLabel} in ${market.fullName}`,
       url: new URL(market.url, canonical).href}))},
     {'@type': 'FAQPage', mainEntity: faq.map(item => ({'@type': 'Question', name: item.question,
       acceptedAnswer: {'@type': 'Answer', text: item.answer}}))},
@@ -68,7 +67,7 @@ const structuredData = {
 <a href="#main" class="skip">Skip to content</a>
 <header class="site-header">
   <a class="brand" href="/" aria-label="GetFlexSpace home"><img src={logo} alt="GetFlexSpace" width="1243" height="228"></a>
-  <nav id="navigation" aria-label="Main navigation"><a href="#locations">Our locations</a><a href="#retail-space">Retail Space</a><a href="#your-business">Built for business</a><a href="#questions">FAQs</a></nav>
+  <nav id="navigation" aria-label="Main navigation"><a href="#locations">Our locations</a><a href="#your-business">Built for business</a><a href="#questions">FAQs</a></nav>
   <div class="header-actions"><a href={telHref} class="call-link"><svg aria-hidden="true"><use href="#phone"/></svg>Call leasing</a><a class="button dark" href="/contact/" data-tour>Request a tour <span aria-hidden="true">↗</span></a><button class="menu" aria-label="Open menu" aria-expanded="false" aria-controls="navigation"><svg aria-hidden="true"><use href="#menu"/></svg></button></div>
 </header>
 <main id="main">
@@ -96,15 +95,15 @@ const structuredData = {
     <div class="location-tabs" role="group" aria-label="Filter locations"><button class="selected" data-filter="all" aria-pressed="true">All locations <span>{markets.length}</span></button>{markets.map(market => <button data-filter={market.name} aria-pressed="false">{market.fullName}</button>)}</div>
     <div class="property-grid">
       {markets.map(market => <article class="property" data-city={market.name}>
-        <a class="property-image" data-property={market.name} href={market.url} aria-label={`View ${market.name} property`}><img src={market.cardImage} alt={`Warehouse and flex space in ${market.fullName}`} loading="lazy" width="720" height="540"/><span class:list={['status', {available: market.available}]}><i></i>{market.available ? 'Now leasing' : 'Join the waitlist'}</span><span class="image-arrow" aria-hidden="true">↗</span></a>
+        <a class="property-image" data-property={market.name} href={market.url} aria-label={`View ${market.name} property`}><img src={market.cardImage} alt={`${market.typeLabel} in ${market.fullName}`} loading="lazy" width="720" height="540"/><span class:list={['status', {available: market.available}]}><i></i>{market.available ? 'Now leasing' : 'Join the waitlist'}</span><span class="image-arrow" aria-hidden="true">↗</span></a>
         <div class="property-heading"><h3>{market.fullName}</h3><span>{market.index}</span></div>
         <p class="property-description">{market.description}</p>
-        <div class="property-facts"><span>{market.range}</span><span>Drive-in access</span></div>
+        <div class="property-facts"><span>{market.range}</span><span>{market.type === 'retail' ? 'Retail Space' : 'Drive-in access'}</span></div>
         <div class="property-bottom">
           <a href="/contact/" class="property-cta property-cta-primary" data-tour={market.available ? 'tour' : 'waitlist'} data-location={market.name} aria-label={market.available ? `Request a tour in ${market.name}` : `Join the waitlist in ${market.name}`}>
             {market.available ? 'Request a tour' : 'Join the waitlist'} <span aria-hidden="true">↗</span>
           </a>
-          <a class="property-cta property-cta-secondary" href={market.url} aria-label={`View ${market.name} property — warehouse and flex space`}>
+          <a class="property-cta property-cta-secondary" href={market.url} aria-label={`View ${market.name} property — ${market.typeLabel}`}>
             View {market.name} property <span aria-hidden="true">↗</span>
           </a>
         </div>
@@ -114,7 +113,6 @@ const structuredData = {
   </section>
 
 
-  <RetailFeature />
   <section class="space-guide section" id="space-features" aria-labelledby="space-guide-title">
     <div class="space-guide-copy"><p class="eyebrow">MORE THAN A PLACE TO STORE</p><h2 id="space-guide-title">Warehouse space.<br>Room for your<br>whole operation.</h2><p>GetFlexSpace offers warehouse and flex industrial space for businesses that need a place to work, store inventory, stage equipment, or bring office and warehouse functions together.</p><p>Across our Carolina locations, suite sizes span {suiteRange}. Explore drive-in access, warehouse-plus-office layouts, and the features that support your day-to-day work. Availability and configurations vary by property.</p><a class="text-link" href="#questions">Explore common leasing questions <span aria-hidden="true">↘</span></a></div>
     <div class="space-specs">
@@ -141,11 +139,11 @@ const structuredData = {
 
   <section class="contact-banner"><div><p class="eyebrow">YOUR NEXT CHAPTER STARTS HERE</p><h2>{cms.finalCta?.heading}</h2><p>{cms.finalCta?.subheading}</p></div><div class="contact-actions"><a class="button orange" href="/contact/" data-tour>Request a tour <span aria-hidden="true">↗</span></a><div><a href={telHref}>Call leasing</a><span>/</span><a href={smsHref}>Text a question</a></div><p>Direct to our leasing team.</p></div></section>
 </main>
-<footer><div class="footer-main"><a class="brand footer-brand" href="/" aria-label="GetFlexSpace home"><img src={logo} alt="GetFlexSpace" width="1243" height="228" loading="lazy"></a><p>Warehouse, flex & retail space.<br>Room for what’s next.</p><div><a href="/retail-space/">Morganton retail space</a>{markets.map(market => <a href={market.url}>{market.name} warehouse &amp; flex space</a>)}</div><div><a href={telHref}>{contact.phone}</a><a href={emailHref}>{contact.email}</a><span>North Carolina & South Carolina</span></div></div><div class="footer-bottom"><span>© {new Date().getFullYear()} GetFlexSpace</span><span><a href="/about/">About us</a> · <a href="/blog/">Leasing resources</a> · <a href="/contact/">Contact</a></span></div></footer>
+<footer><div class="footer-main"><a class="brand footer-brand" href="/" aria-label="GetFlexSpace home"><img src={logo} alt="GetFlexSpace" width="1243" height="228" loading="lazy"></a><p>Warehouse, flex & retail space.<br>Room for what’s next.</p><div>{markets.map(market => <a href={market.url}>{market.name} {market.typeLabel.toLowerCase()}</a>)}</div><div><a href={telHref}>{contact.phone}</a><a href={emailHref}>{contact.email}</a><span>North Carolina & South Carolina</span></div></div><div class="footer-bottom"><span>© {new Date().getFullYear()} GetFlexSpace</span><span><a href="/about/">About us</a> · <a href="/blog/">Leasing resources</a> · <a href="/contact/">Contact</a></span></div></footer>
 <div class="mobile-contact" aria-label="Contact leasing"><a class="button orange" href="/contact/" data-tour>Request a tour <span aria-hidden="true">↗</span></a><a href={telHref}><svg aria-hidden="true"><use href="#phone"/></svg>Call</a><a href={smsHref}><svg aria-hidden="true"><use href="#message"/></svg>Text</a></div>
 
 <dialog id="property-dialog" class="property-dialog" aria-labelledby="detail-title"><button class="close-dialog" aria-label="Close property details">×</button><img id="detail-image" src={featured.image} alt=""><div class="dialog-content"><p class="eyebrow" id="detail-status"></p><h2 id="detail-title"></h2><p id="detail-description"></p><dl id="detail-facts"></dl><p class="fine-print">Suite sizes and features vary. Ask leasing to confirm current availability, pricing, and the specifications of your preferred space.</p><div class="dialog-actions"><button class="button orange" id="detail-action">Request a tour <span aria-hidden="true">↗</span></button><a class="text-link" id="detail-link" href={featured.url}>See property details ↗</a></div></div></dialog>
-<TourInquiry markets={[...markets, ...retailProperties.map(({data}) => ({name: data.city, fullName: `${data.city}, ${data.state} — Retail`, available: true}))]} phone={contact.phone!} phoneHref={contact.phoneHref!} email={contact.email!} />
+<TourInquiry markets={markets} phone={contact.phone!} phoneHref={contact.phoneHref!} email={contact.email!} />
 <script type="application/json" id="homepage-data" set:html={scriptJson({markets, email: contact.email})}/>
 <script src="../scripts/homepage.ts"></script>
 <svg class="svg-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>

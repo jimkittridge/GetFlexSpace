@@ -10,37 +10,6 @@ public_folder: /images
 site_url: https://getflexspace.com
 
 collections:
-  - name: retail
-    label: Retail Space
-    folder: src/content/retail
-    create: false
-    format: frontmatter
-    fields:
-      - { label: Name, name: name, widget: string }
-      - { label: Street Address, name: address, widget: string }
-      - { label: City, name: city, widget: string }
-      - { label: State, name: state, widget: string }
-      - label: Unit Sizes (sq ft)
-        name: sizes
-        widget: list
-        field: { label: Size, name: size, widget: number, value_type: int, min: 1 }
-      - label: Location Highlights
-        name: highlights
-        widget: list
-        fields:
-          - { label: Title, name: title, widget: string }
-          - { label: Description, name: description, widget: text }
-      - label: Property Photos & Floor Plans
-        name: media
-        widget: list
-        required: false
-        fields:
-          - label: Category
-            name: category
-            widget: select
-            options: [Storefronts, Interiors, Floor plans, Parking, Neighborhood]
-          - { label: Image, name: image, widget: image }
-          - { label: Description / Alt Text, name: alt, widget: string }
   # ─── Locations ───
   - name: locations
     label: Locations
@@ -55,6 +24,9 @@ collections:
       - { label: State, name: state, widget: string, hint: "State abbreviation (e.g. NC)" }
       - { label: Full Name, name: fullName, widget: string, hint: "City, State (e.g. Asheville, NC)" }
       - { label: Slug, name: slug, widget: string, hint: "URL slug (e.g. asheville-nc)" }
+      - { label: Property Type, name: propertyType, widget: select, options: [flex, retail], default: flex }
+      - { label: Tenant Access, name: tenantAccess, widget: string, required: false, default: "24/7" }
+      - { label: Hero Logo, name: heroLogo, widget: image, required: false }
       - label: Availability
         name: availability
         widget: select
@@ -149,6 +121,7 @@ collections:
           - label: Geo
             name: geo
             widget: object
+            required: false
             fields:
               - { label: Latitude, name: lat, widget: number, value_type: float }
               - { label: Longitude, name: lng, widget: number, value_type: float }

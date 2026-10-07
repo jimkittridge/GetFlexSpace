@@ -33,7 +33,7 @@ const planSuite = suites.findIndex(suite => suite.media.some(item => item.type =
 const planIndex = planSuite >= 0 ? suites[planSuite].media.findIndex(item => item.type === 'floor-plan') : -1;
 const specs = [
   ['Suite sizes', city.specs.suiteRange], ['Clear height', city.specs.ceilingHeight],
-  ['Loading access', city.specs.doorSize], ['Electrical service', city.specs.power],
+  [city.propertyType === 'retail' ? 'Customer access' : 'Loading access', city.specs.doorSize], ['Electrical service', city.specs.power],
   ['Heating & cooling', city.specs.hvac], ['Lease terms', city.specs.lease],
 ];
 const canonical = `https://getflexspace.com/locations/${city.slug}/`;
@@ -62,15 +62,16 @@ const schema = [
     <section class="property-intro property-wrap" aria-labelledby="property-title">
       <nav class="property-breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/locations/">Locations</a><span aria-hidden="true">/</span><span aria-current="page">{city.fullName}</span></nav>
       <div class="property-title-row">
-        <div><p class="property-eyebrow">A HOME BASE FOR YOUR BUSINESS</p><h1 id="property-title">{city.heroH1 || `Warehouse & flex space in ${city.fullName}.`}</h1><a class="property-address" href={directions} target="_blank" rel="noopener">{address}<span aria-hidden="true">↗</span></a></div>
+        <div><p class="property-eyebrow">{city.propertyType === 'retail' ? 'RETAIL SPACE' : 'A HOME BASE FOR YOUR BUSINESS'}</p><h1 id="property-title">{city.heroH1 || `Warehouse & flex space in ${city.fullName}.`}</h1><a class="property-address" href={directions} target="_blank" rel="noopener">{address}<span aria-hidden="true">↗</span></a></div>
         <div class="property-intro-action"><span class:list={['property-badge', { available: acceptingTours }]}><i></i>{acceptingTours ? 'Now leasing' : 'Waitlist open'}</span><p>{available.length ? `${available.map(suite => suite.size).join(' + ')} available` : acceptingTours ? 'Ask about current space' : 'Be first to hear about openings'}</p><a class="property-button" href="#available-spaces">{acceptingTours ? 'Explore available space' : 'Explore suite options'} <span aria-hidden="true">↓</span></a></div>
       </div>
       <p class="property-lede">{city.heroSubtitle || city.tagline}</p>
+      {city.heroLogo && <img class="property-hero-logo" src={city.heroLogo} alt="GetFlexSpace" width="1243" height="228"/>}
       {photos.length > 0 && <div class:list={['property-mosaic', { 'one-photo': photos.length === 1 }]} id="property-photos">
         {photos.slice(0, 3).map((photo, index) => <a class={`property-photo property-photo-${index}`} href={photo.src} data-property-media="property" data-media-index={index} aria-label={`Open photo ${index + 1}: ${photo.label}`}><img src={photo.thumb} alt={photo.label} width={index === 0 ? 1200 : 640} height={index === 0 ? 900 : 480} loading={index === 0 ? 'eager' : 'lazy'} fetchpriority={index === 0 ? 'high' : 'auto'}/>{index === 2 && photos.length > 3 && <span class="photo-more">+{Math.max(0, photos.length - 3)} photos</span>}</a>)}
         <div class="property-photo-actions"><a href={photos[0].src} data-property-media="property" data-media-index="0">View all {photos.length} photos <span aria-hidden="true">↗</span></a>{planSuite >= 0 && <a href={suites[planSuite].media[planIndex].image} data-property-media={`suite-${planSuite}`} data-media-index={planIndex}>View floor plan <span aria-hidden="true">↗</span></a>}</div>
       </div>}
-      <dl class="property-quick-facts"><div><dt>Suite sizes</dt><dd>{city.specs.suiteRange}</dd></div><div><dt>Clear height</dt><dd>{city.specs.ceilingHeight}</dd></div><div><dt>Loading</dt><dd>{city.specs.doorSize}</dd></div><div><dt>Tenant access</dt><dd>24/7</dd></div></dl>
+      <dl class="property-quick-facts"><div><dt>Suite sizes</dt><dd>{city.specs.suiteRange}</dd></div><div><dt>Clear height</dt><dd>{city.specs.ceilingHeight}</dd></div><div><dt>{city.propertyType === 'retail' ? 'Customer access' : 'Loading'}</dt><dd>{city.specs.doorSize}</dd></div><div><dt>Tenant access</dt><dd>{city.tenantAccess}</dd></div></dl>
     </section>
     <nav class="property-section-nav" aria-label="Property sections"><div class="property-wrap"><a href="#available-spaces">Spaces</a><a href="#specs">Features</a><a href="#property-location">Location</a><a href="#faq">FAQs</a><a href="#request-tour" class="section-tour" data-property-inquiry={city.name}>{action} <span aria-hidden="true">↗</span></a></div></nav>
 
