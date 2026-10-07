@@ -44,7 +44,7 @@ faq:
   - question: What is warehouse and flex space?
     answer: Warehouse space provides room for inventory, equipment, materials, and business operations. Flex space combines that warehouse footprint with office, showroom, or other workspace. GetFlexSpace offers warehouse and flex suites in North Carolina and South Carolina; layouts and permitted uses vary by property.
   - question: Where can I lease warehouse space in NC and SC?
-    answer: Our small-bay locations include {{smallBayLocations}}. Explore larger warehouse space in the High Point / Archdale area and retail space in Morganton. Each property page lists its size, features, and current status.
+    answer: Our small-bay locations include {{smallBayLocations}}. Explore larger warehouse space in the High Point area and retail space in Morganton. Each property page lists its size, features, and current status.
   - question: What sizes of warehouse and flex space do you offer?
     answer: "Small-bay warehouse and flex sizes: {{suiteRanges}}. Larger warehouse offerings have their own building sizes and yard details; retail suites are available in Morganton. Sizes describe the properties, not a promise of current availability. Contact leasing for current openings."
   - question: Can I lease warehouse space with an office?

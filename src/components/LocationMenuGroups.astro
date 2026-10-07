@@ -6,7 +6,7 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 <div class="location-menu-groups">
   {groups.map(group => <section class="location-menu-group" aria-label={group.label}>
     <p>{group.label}</p>
-    <ul>{group.locations.map(({data}) => <li><a href={`${base}locations/${data.slug}/`} aria-current={Astro.url.pathname === `${base}locations/${data.slug}/` ? 'page' : undefined}>{data.name}{data.name === 'West Asheville' && <small>Candler, NC</small>}{data.name === 'High Point' && <small>Archdale, NC</small>}</a></li>)}</ul>
+    <ul>{group.locations.map(({data}) => <li><a href={`${base}locations/${data.slug}/`} aria-current={Astro.url.pathname === `${base}locations/${data.slug}/` ? 'page' : undefined}>{data.name}{data.name === 'West Asheville' && <small>Candler, NC</small>}</a></li>)}</ul>
   </section>)}
 </div>
 <style>

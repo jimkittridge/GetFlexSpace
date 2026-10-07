@@ -1,7 +1,7 @@
 ---
 name: High Point
 state: NC
-fullName: High Point / Archdale, NC
+fullName: High Point, NC
 slug: high-point-nc
 propertyType: warehouse
 published: true
@@ -18,7 +18,7 @@ gallery:
 galleryAltTexts:
   - Building and yard concept at 5874 Uwharrie Rd; site boundaries are not a survey
   - Proposed warehouse interior after renovation
-  - High Point / Archdale warehouse interior before renovation
+  - High Point warehouse interior before renovation
   - Possible warehouse storage layout; shelving and equipment are illustrative
 tenantAccess: Confirm with leasing
 highlights:
@@ -32,16 +32,16 @@ pricingNote: >-
   Expected base rent after renovation: $8/SF. Confirm the rent period, additional charges, final
   specifications, and occupancy timing with leasing.
 homepageDescription: >-
-  An 11,700 SF industrial warehouse with a 1.3-acre storage yard in Archdale, serving High Point. Coming soon
+  An 11,700 SF High Point industrial warehouse with a 1.3-acre storage yard. Coming soon
   after renovation and upfit; $8/SF base rent once renovated.
 tagline: >-
-  Coming soon: an 11,700 SF industrial warehouse with a 1.3-acre storage yard at 5874 Uwharrie Rd in Archdale,
-  serving the High Point area. Renovation and upfit are underway. Expected base rent after renovation is
+  Coming soon in the High Point area: an 11,700 SF industrial warehouse with a 1.3-acre storage yard
+  at 5874 Uwharrie Rd. Renovation and upfit are underway. Expected base rent after renovation is
   $8/SF.
 seo:
   title: High Point Industrial Warehouse | 11,700 SF | GetFlexSpace
   description: >-
-    Coming soon: 11,700 SF industrial warehouse with a 1.3-acre yard in Archdale near High Point, NC. $8/SF
+    Coming soon: 11,700 SF industrial warehouse with a 1.3-acre yard in the High Point area, NC. $8/SF
     base rent after renovation. Join the interest list.
 specs:
   suiteRange: 11,700 SF
@@ -51,7 +51,7 @@ specs:
   hvac: Confirm with leasing
   lease: Confirm with leasing
 localGuide:
-  heading: About this Archdale property
+  heading: About this High Point property
   nearbyHighways: []
   airport: ""
   submarkets: []
@@ -68,8 +68,8 @@ suites:
 faq:
   - question: What space is offered?
     answer: >-
-      The offering is an 11,700 SF industrial warehouse with a 1.3-acre storage yard at 5874 Uwharrie Rd,
-      Archdale, NC, in the High Point area. Renovation and upfit are underway. Expected base rent once
+      The High Point offering is an 11,700 SF industrial warehouse with a 1.3-acre storage yard
+      at 5874 Uwharrie Rd. Renovation and upfit are underway. Expected base rent once
       renovated is $8/SF.
   - question: When will the property be available?
     answer: "{{availabilitySummary}}"
@@ -88,7 +88,7 @@ heroH1: |-
   11,700 SF warehouse.
   1.3-acre storage yard.
 heroSubtitle: >-
-  An industrial building and storage yard in Archdale, serving High Point. Renovation and upfit are underway;
+  An industrial building and storage yard serving the High Point area. Renovation and upfit are underway;
   expected base rent once renovated is $8/SF.
 suitesHeading: Planned space & availability.
 suitesSubheading: >-
@@ -103,4 +103,4 @@ galleryImageTypes:
   - rendering
 ---
 
-Coming soon: an 11,700 SF industrial warehouse with a 1.3-acre storage yard at 5874 Uwharrie Rd in Archdale, serving the High Point area. Renovation and upfit are underway. Expected base rent after renovation is $8/SF.
+Coming soon in the High Point area: an 11,700 SF industrial warehouse with a 1.3-acre storage yard at 5874 Uwharrie Rd. Renovation and upfit are underway. Expected base rent after renovation is $8/SF.

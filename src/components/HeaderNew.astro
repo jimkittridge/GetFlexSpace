@@ -59,7 +59,7 @@ const currentPage = (href: string) => Astro.url.pathname.startsWith(href) ? 'pag
   .gfs-header :is(a,summary,button):focus-visible { outline:3px solid #b5611e; outline-offset:4px; }
   .gfs-brand { display:flex; width:195px; min-width:0; }
   .gfs-brand img { display:block; width:100%; height:auto; max-width:100%; }
-  .gfs-desktop-nav { display:flex; align-items:center; gap:30px; max-width:none; }
+  .gfs-desktop-nav { display:flex; align-items:center; align-self:stretch; gap:30px; max-width:none; }
   .gfs-desktop-nav > a, .gfs-locations-nav > a { display:flex; align-items:center; min-height:48px; padding:12px 0; font:inherit; }
   .gfs-desktop-nav a:hover, .gfs-mobile-menu nav>a:not(.gfs-tour):hover { color:#a95013; }
   .gfs-header-actions { display:flex; align-items:center; justify-content:flex-end; gap:24px; }
@@ -68,7 +68,7 @@ const currentPage = (href: string) => Astro.url.pathname.startsWith(href) ? 'pag
   .gfs-call svg { width:18px; height:18px; }
   .gfs-header .gfs-tour { display:inline-flex; align-items:center; justify-content:space-between; min-height:48px; gap:30px; padding:12px 18px; border:0; border-radius:4px; background:#202925; color:white; font:600 15px/1.5 Arial,Helvetica,sans-serif; white-space:nowrap; }
   .gfs-header .gfs-tour:hover { background:#3b4a42; }
-  .gfs-locations-nav { display:flex; align-items:center; gap:4px; }
+  .gfs-locations-nav { display:flex; align-items:center; align-self:stretch; gap:4px; }
   .gfs-location-menu summary { list-style:none; display:grid; place-items:center; width:32px; height:44px; cursor:pointer; border-radius:4px; }
   .gfs-location-menu summary::-webkit-details-marker { display:none; }
   .gfs-location-menu summary svg { width:16px; height:16px; }
