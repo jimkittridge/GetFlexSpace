@@ -273,7 +273,8 @@ access, and permitted uses require confirmation. Edit `yard`, `yardNotes`,
 Every property page includes a permanent canonical URL, a native-share/copy-link
 button, and social image metadata for sending directly to prospects.
 
-Owner-provided Concord photos are in `public/images/concord/`. High Point assets
+The seven replacement, owner-provided edited Concord photos are in
+`public/images/concord/`; the public address is 101 Corban Ave SW. High Point assets
 are in `public/images/high-point/`: the original interior photo shows the building
 before renovation; the three supplied PNGs are owner-confirmed proposed-renovation
 renderings. `galleryImageTypes` mirrors gallery order and visibly labels renderings

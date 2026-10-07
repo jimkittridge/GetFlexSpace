@@ -9,25 +9,23 @@ navigationOrder: 20
 marketingStage: standard
 availability: available
 availableUnits: 3,400 SF
-image: /images/concord/building-aerial.webp
+image: /images/concord/building-aerial-edited.webp
 gallery:
-  - /images/concord/building-aerial.webp
-  - /images/concord/warehouse-yard.webp
-  - /images/concord/loading-area.webp
-  - /images/concord/loading-ramp.webp
-  - /images/concord/loading-view.webp
-  - /images/concord/site-aerial.webp
-  - /images/concord/yard-view.webp
-  - /images/concord/area-aerial.webp
+  - /images/concord/building-aerial-edited.webp
+  - /images/concord/yard-front-edited.webp
+  - /images/concord/loading-ramp-edited.webp
+  - /images/concord/covered-entry-edited.webp
+  - /images/concord/loading-view-edited.webp
+  - /images/concord/yard-side-edited.webp
+  - /images/concord/area-aerial-edited.webp
 galleryAltTexts:
-  - Aerial view of the Concord warehouse and adjoining yard
-  - Concord warehouse and paved yard
-  - Covered loading area at the Concord warehouse
-  - Warehouse loading ramp in Concord
-  - View from the covered warehouse loading area
-  - Overhead view of the Concord warehouse and yard
-  - Paved yard and building in Concord
-  - Concord property with downtown in the distance; outline is illustrative
+  - Edited aerial view of the warehouse and yard at 101 Corban Ave SW, Concord
+  - Edited front view of the paved yard and Concord warehouse
+  - Edited view of the warehouse loading ramp at 101 Corban Ave SW
+  - Edited view of the covered warehouse entry in Concord
+  - Edited view from the covered loading area toward the paved yard
+  - Edited side view of the paved storage yard and Concord warehouse
+  - Edited aerial view toward downtown Concord; property outline is illustrative
 tenantAccess: Confirm with leasing
 highlights:
   - ½-acre paved storage yard
