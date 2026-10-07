@@ -76,6 +76,8 @@ selection pause it until Play is requested. Reduced-motion users start paused.
 Photos are decoded before their image, caption, and property link change together.
 Public action arrows use `ArrowIcon.astro` SVGs rather than Unicode characters,
 which iOS Safari can display as emoji. Property links name the city and space type.
+The homepage mobile contact bar stays hidden while the hero is visible, then
+appears below the hero and hides again when visitors scroll back to it.
 
 ## Publishing
 

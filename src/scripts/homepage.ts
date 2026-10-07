@@ -15,6 +15,17 @@ const propertyDialog = document.querySelector<HTMLDialogElement>('#property-dial
 const detailAction = document.querySelector<HTMLButtonElement>('#detail-action')!;
 let currentMarket = markets[0];
 
+const hero = document.querySelector<HTMLElement>('.hero')!;
+const mobileContact = document.querySelector<HTMLElement>('.mobile-contact')!;
+function updateMobileContact() {
+  // Keep the hero readable; also handle direct links and restored scroll positions.
+  mobileContact.hidden = hero.getBoundingClientRect().bottom > 0;
+}
+const contactVisibility = new IntersectionObserver(updateMobileContact);
+contactVisibility.observe(hero);
+window.addEventListener('pageshow', updateMobileContact);
+updateMobileContact();
+
 document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(button => {
   button.addEventListener('click', () => {
     document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(item => {
