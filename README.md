@@ -26,6 +26,9 @@ npm run build   # production build -> dist/
 
 **Always run `npm run build` before pushing** content or schema changes. See
 "A failed build is a silently stale site" below.
+The build first checks the CMS configuration so misplaced page fields cannot
+silently ship a broken admin. Property settings belong under Locations; entries
+in Pages must each specify a content file and its editable fields.
 
 ## Project structure
 
