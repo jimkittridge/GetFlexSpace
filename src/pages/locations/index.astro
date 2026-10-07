@@ -2,8 +2,9 @@
 import NewLayout from '../../layouts/NewLayout.astro';
 import LeadForm from '../../components/LeadForm.astro';
 import { getCollection } from 'astro:content';
+import { compareLocationAvailability, locationStatus } from '../../lib/property.js';
 
-const allLocations = await getCollection('locations');
+const allLocations = (await getCollection('locations')).sort((a, b) => compareLocationAvailability(a.data, b.data));
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const title = 'Flex & Retail Space Locations in NC & SC | GetFlexSpace';
 const description = 'Explore warehouse, flex, and retail space for lease in Durham, Asheville, Morganton, and Columbia. View property photos, suite sizes, and current availability.';
@@ -72,7 +73,7 @@ const breadcrumbSchema = JSON.stringify({
                       ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200'
                       : 'bg-zinc-100 text-zinc-700 ring-1 ring-zinc-200'
                   ]}>
-                    {isAvailable ? 'Available now' : 'Waitlist'}
+                    {locationStatus(loc.data.availability).label}
                   </span>
                 </div>
                 <p class="mt-4 text-sm leading-6 text-black/60">{loc.data.tagline}</p>

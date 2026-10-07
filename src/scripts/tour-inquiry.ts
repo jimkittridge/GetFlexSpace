@@ -15,12 +15,14 @@ let mode = 'tour';
 let requestedMode: 'tour' | 'waitlist' | undefined;
 
 function updateMode() {
+  const comingSoon = location.selectedOptions[0]?.dataset.availability === 'coming-soon';
   const full = location.selectedOptions[0]?.dataset.available === 'false';
   mode = full ? 'waitlist' : requestedMode || 'tour';
   const waitlist = mode === 'waitlist';
   document.querySelector('#inquiry-title')!.textContent = waitlist ? 'Get on the list.' : 'Request a tour.';
   document.querySelector('#inquiry-intro')!.textContent = waitlist
-    ? full ? `${location.value} is full. We’ll contact you when space opens.` : `We’ll contact you about upcoming space in ${location.value}.`
+    ? comingSoon ? `${location.value} is coming soon. We’ll contact you about opening dates and availability.`
+      : full ? `${location.value} is full. We’ll contact you when space opens.` : `We’ll contact you about upcoming space in ${location.value}.`
     : 'We’ll call or text to confirm a tour time.';
   submitLabel.textContent = waitlist ? 'Join the waitlist' : 'Request my tour';
   document.querySelector('.tour-form-note')!.textContent = waitlist

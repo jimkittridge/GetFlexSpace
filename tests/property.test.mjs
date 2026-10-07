@@ -35,3 +35,26 @@ test('FAQs resolve size and availability from the same current listing', () => {
   assert.equal(faq[1].answer, 'An ordinary answer.');
   assert.match(city.faq[0].answer, /\{\{suiteRange\}\}/);
 });
+
+test('coming-soon properties collect interest without advertising a vacant suite or claiming full occupancy', () => {
+  const result = propertyAvailability({ availability: 'coming-soon', suites: [suite('2,000 SF', 'available')] });
+  assert.equal(result.acceptingTours, false);
+  assert.equal(result.available.length, 0);
+  assert.match(result.summary, /coming soon/);
+  assert.doesNotMatch(result.summary, /currently full/);
+});
+
+test('location order prioritizes leasing, then coming soon, then waitlist, independent of original city order', async () => {
+  const { compareLocationAvailability, locationStatus } = await import('../src/lib/property.js');
+  const records = [
+    { name: 'Asheville', slug: 'asheville-nc', availability: 'full' },
+    { name: 'Zebulon', slug: 'zebulon-nc', availability: 'coming-soon' },
+    { name: 'Morganton', slug: 'morganton-nc', availability: 'available' },
+    { name: 'Durham', slug: 'durham-nc', availability: 'available' },
+    { name: 'Columbia', slug: 'columbia-sc', availability: 'full' },
+  ];
+  const sorted = [...records].sort(compareLocationAvailability);
+  assert.deepEqual(sorted.map(x => x.name), ['Durham', 'Morganton', 'Zebulon', 'Asheville', 'Columbia']);
+  assert.deepEqual(sorted.map(x => locationStatus(x.availability).label), ['Now leasing', 'Now leasing', 'Coming soon', 'Join the waitlist', 'Join the waitlist']);
+  assert.equal(locationStatus('unknown').rank, 2);
+});

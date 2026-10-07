@@ -11,7 +11,7 @@ const locations = defineCollection({
     propertyType: z.enum(['flex', 'retail']).nullish().transform(v => v ?? 'flex'),
     tenantAccess: z.string().nullish().transform(v => v || '24/7'),
     heroLogo: z.string().nullish().transform(v => v || ''),
-    availability: z.enum(['available', 'full']),
+    availability: z.enum(['available', 'coming-soon', 'full']),
     availableUnits: z.string().optional().default(''),
     image: z.string().optional().default(''),
     gallery: z.array(z.string()).optional().default([]),

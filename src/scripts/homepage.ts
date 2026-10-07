@@ -2,7 +2,7 @@ import { openTourInquiry } from './tour-inquiry';
 import { createSlideshow } from '../lib/slideshow.js';
 
 type Market = {
-  type: string; typeLabel: string;
+  type: string; typeLabel: string; statusLabel: string;
   name: string; fullName: string; stateName: string; index: string;
   image: string; range: string; available: boolean; description: string;
   door: string; height: string; power: string; lease: string; url: string;
@@ -31,7 +31,6 @@ document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(button => 
 const heroPhoto = document.querySelector<HTMLElement>('.hero-photo')!;
 const heroImage = heroPhoto.querySelector<HTMLImageElement>('img')!;
 const rotationButton = heroPhoto.querySelector<HTMLButtonElement>('.photo-rotation')!;
-const rotationLabel = rotationButton.querySelector('span')!;
 const heroButtons = [...heroPhoto.querySelectorAll<HTMLButtonElement>('[data-hero]')];
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 let heroIndex = 0;
@@ -64,7 +63,7 @@ const slideshow = createSlideshow({
   reducedMotion: reducedMotion.matches,
   advance: (signal: AbortSignal) => showHero((heroIndex + 1) % markets.length, signal),
   onChange: (enabled: boolean) => {
-    rotationLabel.textContent = enabled ? 'Pause' : 'Play';
+    rotationButton.title = enabled ? 'Pause location slideshow' : 'Play location slideshow';
     rotationButton.setAttribute('aria-label', enabled ? 'Pause location slideshow' : 'Play location slideshow');
     rotationButton.classList.toggle('is-playing', enabled);
   },
@@ -112,7 +111,7 @@ document.querySelectorAll<HTMLAnchorElement>('[data-property]').forEach(link => 
     const image = document.querySelector<HTMLImageElement>('#detail-image')!;
     image.src = currentMarket.image;
     image.alt = `${currentMarket.typeLabel} in ${currentMarket.fullName}`;
-    document.querySelector('#detail-status')!.textContent = currentMarket.available ? 'NOW LEASING' : 'WAITLIST OPEN';
+    document.querySelector('#detail-status')!.textContent = currentMarket.statusLabel.toUpperCase();
     document.querySelector('#detail-title')!.textContent = currentMarket.fullName;
     document.querySelector('#detail-description')!.textContent = currentMarket.description;
     const facts = document.querySelector('#detail-facts')!;

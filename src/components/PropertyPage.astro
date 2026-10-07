@@ -5,7 +5,7 @@ import NewLayout from '../layouts/NewLayout.astro';
 import SuiteGallery from './SuiteGallery.astro';
 import TourInquiry from './TourInquiry.astro';
 import { homepageImage, scriptJson } from '../lib/homepage';
-import { propertyAvailability, propertyFaq } from '../lib/property.js';
+import { propertyAvailability, propertyFaq, compareLocationAvailability, locationStatus } from '../lib/property.js';
 import '../styles/property.css';
 
 interface Props { location: CollectionEntry<'locations'>; }
@@ -13,7 +13,8 @@ const { location } = Astro.props;
 const city = location.data;
 const { Content } = await render(location);
 const contact = (await getEntry('pages', 'contact'))!.data;
-const locations = await getCollection('locations');
+const locations = (await getCollection('locations')).sort((a, b) => compareLocationAvailability(a.data, b.data));
+const comingSoon = city.availability === 'coming-soon';
 const { suites, available, acceptingTours, summary } = propertyAvailability(city);
 const faq = propertyFaq(city, summary);
 const action = acceptingTours ? 'Request a tour' : 'Join the waitlist';
@@ -63,7 +64,7 @@ const schema = [
       <nav class="property-breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/locations/">Locations</a><span aria-hidden="true">/</span><span aria-current="page">{city.fullName}</span></nav>
       <div class="property-title-row">
         <div><p class="property-eyebrow">{city.propertyType === 'retail' ? 'RETAIL SPACE' : 'A HOME BASE FOR YOUR BUSINESS'}</p><h1 id="property-title">{city.heroH1 || `Warehouse & flex space in ${city.fullName}.`}</h1><a class="property-address" href={directions} target="_blank" rel="noopener">{address}<span aria-hidden="true">↗</span></a></div>
-        <div class="property-intro-action"><span class:list={['property-badge', { available: acceptingTours }]}><i></i>{acceptingTours ? 'Now leasing' : 'Waitlist open'}</span><p>{available.length ? `${available.map(suite => suite.size).join(' + ')} available` : acceptingTours ? 'Ask about current space' : 'Be first to hear about openings'}</p><a class="property-button" href="#available-spaces">{acceptingTours ? 'Explore available space' : 'Explore suite options'} <span aria-hidden="true">↓</span></a></div>
+        <div class="property-intro-action"><span class:list={['property-badge', { available: acceptingTours }]}><i></i>{comingSoon ? 'Coming soon' : acceptingTours ? 'Now leasing' : 'Waitlist open'}</span><p>{available.length ? `${available.map(suite => suite.size).join(' + ')} available` : acceptingTours ? 'Ask about current space' : 'Be first to hear about openings'}</p><a class="property-button" href="#available-spaces">{acceptingTours ? 'Explore available space' : 'Explore suite options'} <span aria-hidden="true">↓</span></a></div>
       </div>
       <p class="property-lede">{city.heroSubtitle || city.tagline}</p>
       {city.heroLogo && <img class="property-hero-logo" src={city.heroLogo} alt="GetFlexSpace" width="1243" height="228"/>}
@@ -82,7 +83,7 @@ const schema = [
           {available.length > 0 && suites.some(suite => !suite.available) && <div class="suite-filters" role="group" aria-label="Filter suites"><button type="button" data-suite-filter="all" aria-pressed="true">All spaces <span>{suites.length}</span></button><button type="button" data-suite-filter="available" aria-pressed="false">Available now <span>{available.length}</span></button><button type="button" data-suite-filter="waitlist" aria-pressed="false">Waitlist</button></div>}
           <p class="property-sr-only" id="suite-filter-status" role="status"></p>
           <div class="property-suite-list">{suites.map((suite, index) => <article class="property-suite" data-suite-status={suite.available ? 'available' : 'waitlist'} aria-labelledby={`suite-title-${index}`}>
-            <div class="suite-card-heading"><div><p class="property-eyebrow">{suite.name}</p><h3 id={`suite-title-${index}`}>{suite.size}</h3></div><span class:list={['property-badge', { available: suite.available }]}>{suite.available ? 'Available now' : 'Waitlist'}</span></div>
+            <div class="suite-card-heading"><div><p class="property-eyebrow">{suite.name}</p><h3 id={`suite-title-${index}`}>{suite.size}</h3></div><span class:list={['property-badge', { available: suite.available }]}>{comingSoon ? 'Coming soon' : suite.available ? 'Available now' : 'Waitlist'}</span></div>
             <p class="suite-description">{suite.description}</p>
             {suite.media.length > 0 && <SuiteGallery media={suite.media} name={`${suite.size} suite`} brochure={suite.brochure} galleryId={`suite-${index}`} />}
             <div class="suite-card-bottom"><div><p class="suite-price-label">{suite.available && suite.baseRent ? 'Listed base rent' : 'Availability & pricing'}</p><p class="suite-price">{suite.available && suite.baseRent ? suite.baseRent : 'Ask our leasing team'}</p></div><a href="#request-tour" class:list={['property-button', { secondary: !suite.available }]} data-property-inquiry={city.name} data-request-type={suite.available ? 'tour' : 'waitlist'}>{suite.available ? 'Request a tour' : 'Join location waitlist'} <span aria-hidden="true">↗</span></a></div>
@@ -101,17 +102,17 @@ const schema = [
         <section class="property-section" id="faq" aria-labelledby="faq-title"><p class="property-eyebrow">A FEW THINGS TO KNOW</p><h2 id="faq-title">{city.faqHeading || 'Your questions, answered.'}</h2><div class="property-faq">{faq.map((item, index) => <details open={index === 0}><summary>{item.question}<span aria-hidden="true">+</span></summary><p>{item.answer}</p></details>)}</div></section>
       </div>
 
-      <aside class="property-leasing-card" id="request-tour" aria-labelledby="leasing-card-title"><p class="property-eyebrow">LET’S TALK SPACE</p><h2 id="leasing-card-title">Your next move<br/>starts here.</h2><span class:list={['property-badge', { available: acceptingTours }]}>{acceptingTours ? 'Now leasing' : 'Waitlist open'}</span><p>{summary}</p><a class="property-button" href="/contact/" data-property-inquiry={city.name}>{action} <span aria-hidden="true">↗</span></a><div class="property-contact-options"><a href={`tel:${contact.phoneHref}`}>Call leasing ↗</a><a href={`sms:${contact.phoneHref}`}>Text leasing ↗</a></div><a class="property-contact-number" href={`tel:${contact.phoneHref}`}>{contact.phone}</a><p class="property-note">Talk directly with our leasing team. Tell us what you need; we’ll help you find the right fit.</p></aside>
+      <aside class="property-leasing-card" id="request-tour" aria-labelledby="leasing-card-title"><p class="property-eyebrow">LET’S TALK SPACE</p><h2 id="leasing-card-title">Your next move<br/>starts here.</h2><span class:list={['property-badge', { available: acceptingTours }]}>{comingSoon ? 'Coming soon' : acceptingTours ? 'Now leasing' : 'Waitlist open'}</span><p>{summary}</p><a class="property-button" href="/contact/" data-property-inquiry={city.name}>{action} <span aria-hidden="true">↗</span></a><div class="property-contact-options"><a href={`tel:${contact.phoneHref}`}>Call leasing ↗</a><a href={`sms:${contact.phoneHref}`}>Text leasing ↗</a></div><a class="property-contact-number" href={`tel:${contact.phoneHref}`}>{contact.phone}</a><p class="property-note">Talk directly with our leasing team. Tell us what you need; we’ll help you find the right fit.</p></aside>
     </div>
 
     <section class="property-final property-wrap"><div><p class="property-eyebrow">ROOM FOR WHAT’S NEXT</p><h2>{city.ctaHeading || `Let’s find your space in ${city.name}.`}</h2><p>{city.ctaSubheading || 'See the space, ask your questions, and plan your next move.'}</p></div><a href="/contact/" class="property-button" data-property-inquiry={city.name}>{action} <span aria-hidden="true">↗</span></a></section>
-    <section class="property-other property-wrap" aria-labelledby="other-title"><p class="property-eyebrow">EXPLORE OUR OTHER LOCATIONS</p><h2 id="other-title">More room in the Carolinas.</h2><div>{locations.filter(item => item.data.slug !== city.slug).map(({data}) => <a href={`/locations/${data.slug}/`}><span>{data.fullName}<small>{data.specs.suiteRange} · {data.availability === 'full' ? 'Waitlist open' : 'Explore availability'}</small></span><span aria-hidden="true">↗</span></a>)}</div></section>
+    <section class="property-other property-wrap" aria-labelledby="other-title"><p class="property-eyebrow">EXPLORE OUR OTHER LOCATIONS</p><h2 id="other-title">More room in the Carolinas.</h2><div>{locations.filter(item => item.data.slug !== city.slug).map(({data}) => <a href={`/locations/${data.slug}/`}><span>{data.fullName}<small>{data.specs.suiteRange} · {locationStatus(data.availability).label}</small></span><span aria-hidden="true">↗</span></a>)}</div></section>
 
     <div class="property-mobile-actions" aria-label="Contact leasing"><a href="/contact/" class="property-button" data-property-inquiry={city.name}>{action} <span aria-hidden="true">↗</span></a><a href={`tel:${contact.phoneHref}`}><svg aria-hidden="true"><use href="#phone"/></svg>Call</a><a href={`sms:${contact.phoneHref}`}><svg aria-hidden="true"><use href="#message"/></svg>Text</a></div>
   </div>
 
   <dialog class="property-lightbox" id="property-lightbox" aria-label="Property photos and floor plans"><div class="property-lightbox-header"><p id="property-media-caption" aria-live="polite"></p><button type="button" class="property-lightbox-close" aria-label="Close photo gallery" autofocus>×</button></div><div class="property-lightbox-stage"><img id="property-media-image" alt=""/><p id="property-media-error" role="status" hidden>Unable to load this image. Try the full-size link below.</p></div><div class="property-lightbox-controls"><button type="button" data-media-prev aria-label="Previous photo">←</button><span id="property-media-count"></span><button type="button" data-media-next aria-label="Next photo">→</button><button type="button" data-media-zoom aria-pressed="false">Zoom in</button><a id="property-media-original" target="_blank" rel="noopener">Full size ↗</a></div></dialog>
-  <TourInquiry markets={locations.map(({data}) => ({ name: data.name, fullName: data.fullName, available: propertyAvailability(data).acceptingTours }))} phone={contact.phone!} phoneHref={contact.phoneHref!} email={contact.email!}/>
+  <TourInquiry markets={locations.map(({data}) => ({ name: data.name, fullName: data.fullName, availability: data.availability, available: propertyAvailability(data).acceptingTours }))} phone={contact.phone!} phoneHref={contact.phoneHref!} email={contact.email!}/>
   <script type="application/json" id="property-media-data" set:html={scriptJson(mediaGroups)}/>
   <script src="../scripts/property.ts"></script>
   <svg class="property-icon-definitions" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs><symbol id="phone" viewBox="0 0 24 24"><path d="M6 3h3l2 5-2 2c1.5 3 2 3.5 5 5l2-2 5 2v3c0 2-2 3-4 2C9 18 6 15 3 7c-1-2 1-4 3-4Z"/></symbol><symbol id="message" viewBox="0 0 24 24"><path d="M4 4h16v12H9l-5 4V4Z"/><path d="M8 8h8M8 12h5"/></symbol></defs></svg>
