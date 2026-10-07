@@ -11,6 +11,5 @@
 @media(max-width:380px){.property-title-row h1{font-size:37px}.property-mosaic{height:290px}.property-photo-actions a{font-size:13px;padding:10px 8px}.property-suite{padding:17px}.suite-card-heading h3{font-size:29px}.property-mobile-actions{padding-left:10px;padding-right:10px;gap:5px}.property-mobile-actions>.property-button{padding:12px 10px;font-size:15px}.property-mobile-actions>.property-button span{display:none}.property-quick-facts dd{font-size:18px}.property-lightbox-controls{gap:7px}.property-lightbox-controls [data-media-zoom]{margin-left:0}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.property-photo img{transition:none}}
 
-.property-page header [data-property-inquiry]{min-height:48px;display:inline-flex;align-items:center;font-size:16px;padding:12px 18px;border-radius:4px}
 
 .property-hero-logo{display:block;width:220px;max-width:100%;height:auto;margin:0 0 28px}

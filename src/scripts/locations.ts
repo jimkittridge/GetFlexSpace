@@ -34,8 +34,6 @@ filterLocations();
 document.querySelectorAll<HTMLAnchorElement>('[data-property-inquiry]').forEach(link => link.addEventListener('click', event => {
   if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   event.preventDefault();
-  const menu = link.closest('header details');
-  if (menu) { menu.removeAttribute('open'); menu.querySelector<HTMLElement>('summary')?.focus(); }
   openTourInquiry(link.dataset.propertyInquiry, link.dataset.requestType === 'waitlist' ? 'waitlist' : undefined);
 }));
 const inquiry = document.querySelector<HTMLDialogElement>('#inquiry-dialog')!;
