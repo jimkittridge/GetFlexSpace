@@ -16,6 +16,7 @@ locations.sort((a, b) => {
 const markets = await Promise.all(locations.map(async ({data}, i) => ({
   type: data.propertyType, typeLabel: data.propertyType === 'retail' ? 'Retail space' : 'Warehouse & flex space',
   name: data.name, fullName: data.fullName, state: data.state,
+  cardTitle: data.homepageCardTitle || data.fullName,
   stateName: data.state === 'NC' ? 'North Carolina' : data.state === 'SC' ? 'South Carolina' : data.state,
   index: String(i + 1).padStart(2, '0'),
   image: await homepageImage(data.image), cardImage: await homepageImage(data.image, 720),
@@ -96,7 +97,7 @@ const structuredData = {
     <div class="property-grid">
       {markets.map(market => <article class="property" data-city={market.name}>
         <a class="property-image" data-property={market.name} href={market.url} aria-label={`View ${market.name} property`}><img src={market.cardImage} alt={`${market.typeLabel} in ${market.fullName}`} loading="lazy" width="720" height="540"/><span class:list={['status', {available: market.available}]}><i></i>{market.available ? 'Now leasing' : 'Join the waitlist'}</span><span class="image-arrow" aria-hidden="true">↗</span></a>
-        <div class="property-heading"><h3>{market.fullName}</h3><span>{market.index}</span></div>
+        <div class="property-heading"><h3>{market.cardTitle}</h3><span>{market.index}</span></div>
         <p class="property-description">{market.description}</p>
         <div class="property-facts"><span>{market.range}</span><span>{market.type === 'retail' ? 'Retail Space' : 'Drive-in access'}</span></div>
         <div class="property-bottom">

@@ -70,6 +70,7 @@ const locations = defineCollection({
       phone: z.string(),
     }),
     tagline: z.string().optional().default(''),
+    homepageCardTitle: z.string().nullish().transform(v => v?.trim() || ''),
     homepageDescription: z.string().nullish().transform(v => v || ''),
     heroH1: z.string().optional().default(''),
     heroSubtitle: z.string().optional().default(''),

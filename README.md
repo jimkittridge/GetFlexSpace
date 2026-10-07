@@ -47,7 +47,8 @@ oauth-proxy/          hand-rolled Cloudflare Worker for CMS auth (see below)
 Location pages are driven entirely by `src/content/locations/*.md`. The homepage
 pulls its property cards, photos, availability, suite ranges, and property details
 **dynamically** from the locations collection. Edit location markdown, not suite
-specs in the homepage. `homepageDescription` supplies card copy; `{{suiteRange}}`
+specs in the homepage. `homepageCardTitle` overrides the homepage card heading;
+blank or cleared values use `fullName`. `homepageDescription` supplies card copy; `{{suiteRange}}`
 in that field uses the current location size range. Homepage FAQ answers can use
 `{{suiteRanges}}` to list all location ranges. Visible FAQs and JSON-LD use the same data.
 

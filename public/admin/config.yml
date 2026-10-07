@@ -41,6 +41,7 @@ collections:
         required: false
         hint: "Property photos shown in the gallery section on the location page"
       - { label: Tagline, name: tagline, widget: string, required: false, default: "", hint: "Short tagline shown on city cards" }
+      - { label: Homepage Card Title, name: homepageCardTitle, widget: string, required: false, default: "", hint: "Custom heading for this location’s homepage card, such as Morganton, NC Retail. Leave blank to use Full Name." }
       - { label: Homepage Description, name: homepageDescription, widget: text, required: false, hint: "Use {{suiteRange}} to include the current suite range automatically." }
       - label: SEO
         name: seo
