@@ -181,8 +181,24 @@ menu.addEventListener('click', () => {
   menu.setAttribute('aria-expanded', String(open));
   menu.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
   navigation.classList.toggle('open', open);
+  if (open) navigation.querySelector<HTMLAnchorElement>('a')!.focus();
 });
-navigation.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+navigation.addEventListener('click', event => {
+  const link = (event.target as Element).closest('a');
+  if (!link) return;
+  closeMenu();
+  // Close before the tour handler runs so the dialog returns focus to the toggle.
+  if (link.hasAttribute('data-tour')) menu.focus();
+}, { capture: true });
+document.addEventListener('click', event => {
+  const target = event.target as Node;
+  if (!navigation.contains(target) && !menu.contains(target)) closeMenu();
+});
+document.addEventListener('focusin', event => {
+  const target = event.target as Node;
+  if (!navigation.contains(target) && !menu.contains(target)) closeMenu();
+});
+matchMedia('(max-width: 960px)').addEventListener('change', closeMenu);
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && navigation.classList.contains('open')) {
     closeMenu();

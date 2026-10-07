@@ -152,7 +152,7 @@ dialog{border:0;padding:0;border-radius:8px;max-width:590px;width:calc(100% - 32
   .photo-switch button { font-size: .9375rem; }
 }
 
-/* Make room for the Retail Space link on tablet-sized screens. */
+/* Use the mobile navigation on tablet-sized screens too. */
 @media (min-width:761px) and (max-width:960px) {
   .site-header nav { display:none; position:absolute; left:0; right:0; top:90px; background:var(--paper); padding:20px 24px; border-bottom:1px solid var(--line); gap:8px; flex-direction:column; }
   .site-header nav.open { display:flex; }
@@ -180,3 +180,16 @@ dialog{border:0;padding:0;border-radius:8px;max-width:590px;width:calc(100% - 32
 
 /* Dynamic labels must keep button typography while their SVG arrows stay intact. */
 #detail-action-label, #detail-link-label { font: inherit; }
+
+/* Match the site's page navigation and keep tours accessible above the fold. */
+.site-header nav .menu-tour { display: none; }
+.menu .menu-close-icon, .menu[aria-expanded="true"] .menu-open-icon { display: none; }
+.menu[aria-expanded="true"] .menu-close-icon { display: block; }
+@media (max-width: 960px) {
+  .menu { width: 44px; height: 44px; padding: 10px; }
+  .menu svg { width: 24px; height: 24px; }
+  .site-header nav { max-height: calc(100dvh - 90px); overflow-y: auto; align-items: stretch; font-size: 1.125rem; box-shadow: 0 14px 20px #17231d0d; }
+  .site-header nav > a { min-height: 48px; padding: 12px 4px; }
+  .site-header nav .menu-tour { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 54px; margin-top: 8px; padding: 14px 18px; border-radius: 4px; background: var(--ink); color: white; font-weight: 600; }
+  .site-header nav .menu-tour:hover { background: #3b4a42; }
+}
