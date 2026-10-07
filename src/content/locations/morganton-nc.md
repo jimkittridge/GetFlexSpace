@@ -7,27 +7,27 @@ slug: morganton-nc
 propertyType: retail
 availability: available
 availableUnits: 1,200 sq ft and 2,400 sq ft available
-image: /images/morganton/storefront-front.webp
+image: /images/morganton/updated/storefront-front.webp
 gallery:
-  - /images/morganton/storefront-front.webp
-  - /images/morganton/covered-entrances.webp
-  - /images/morganton/covered-patio.webp
-  - /images/morganton/open-interior.webp
-  - /images/morganton/interior-wide.webp
-  - /images/morganton/interior-rear.webp
-  - /images/morganton/interior-seating.webp
-  - /images/morganton/paved-frontage.webp
-  - /images/morganton/walkway-access.webp
+  - /images/morganton/updated/storefront-front.webp
+  - /images/morganton/updated/storefront-angle.webp
+  - /images/morganton/updated/covered-entrance.webp
+  - /images/morganton/updated/covered-patio.webp
+  - /images/morganton/updated/open-interior.webp
+  - /images/morganton/updated/interior-entrance.webp
+  - /images/morganton/updated/interior-rear.webp
+  - /images/morganton/updated/office-interior.webp
+  - /images/morganton/updated/seating-interior.webp
 galleryAltTexts:
-  - Brick retail storefronts and covered entrances at 408 W Fleming Dr
-  - Glass storefront entrance beneath the covered walkway
-  - Covered patio and storefront windows at the property
-  - Open interior with wood-look flooring, windows, and a ceiling fan
-  - Wide view of the existing interior and entrance
-  - Interior view toward the adjoining rooms
-  - Existing tiled interior with seating and a glass entrance
-  - Paved area immediately outside the retail storefronts
-  - Covered pedestrian walkway beside the paved customer approach
+  - Brick storefronts and covered entrances at 408 W Fleming Dr
+  - View along the retail storefronts and paved frontage
+  - Glass storefront entrance and covered walkway with picnic tables
+  - Covered patio and windows outside the storefront
+  - Open interior with wood-look flooring and storefront windows
+  - Interior view toward the glass entrance and adjoining rooms
+  - Interior view toward the mirrored wall and adjoining rooms
+  - Existing office interior with desk and adjoining rooms
+  - Existing tiled interior arranged with rows of seating
 tagline: Retail space at 408 W Fleming Dr, with individual storefront entrances and a covered walkway.
 homepageDescription: Retail space at 408 W Fleming Dr, Morganton, NC. Both 1,200 sq ft and 2,400 sq ft units are available, with individual storefront entrances and a covered walkway.
 seo:
@@ -104,6 +104,7 @@ schema:
     state: NC
     zip: "28655"
   phone: "+19806002520"
+
 ---
 
 408 W Fleming Dr offers retail space in Morganton with brick storefronts, individual customer entrances, and a covered walkway beside the paved frontage. Both 1,200 sq ft and 2,400 sq ft units are available.
