@@ -1,4 +1,5 @@
 ---
+import ArrowIcon from '../components/ArrowIcon.astro';
 import { getCollection, getEntry } from 'astro:content';
 import { homepageImage, portfolioRange, scriptJson } from '../lib/homepage';
 import '../styles/homepage.css';
@@ -13,6 +14,7 @@ const markets = await Promise.all(locations.map(async ({data}, i) => ({
   type: data.propertyType, typeLabel: data.propertyType === 'retail' ? 'Retail space' : 'Warehouse & flex space',
   name: data.name, fullName: data.fullName, state: data.state,
   cardTitle: data.homepageCardTitle || data.fullName,
+  viewLabel: `View ${data.name} ${data.propertyType === 'retail' ? 'Retail' : 'Flex Space'}`,
   stateName: data.state === 'NC' ? 'North Carolina' : data.state === 'SC' ? 'South Carolina' : data.state,
   index: String(i + 1).padStart(2, '0'),
   image: await homepageImage(data.image), cardImage: await homepageImage(data.image, 720),
@@ -66,7 +68,7 @@ const structuredData = {
 <header class="site-header">
   <a class="brand" href="/" aria-label="GetFlexSpace home"><img src={logo} alt="GetFlexSpace" width="1243" height="228"></a>
   <nav id="navigation" aria-label="Main navigation"><a href="#locations">Our locations</a><a href="#your-business">Built for business</a><a href="#questions">FAQs</a></nav>
-  <div class="header-actions"><a href={telHref} class="call-link"><svg aria-hidden="true"><use href="#phone"/></svg>Call leasing</a><a class="button dark" href="/contact/" data-tour>Request a tour <span aria-hidden="true">↗</span></a><button class="menu" aria-label="Open menu" aria-expanded="false" aria-controls="navigation"><svg aria-hidden="true"><use href="#menu"/></svg></button></div>
+  <div class="header-actions"><a href={telHref} class="call-link"><svg aria-hidden="true"><use href="#phone"/></svg>Call leasing</a><a class="button dark" href="/contact/" data-tour>Request a tour <span aria-hidden="true"><ArrowIcon/></span></a><button class="menu" aria-label="Open menu" aria-expanded="false" aria-controls="navigation"><svg aria-hidden="true"><use href="#menu"/></svg></button></div>
 </header>
 <main id="main">
   <section class="hero" aria-labelledby="hero-title">
@@ -75,13 +77,13 @@ const structuredData = {
       <p class="hero-display">Space for<br> your next<br> <em>move.</em></p>
       <h1 id="hero-title" class="hero-search-title">{cms.hero?.headline}</h1>
       <p class="hero-description">{cms.hero?.subheadline}</p>
-      <div class="hero-actions"><a class="button orange" href="#locations">Find your space <span aria-hidden="true">↗</span></a><a class="text-link" href={smsHref}>Text us a question <svg aria-hidden="true"><use href="#message"/></svg></a></div>
+      <div class="hero-actions"><a class="button orange" href="#locations">Find your space <span aria-hidden="true"><ArrowIcon/></span></a><a class="text-link" href={smsHref}>Text us a question <svg aria-hidden="true"><use href="#message"/></svg></a></div>
       <p class="hero-note">{markets.length} Carolina markets. One next step.</p>
     </div>
     <div class="hero-photo" role="group" aria-roledescription="carousel" aria-label="Our locations">
       <img src={featured.image} alt={`${featured.typeLabel} in ${featured.fullName}`} width="1200" height="900" fetchpriority="high">
       <div class="photo-top"><span><i></i>EXPLORE OUR SPACES</span><span id="photo-count">01 / {String(markets.length).padStart(2, '0')}</span></div>
-      <div class="photo-caption"><div><p>{featured.name.toUpperCase()}, {featured.stateName.toUpperCase()}</p><strong>Your business belongs here.</strong></div><a href={featured.url} class="round-button" data-property={featured.name} aria-label={`Explore ${featured.name}`}><span aria-hidden="true">↗</span></a></div>
+      <div class="photo-caption"><div><p>{featured.name.toUpperCase()}, {featured.stateName.toUpperCase()}</p><strong>Your business belongs here.</strong></div><a href={featured.url} class="round-button" data-property={featured.name} aria-label={`Explore ${featured.name}`}><span aria-hidden="true"><ArrowIcon/></span></a></div>
       <div class="photo-controls">
       <button class="photo-rotation" type="button" aria-label="Pause location slideshow" title="Pause location slideshow" hidden><svg class="rotation-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg><svg class="rotation-play" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7Z"/></svg></button>
       <div class="photo-switch" role="group" aria-label="Choose property photo">{markets.map((market, i) => <button class:list={{active: i === 0}} data-hero={market.name} aria-pressed={i === 0}>{market.name}</button>)}</div>
@@ -95,26 +97,26 @@ const structuredData = {
     <div class="location-tabs" role="group" aria-label="Filter locations"><button class="selected" data-filter="all" aria-pressed="true">All locations <span>{markets.length}</span></button>{markets.map(market => <button data-filter={market.name} aria-pressed="false">{market.fullName}</button>)}</div>
     <div class="property-grid">
       {markets.map(market => <article class="property" data-city={market.name}>
-        <a class="property-image" data-property={market.name} href={market.url} aria-label={`View ${market.name} property`}><img src={market.cardImage} alt={`${market.typeLabel} in ${market.fullName}`} loading="lazy" width="720" height="540"/><span class:list={['status', {available: market.available, 'coming-soon': market.availability === 'coming-soon'}]}><i></i>{market.statusLabel}</span><span class="image-arrow" aria-hidden="true">↗</span></a>
+        <a class="property-image" data-property={market.name} href={market.url} aria-label={market.viewLabel}><img src={market.cardImage} alt={`${market.typeLabel} in ${market.fullName}`} loading="lazy" width="720" height="540"/><span class:list={['status', {available: market.available, 'coming-soon': market.availability === 'coming-soon'}]}><i></i>{market.statusLabel}</span><span class="image-arrow" aria-hidden="true"><ArrowIcon/></span></a>
         <div class="property-heading"><h3>{market.cardTitle}</h3><span>{market.index}</span></div>
         <p class="property-description">{market.description}</p>
         <div class="property-facts"><span>{market.range}</span><span>{market.type === 'retail' ? 'Retail Space' : 'Drive-in access'}</span></div>
         <div class="property-bottom">
           <a href="/contact/" class="property-cta property-cta-primary" data-tour={market.available ? 'tour' : 'waitlist'} data-location={market.name} aria-label={market.available ? `Request a tour in ${market.name}` : `Join the waitlist in ${market.name}`}>
-            {market.available ? 'Request a tour' : 'Join the waitlist'} <span aria-hidden="true">↗</span>
+            {market.available ? 'Request a tour' : 'Join the waitlist'} <span aria-hidden="true"><ArrowIcon/></span>
           </a>
-          <a class="property-cta property-cta-secondary" href={market.url} aria-label={`View ${market.name} property — ${market.typeLabel}`}>
-            View {market.name} property <span aria-hidden="true">↗</span>
+          <a class="property-cta property-cta-secondary" href={market.url} aria-label={market.viewLabel}>
+            {market.viewLabel} <span aria-hidden="true"><ArrowIcon/></span>
           </a>
         </div>
       </article>)}
     </div>
-    <div class="location-help"><span>Not sure where to start? Tell us what your business needs.</span><a class="text-link" href={smsHref}>Let’s talk <span aria-hidden="true">↗</span></a></div>
+    <div class="location-help"><span>Not sure where to start? Tell us what your business needs.</span><a class="text-link" href={smsHref}>Let’s talk <span aria-hidden="true"><ArrowIcon/></span></a></div>
   </section>
 
 
   <section class="space-guide section" id="space-features" aria-labelledby="space-guide-title">
-    <div class="space-guide-copy"><p class="eyebrow">MORE THAN A PLACE TO STORE</p><h2 id="space-guide-title">Warehouse space.<br>Room for your<br>whole operation.</h2><p>GetFlexSpace offers warehouse and flex industrial space for businesses that need a place to work, store inventory, stage equipment, or bring office and warehouse functions together.</p><p>Across our Carolina locations, suite sizes span {suiteRange}. Explore drive-in access, warehouse-plus-office layouts, and the features that support your day-to-day work. Availability and configurations vary by property.</p><a class="text-link" href="#questions">Explore common leasing questions <span aria-hidden="true">↘</span></a></div>
+    <div class="space-guide-copy"><p class="eyebrow">MORE THAN A PLACE TO STORE</p><h2 id="space-guide-title">Warehouse space.<br>Room for your<br>whole operation.</h2><p>GetFlexSpace offers warehouse and flex industrial space for businesses that need a place to work, store inventory, stage equipment, or bring office and warehouse functions together.</p><p>Across our Carolina locations, suite sizes span {suiteRange}. Explore drive-in access, warehouse-plus-office layouts, and the features that support your day-to-day work. Availability and configurations vary by property.</p><a class="text-link" href="#questions">Explore common leasing questions <span aria-hidden="true"><ArrowIcon direction="down-right"/></span></a></div>
     <div class="space-specs">
       <div><span class="spec-label">SPACE TO WORK</span><h3>{suiteRange}</h3><p>Compare the suite sizes at each location, from a dedicated contractor workspace to room for inventory and operations.</p></div>
       <div><span class="spec-label">LOADING & STORAGE</span><h3>Drive-in doors</h3><p>Move tools, materials, and inventory into your space. Confirm door dimensions and vehicle access for your chosen suite.</p></div>
@@ -124,7 +126,7 @@ const structuredData = {
   </section>
 
   <section class="business section" id="your-business" aria-labelledby="business-title">
-    <div class="business-intro"><p class="eyebrow">BUILT AROUND YOUR WORK</p><h2 id="business-title"><span class="business-headline preserve-lines">{cms.useCases?.heading}</span><br><span>We’ve got<br>the space.</span></h2><p>{cms.useCases?.subheading}</p><a class="text-link" href="#locations">Find your fit <span aria-hidden="true">↗</span></a></div>
+    <div class="business-intro"><p class="eyebrow">BUILT AROUND YOUR WORK</p><h2 id="business-title"><span class="business-headline preserve-lines">{cms.useCases?.heading}</span><br><span>We’ve got<br>the space.</span></h2><p>{cms.useCases?.subheading}</p><a class="text-link" href="#locations">Find your fit <span aria-hidden="true"><ArrowIcon/></span></a></div>
     <div class="business-list">
       {cms.useCases?.items.map((item, i) => <div class="business-row"><span class="business-number">{String(i + 1).padStart(2, '0')}</span><div><h3>{item.title}</h3><p>{item.description}</p></div><svg aria-hidden="true"><use href={`#${item.icon}`}/></svg></div>)}
       <p class="use-note">Every business is different. We’ll help confirm that your intended use fits the property.</p>
@@ -133,16 +135,16 @@ const structuredData = {
 
   <section class="steps section" aria-labelledby="steps-title"><div class="section-heading"><div><p class="eyebrow">A CLEAR PATH FORWARD</p><h2 id="steps-title">{cms.process?.heading}</h2></div><p>{cms.process?.subheading}</p></div><div class="steps-grid">{cms.process?.steps.map((step, i) => <div><span>{String(i + 1).padStart(2, '0')} / {['FIND', 'EXPLORE', 'MOVE'][i] || 'NEXT'}</span><h3>{step.title}</h3><p>{step.description}</p></div>)}</div></section>
 
-  <section class="faq section" id="questions" aria-labelledby="faq-title"><div class="faq-intro"><p class="eyebrow">A FEW THINGS TO KNOW</p><h2 id="faq-title">Warehouse leasing.<br>Your questions,<br>answered.</h2><p>Have something specific in mind?<br>We’re happy to talk it through.</p><a class="text-link" href={smsHref}>Ask us a question <span aria-hidden="true">↗</span></a></div><div class="faq-list">
+  <section class="faq section" id="questions" aria-labelledby="faq-title"><div class="faq-intro"><p class="eyebrow">A FEW THINGS TO KNOW</p><h2 id="faq-title">Warehouse leasing.<br>Your questions,<br>answered.</h2><p>Have something specific in mind?<br>We’re happy to talk it through.</p><a class="text-link" href={smsHref}>Ask us a question <span aria-hidden="true"><ArrowIcon/></span></a></div><div class="faq-list">
     {faq.map((item, i) => <details open={i === 0}><summary>{item.question}<span aria-hidden="true">+</span></summary><p>{item.answer}</p></details>)}
   </div></section>
 
-  <section class="contact-banner"><div><p class="eyebrow">YOUR NEXT CHAPTER STARTS HERE</p><h2>{cms.finalCta?.heading}</h2><p>{cms.finalCta?.subheading}</p></div><div class="contact-actions"><a class="button orange" href="/contact/" data-tour>Request a tour <span aria-hidden="true">↗</span></a><div><a href={telHref}>Call leasing</a><span>/</span><a href={smsHref}>Text a question</a></div><p>Direct to our leasing team.</p></div></section>
+  <section class="contact-banner"><div><p class="eyebrow">YOUR NEXT CHAPTER STARTS HERE</p><h2>{cms.finalCta?.heading}</h2><p>{cms.finalCta?.subheading}</p></div><div class="contact-actions"><a class="button orange" href="/contact/" data-tour>Request a tour <span aria-hidden="true"><ArrowIcon/></span></a><div><a href={telHref}>Call leasing</a><span>/</span><a href={smsHref}>Text a question</a></div><p>Direct to our leasing team.</p></div></section>
 </main>
 <footer><div class="footer-main"><a class="brand footer-brand" href="/" aria-label="GetFlexSpace home"><img src={logo} alt="GetFlexSpace" width="1243" height="228" loading="lazy"></a><p>Warehouse, flex & retail space.<br>Room for what’s next.</p><div>{markets.map(market => <a href={market.url}>{market.name} {market.typeLabel.toLowerCase()}</a>)}</div><div><a href={telHref}>{contact.phone}</a><a href={emailHref}>{contact.email}</a><span>North Carolina & South Carolina</span></div></div><div class="footer-bottom"><span>© {new Date().getFullYear()} GetFlexSpace</span><span><a href="/about/">About us</a> · <a href="/blog/">Leasing resources</a> · <a href="/contact/">Contact</a></span></div></footer>
-<div class="mobile-contact" aria-label="Contact leasing"><a class="button orange" href="/contact/" data-tour>Request a tour <span aria-hidden="true">↗</span></a><a href={telHref}><svg aria-hidden="true"><use href="#phone"/></svg>Call</a><a href={smsHref}><svg aria-hidden="true"><use href="#message"/></svg>Text</a></div>
+<div class="mobile-contact" aria-label="Contact leasing"><a class="button orange" href="/contact/" data-tour>Request a tour <span aria-hidden="true"><ArrowIcon/></span></a><a href={telHref}><svg aria-hidden="true"><use href="#phone"/></svg>Call</a><a href={smsHref}><svg aria-hidden="true"><use href="#message"/></svg>Text</a></div>
 
-<dialog id="property-dialog" class="property-dialog" aria-labelledby="detail-title"><button class="close-dialog" aria-label="Close property details">×</button><img id="detail-image" src={featured.image} alt=""><div class="dialog-content"><p class="eyebrow" id="detail-status"></p><h2 id="detail-title"></h2><p id="detail-description"></p><dl id="detail-facts"></dl><p class="fine-print">Suite sizes and features vary. Ask leasing to confirm current availability, pricing, and the specifications of your preferred space.</p><div class="dialog-actions"><button class="button orange" id="detail-action">Request a tour <span aria-hidden="true">↗</span></button><a class="text-link" id="detail-link" href={featured.url}>See property details ↗</a></div></div></dialog>
+<dialog id="property-dialog" class="property-dialog" aria-labelledby="detail-title"><button class="close-dialog" aria-label="Close property details">×</button><img id="detail-image" src={featured.image} alt=""><div class="dialog-content"><p class="eyebrow" id="detail-status"></p><h2 id="detail-title"></h2><p id="detail-description"></p><dl id="detail-facts"></dl><p class="fine-print">Suite sizes and features vary. Ask leasing to confirm current availability, pricing, and the specifications of your preferred space.</p><div class="dialog-actions"><button class="button orange" id="detail-action"><span id="detail-action-label">Request a tour</span> <span aria-hidden="true"><ArrowIcon/></span></button><a class="text-link" id="detail-link" href={featured.url}><span id="detail-link-label">{featured.viewLabel}</span> <ArrowIcon/></a></div></div></dialog>
 <TourInquiry markets={markets} phone={contact.phone!} phoneHref={contact.phoneHref!} email={contact.email!} />
 <script type="application/json" id="homepage-data" set:html={scriptJson({markets, email: contact.email})}/>
 <script src="../scripts/homepage.ts"></script>
