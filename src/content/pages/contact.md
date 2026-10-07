@@ -9,5 +9,5 @@ email: leasing@getflexspace.com
 phone: 980-600-2520
 phoneHref: '+19806002520'
 officeHours: 'Mon–Fri: 8am–6pm EST'
-tenantAccess: 'Tenant access: 24/7/365'
+tenantAccess: 'Tenant access varies by property'
 ---

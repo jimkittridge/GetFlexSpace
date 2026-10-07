@@ -1,8 +1,10 @@
 ---
+published: true
+navigationOrder: 30
 homepageDescription: "Flex space and warehouse suites in Fletcher, near Asheville, NC. Explore {{suiteRange}} layouts with drive-in access, close to I-26 and Asheville Regional Airport, serving Western North Carolina."
-name: Asheville
+name: Fletcher / Asheville
 state: NC
-fullName: Asheville, NC
+fullName: Fletcher / Asheville, NC
 slug: asheville-nc
 availability: full
 availableUnits: ''

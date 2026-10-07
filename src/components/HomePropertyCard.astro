@@ -1,0 +1,20 @@
+---
+import ArrowIcon from './ArrowIcon.astro';
+import { acquisitionNotice } from '../lib/portfolio.js';
+interface Props { market: any; }
+const { market } = Astro.props;
+---
+<article class="property" data-city={market.name}>
+        <a class="property-image" href={market.url} aria-label={market.viewLabel}>{market.cardImage ? <img src={market.cardImage} alt={`${market.typeLabel} in ${market.fullName}`} loading="lazy" width="720" height="540"/> : <div class="property-image-placeholder"><span>{market.typeLabel}</span><strong>{market.range}</strong><span>{market.features.join(" · ")}</span></div>}<span class:list={['status', {available: market.available, 'coming-soon': market.availability === 'coming-soon'}]}><i></i>{market.statusLabel}</span>{market.imageIsRendering && <span class="rendering-label">Proposed renovation · Illustrative rendering</span>}<span class="image-arrow" aria-hidden="true"><ArrowIcon/></span></a>
+        <p class="property-type-label">{market.typeLabel}</p><div class="property-heading"><h3>{market.cardTitle}</h3><span>{market.index}</span></div>
+        <p class="property-description">{market.description}{market.marketingStage === 'subject-to-acquisition' && <span class="card-marketing-note">{acquisitionNotice}</span>}</p>
+        <div class="property-facts"><span>{market.range}</span>{market.features.map(feature => <span>{feature}</span>)}</div>
+        <div class="property-bottom">
+          <a href="/contact/" class="property-cta property-cta-primary" data-tour={market.available ? 'tour' : 'waitlist'} data-location={market.name} aria-label={market.available ? `Request a tour in ${market.name}` : `Join the waitlist in ${market.name}`}>
+            {market.available ? 'Request a tour' : 'Join the waitlist'} <span aria-hidden="true"><ArrowIcon/></span>
+          </a>
+          <a class="property-cta property-cta-secondary" href={market.url} aria-label={market.viewLabel}>
+            {market.viewLabel} <span aria-hidden="true"><ArrowIcon/></span>
+          </a>
+        </div>
+      </article>

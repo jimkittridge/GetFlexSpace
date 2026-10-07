@@ -2,19 +2,20 @@
 import NewLayout from '../../layouts/NewLayout.astro';
 import ArrowIcon from '../../components/ArrowIcon.astro';
 import TourInquiry from '../../components/TourInquiry.astro';
+import { isPublished, isRenderingImage, acquisitionNotice, propertyTypeLabel, propertyViewLabel, propertyHighlights } from '../../lib/portfolio.js';
 import { getCollection, getEntry } from 'astro:content';
-import { compareLocationAvailability, locationStatus, propertyAvailability } from '../../lib/property.js';
+import { compareLocationAvailability, locationStatus, propertyAvailability, publicAvailability } from '../../lib/property.js';
 import { homepageImage, portfolioRange, scriptJson } from '../../lib/homepage';
 import '../../styles/locations.css';
 
-const allLocations = (await getCollection('locations')).sort((a, b) => compareLocationAvailability(a.data, b.data));
+const allLocations = (await getCollection('locations', isPublished)).sort((a, b) => compareLocationAvailability(a.data, b.data));
 const contact = (await getEntry('pages', 'contact'))!.data;
 const markets = await Promise.all(allLocations.map(async ({ data }) => ({
-  ...data,
+  ...data, imageIsRendering: isRenderingImage(data), availability: publicAvailability(data),
   image: await homepageImage(data.image, 960),
   available: propertyAvailability(data).acceptingTours,
-  typeLabel: data.propertyType === 'retail' ? 'Retail space' : 'Warehouse & flex space',
-  viewLabel: `View ${data.name} ${data.propertyType === 'retail' ? 'Retail' : 'Flex Space'}`,
+  typeLabel: propertyTypeLabel(data.propertyType), features: propertyHighlights(data),
+  viewLabel: propertyViewLabel(data),
   description: (data.homepageDescription || data.tagline).replaceAll('{{suiteRange}}', data.specs.suiteRange),
   url: `/locations/${data.slug}/`,
 })));
@@ -26,7 +27,7 @@ const filters = [
   })).filter(filter => filter.count > 0),
 ];
 const title = 'Warehouse, Flex & Retail Space Locations in NC & SC | GetFlexSpace';
-const description = 'Find warehouse, flex, and retail space for lease in Durham, Asheville, Morganton, and Columbia. Compare locations, suite sizes, and availability. Request a tour or join a waitlist.';
+const description = `Explore small-bay space, larger warehouses, and retail space in ${markets.map(market => market.fullName).join('; ')}. Compare sizes and availability.`;
 const canonical = 'https://getflexspace.com/locations/';
 const schema = {
   '@context': 'https://schema.org', '@graph': [
@@ -52,7 +53,7 @@ const schema = {
       </div>
       <aside class="directory-overview" aria-label="Our locations at a glance">
         <p class="directory-eyebrow">ROOM FOR WHAT’S NEXT</p>
-        <dl><div><dt>Carolina locations</dt><dd>{markets.length}</dd></div><div><dt>Suite sizes across our locations</dt><dd>{range}</dd></div></dl>
+        <dl><div><dt>Carolina locations</dt><dd>{markets.length}</dd></div><div><dt>Building & suite sizes</dt><dd>{range}</dd></div></dl>
         <a href={`sms:${contact.phoneHref}`} class="directory-text-link">Need a hand? Text leasing <ArrowIcon/></a>
       </aside>
     </section>
@@ -61,21 +62,21 @@ const schema = {
       <div class="directory-list-heading"><h2 id="property-list-title">Explore our locations.</h2><p>Now leasing first. Your next move, made easier.</p></div>
       <div class="directory-filters" hidden>
         <div class="directory-status-filters" role="group" aria-label="Filter by availability">{filters.map((filter, index) => <button type="button" data-location-status={filter.value} aria-pressed={index === 0} aria-label={`${filter.label}, ${filter.count} locations`} aria-controls="location-results">{filter.label}<span>{filter.count}</span></button>)}</div>
-        <label class="directory-type-filter" for="location-type">Space type<select id="location-type" aria-controls="location-results"><option value="all">All space types</option><option value="flex">Warehouse & flex</option><option value="retail">Retail space</option></select></label>
+        <label class="directory-type-filter" for="location-type">Space type<select id="location-type" aria-controls="location-results"><option value="all">All space types</option><option value="flex">Small Bay Spaces</option><option value="warehouse">Larger Warehouses</option><option value="retail">Retail Space</option></select></label>
       </div>
       <p class="directory-result-count" id="location-result-count" role="status" aria-live="polite" aria-atomic="true">Showing all {markets.length} locations</p>
       <div class="directory-grid" id="location-results">
         {markets.map((market, index) => <article class="location-card" data-location-card data-availability={market.availability} data-space-type={market.propertyType} aria-labelledby={`location-${market.slug}`}>
           <a class="location-card-image" href={market.url} aria-label={market.viewLabel}>
-            <img src={market.image} alt={`${market.typeLabel} at ${market.schema.address.street}, ${market.schema.address.city}, ${market.state}`} width="960" height="640" loading={index === 0 ? 'eager' : 'lazy'} decoding="async"/>
+            {market.image ? <img src={market.image} alt={`${market.typeLabel} at ${market.schema.address.street}, ${market.schema.address.city}, ${market.state}`} width="960" height="640" loading={index === 0 ? 'eager' : 'lazy'} decoding="async"/> : <div class="location-image-placeholder"><span>{market.typeLabel}</span><strong>{market.specs.suiteRange}</strong><span>{market.features.join(' · ')}</span></div>}
             <span class:list={['location-status', market.availability]}><i aria-hidden="true"></i>{locationStatus(market.availability).label}</span>
-            <span class="location-photo-arrow"><ArrowIcon/></span>
+            {market.imageIsRendering && <span class="rendering-label">Proposed renovation · Illustrative rendering</span>}<span class="location-photo-arrow"><ArrowIcon/></span>
           </a>
           <div class="location-card-body">
             <div class="location-card-heading"><div><p class="directory-eyebrow">{market.typeLabel}</p><h3 id={`location-${market.slug}`}><a href={market.url}>{market.fullName}</a></h3></div><span class="location-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span></div>
             <address>{market.schema.address.street}<br/>{market.schema.address.city}, {market.schema.address.state} {market.schema.address.zip}</address>
-            <p class="location-description">{market.description}</p>
-            <dl class="location-card-facts"><div><dt>Suite sizes</dt><dd>{market.specs.suiteRange}</dd></div><div><dt>{market.propertyType === 'retail' ? 'Customer access' : 'Loading access'}</dt><dd>{market.specs.doorSize}</dd></div></dl>
+            <p class="location-description">{market.description}{market.marketingStage === 'subject-to-acquisition' && <span class="card-marketing-note">{acquisitionNotice}</span>}</p>
+            <dl class="location-card-facts"><div><dt>Suite sizes</dt><dd>{market.specs.suiteRange}</dd></div><div><dt>{market.yard ? 'Storage yard' : market.propertyType === 'retail' ? 'Customer access' : 'Loading access'}</dt><dd>{market.yard || market.specs.doorSize}</dd></div></dl>
             <div class="location-card-actions">
               <a class="directory-button" href="/contact/" data-property-inquiry={market.name} data-request-type={market.available ? 'tour' : 'waitlist'} aria-label={`${market.available ? 'Request a tour' : 'Join the waitlist'} in ${market.name}`}>{market.available ? 'Request a tour' : 'Join the waitlist'}<ArrowIcon/></a>
               <a class="directory-button secondary" href={market.url}>{market.viewLabel}<ArrowIcon/></a>
@@ -89,7 +90,7 @@ const schema = {
 
     <section class="directory-guide" aria-labelledby="directory-guide-title">
       <div><p class="directory-eyebrow">FIND THE RIGHT FIT</p><h2 id="directory-guide-title">The space is just<br/>the starting point.</h2><p>Choose the location that works for your customers, your team, and the way you do business.</p></div>
-      <div class="directory-guide-options"><div><h3>Warehouse & flex space</h3><p>Explore Durham, the Asheville area, and Columbia for equipment, inventory, trade businesses, and warehouse-plus-office needs. Check each property for loading access and suite details.</p></div><div><h3>Retail space</h3><p>Explore Morganton for storefront space on W Fleming Drive. Review available sizes and speak with leasing about your business, layout, and signage needs.</p></div></div>
+      <div class="directory-guide-options"><div><h3>Small Bay Spaces</h3><p>Explore {markets.filter(m => m.propertyType === 'flex').map(m => m.name).join(', ')} for equipment, inventory, trade businesses, and warehouse-plus-office needs. Check each property for loading access and suite details.</p></div><div><h3>Larger Warehouses & Yards</h3><p>Explore more building space and outdoor storage at our larger properties. Confirm yard access, permitted uses, and availability with leasing.</p></div><div><h3>Retail space</h3><p>Explore Morganton for storefront space on W Fleming Drive. Review available sizes and speak with leasing about your business, layout, and signage needs.</p></div></div>
     </section>
 
     <section class="directory-help" aria-labelledby="directory-help-title"><div><p class="directory-eyebrow">LET’S TALK SPACE</p><h2 id="directory-help-title">Tell us what you need.</h2><p>Share your preferred location, size, and move-in timing. We’ll help you explore the options.</p></div><div class="directory-help-actions"><a class="directory-button" href="/contact/" data-property-inquiry="">Request a tour <ArrowIcon/></a><div><a href={`tel:${contact.phoneHref}`}>Call {contact.phone}</a><a href={`sms:${contact.phoneHref}`}>Text leasing <ArrowIcon size={18}/></a></div></div></section>

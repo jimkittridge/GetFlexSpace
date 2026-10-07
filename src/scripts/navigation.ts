@@ -22,3 +22,15 @@ if (menu) {
   matchMedia('(max-width: 960px)').addEventListener('change', closeMenu);
   window.addEventListener('pageshow', closeMenu);
 }
+
+const locationsMenu = document.querySelector<HTMLDetailsElement>('.gfs-location-menu');
+if (locationsMenu) {
+  const toggle = locationsMenu.querySelector<HTMLElement>('summary')!;
+  const close = () => { locationsMenu.open = false; };
+  locationsMenu.addEventListener('toggle', () => toggle.setAttribute('aria-label', locationsMenu.open ? 'Hide property locations' : 'Show property locations'));
+  document.addEventListener('click', event => { if (!locationsMenu.contains(event.target as Node)) close(); });
+  document.addEventListener('focusin', event => { if (!locationsMenu.contains(event.target as Node)) close(); });
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && locationsMenu.open) { close(); toggle.focus(); } });
+  matchMedia('(max-width: 960px)').addEventListener('change', close);
+  window.addEventListener('pageshow', close);
+}

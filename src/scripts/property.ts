@@ -82,3 +82,27 @@ const header = document.querySelector('body > header');
 if (header) new ResizeObserver(() => {
   document.body.style.setProperty('--property-header-height', `${header.getBoundingClientRect().height}px`);
 }).observe(header);
+
+const shareButton = document.querySelector<HTMLButtonElement>('[data-share-property]');
+const shareStatus = document.querySelector<HTMLElement>('[data-share-status]')!;
+async function copyPropertyLink() {
+  const url = shareButton!.dataset.shareUrl!;
+  try {
+    await navigator.clipboard.writeText(url);
+    shareStatus.textContent = 'Property link copied.';
+  } catch {
+    shareStatus.replaceChildren();
+    const link = document.createElement('a'); link.href = url; link.textContent = url;
+    shareStatus.append('Copy this link: ', link);
+  }
+}
+document.querySelector('[data-copy-property-link]')?.addEventListener('click', copyPropertyLink);
+shareButton?.addEventListener('click', async () => {
+  try {
+    if (navigator.share) await navigator.share({ title: shareButton.dataset.shareTitle, url: shareButton.dataset.shareUrl! });
+    else await copyPropertyLink();
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') return;
+    await copyPropertyLink();
+  }
+});

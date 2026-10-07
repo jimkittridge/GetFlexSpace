@@ -9,7 +9,7 @@ hero:
 
 items:
   - question: What size suites do you offer?
-    answer: "Our suites range from 1,000 to 3,000 square feet, depending on the location. We specialize in small bay industrial flex space — the right size for contractors, e-commerce businesses, and light manufacturers who need more room than an office but less than a full warehouse."
+    answer: "Our small-bay warehouse and flex spaces range from 950 to 4,000 SF, depending on the location. We also offer larger warehouses and retail space. High Point / Archdale has an 11,700 SF warehouse coming soon, with a 1.3-acre storage yard. See each property page for its sizes and current status."
   - question: What are the lease terms?
     answer: "We typically offer 1-year, 2-year, and 3-year lease terms. Longer terms may qualify for reduced rates. We also occasionally offer month-to-month options for tenants with specific needs. Contact us to discuss what works best for your business."
   - question: Can I customize or build out my suite?
@@ -19,13 +19,13 @@ items:
   - question: Do suites come with restrooms and office space?
     answer: "All suites have access to restroom facilities. Some suites include a built-in office area, and others can be customized to add office or mezzanine space. Ask us about your specific needs during a tour."
   - question: Is 24/7 access included?
-    answer: "Yes. Every tenant receives secure key card access that works around the clock, 365 days a year. Your space, your schedule — no restrictions on when you can work."
+    answer: "Tenant access varies by property and suite. See the property page and confirm the hours, entry method, and any yard-access rules with leasing."
   - question: What utilities are included in the lease?
     answer: "Water, sewer, and trash are typically included. Electricity is metered individually per suite. HVAC is included in all suites. Specific inclusions may vary by location — we will provide a detailed breakdown with your lease proposal."
   - question: How do I apply for a space?
-    answer: "Start by filling out our Check Availability form on any location page. We will review your application, schedule a tour, and if it is a good fit, you can have your keys in as little as two weeks. You can also call us directly or visit our Contact page."
+    answer: "Request a tour on an available property’s page, or join the interest list for a coming-soon or full location. Leasing will follow up about your needs, availability, and next steps. Tour requests do not reserve a space or confirm a move-in date."
   - question: What if all suites are currently leased?
     answer: "Our spaces fill up fast. If a location is fully leased, submit your information through our availability form and we will place you on the priority list. You will be the first to know when a suite matching your needs opens up — often before it hits the market."
   - question: Where are you located?
-    answer: "We currently operate in three markets: Asheville NC, Durham NC, and Columbia SC. All locations are strategically positioned near major highways for easy distribution and logistics access. We are actively exploring expansion into additional Carolina markets."
+    answer: "Explore small-bay space in Durham, Concord, Fletcher near Asheville, and Columbia; larger warehouse space in High Point / Archdale; and retail space in Morganton. See the Locations page for current availability and coming-soon offerings."
 ---

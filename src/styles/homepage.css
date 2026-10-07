@@ -169,3 +169,21 @@ dialog{border:0;padding:0;border-radius:8px;max-width:590px;width:calc(100% - 32
 
 /* Dynamic labels must keep button typography while their SVG arrows stay intact. */
 #detail-action-label, #detail-link-label { font: inherit; }
+
+/* Keep small-bay space primary and distinguish other property types. */
+.property-type-label { margin:20px 0 8px; font-size:12px; letter-spacing:1px; text-transform:uppercase; font-weight:600; color:#66715d; }
+.property-type-label + .property-heading { margin-top:0; }
+.property-image-placeholder { height:100%; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:16px; padding:28px; background:#e5eade; color:#233b30; }
+.property-image-placeholder strong { font-size:38px; font-weight:500; letter-spacing:-1px; }
+.property-image-placeholder span { font-size:15px; line-height:1.5; }
+.secondary-property-section { border-top:1px solid var(--line); padding-top:60px; }
+.secondary-property-section .property-grid { grid-template-columns:1fr; }
+.secondary-property-section .property { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); column-gap:40px; }
+.secondary-property-section .property > :not(.property-image) { grid-column:2; }
+.secondary-property-section .property-image { grid-column:1; grid-row:1/6; height:100%; min-height:360px; }
+.secondary-property-section .property-type-label { margin-top:0; }
+.card-marketing-note { display:block; margin-top:12px; font-weight:600; }
+.property-facts { flex-wrap:wrap; }
+@media(max-width:760px) { .secondary-property-section .property { display:flex; } .secondary-property-section .property-image { height:260px; min-height:0; } .secondary-property-section .property-type-label { margin-top:20px; } .property-type-label { font-size:14px; } }
+
+.rendering-label { position:absolute; left:12px; bottom:12px; max-width:calc(100% - 90px); padding:7px 10px; border-radius:3px; color:white; background:#202925ee; font:500 13px/1.4 Arial,Helvetica,sans-serif; }

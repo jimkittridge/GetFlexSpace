@@ -13,3 +13,15 @@
 
 
 .property-hero-logo{display:block;width:220px;max-width:100%;height:auto;margin:0 0 28px}
+
+.property-share { display:flex; align-items:center; flex-wrap:wrap; gap:12px; margin:-8px 0 24px; font-size:14px; }
+.property-share button { display:inline-flex; align-items:center; gap:10px; min-height:44px; padding:8px 12px; border:1px solid #bbc4b5; border-radius:4px; background:transparent; font:inherit; color:inherit; }
+.property-share svg { fill:none; stroke:currentColor; stroke-width:1.6; }
+.property-share span { overflow-wrap:anywhere; }
+.property-marketing-note { margin-bottom:24px!important; padding:20px; border:1px solid #ba7a46; background:#fff0de; font-size:18px; }
+
+.property-rendering-label { position:absolute; left:12px; top:12px; max-width:calc(100% - 24px); padding:7px 10px; border-radius:3px; color:white; background:#202925ee; font:500 13px/1.4 Arial,Helvetica,sans-serif; }
+.property-photo .photo-more { top:auto; bottom:12px; }
+.photo-disclosure { max-width:900px; margin-top:12px!important; }
+
+.property-title-row h1 { white-space:pre-line; }

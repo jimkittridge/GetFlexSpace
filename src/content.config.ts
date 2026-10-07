@@ -8,7 +8,14 @@ const locations = defineCollection({
     state: z.string(),
     fullName: z.string(),
     slug: z.string(),
-    propertyType: z.enum(['flex', 'retail']).nullish().transform(v => v ?? 'flex'),
+    propertyType: z.enum(['flex', 'warehouse', 'retail']).nullish().transform(v => v ?? 'flex'),
+    published: z.boolean().nullish().transform(v => v ?? true),
+    navigationOrder: z.number().nullish().transform(v => v ?? 100),
+    marketingStage: z.enum(['standard', 'subject-to-acquisition']).nullish().transform(v => v ?? 'standard'),
+    highlights: z.array(z.string()).nullish().transform(v => v ?? []),
+    yard: z.string().nullish().transform(v => v?.trim() || ''),
+    yardNotes: z.string().nullish().transform(v => v?.trim() || ''),
+    pricingNote: z.string().nullish().transform(v => v?.trim() || ''),
     tenantAccess: z.string().nullish().transform(v => v || '24/7'),
     heroLogo: z.string().nullish().transform(v => v || ''),
     availability: z.enum(['available', 'coming-soon', 'full']),
@@ -85,6 +92,7 @@ const locations = defineCollection({
     ctaHeading: z.string().optional().default(''),
     ctaSubheading: z.string().optional().default(''),
     galleryAltTexts: z.array(z.string()).optional().default([]),
+    galleryImageTypes: z.array(z.enum(['photo', 'rendering'])).nullish().transform(v => v ?? []),
   }),
 });
 

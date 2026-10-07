@@ -1,12 +1,13 @@
 ---
 import ArrowIcon from './ArrowIcon.astro';
+import { isPublished, comparePortfolio, acquisitionNotice } from '../lib/portfolio.js';
 import { getCollection, getEntry, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import NewLayout from '../layouts/NewLayout.astro';
 import SuiteGallery from './SuiteGallery.astro';
 import TourInquiry from './TourInquiry.astro';
 import { homepageImage, scriptJson } from '../lib/homepage';
-import { propertyAvailability, propertyFaq, compareLocationAvailability, locationStatus } from '../lib/property.js';
+import { propertyAvailability, propertyFaq, publicAvailability, locationStatus } from '../lib/property.js';
 import '../styles/property.css';
 
 interface Props { location: CollectionEntry<'locations'>; }
@@ -14,19 +15,21 @@ const { location } = Astro.props;
 const city = location.data;
 const { Content } = await render(location);
 const contact = (await getEntry('pages', 'contact'))!.data;
-const locations = (await getCollection('locations')).sort((a, b) => compareLocationAvailability(a.data, b.data));
-const comingSoon = city.availability === 'coming-soon';
+const locations = (await getCollection('locations', isPublished)).sort((a, b) => comparePortfolio(a.data, b.data));
+const comingSoon = publicAvailability(city) === 'coming-soon';
+const preAcquisition = city.marketingStage === 'subject-to-acquisition';
 const { suites, available, acceptingTours, summary } = propertyAvailability(city);
 const faq = propertyFaq(city, summary);
-const action = acceptingTours ? 'Request a tour' : 'Join the waitlist';
-const address = `${city.schema.address.street}, ${city.schema.address.city}, ${city.schema.address.state} ${city.schema.address.zip}`;
+const action = preAcquisition ? 'Register interest' : acceptingTours ? 'Request a tour' : 'Join the waitlist';
+const address = [city.schema.address.street, city.schema.address.city, `${city.schema.address.state} ${city.schema.address.zip}`.trim()].filter(Boolean).join(', ');
 const mapQuery = encodeURIComponent(address);
 const directions = `https://www.google.com/maps/dir/?api=1&destination=${mapQuery}`;
 const photoSources = city.gallery.length ? city.gallery : city.image ? [city.image] : [];
 const photos = await Promise.all(photoSources.map(async (src, i) => ({
+  isRendering: city.galleryImageTypes[i] === 'rendering',
   src: await homepageImage(src, 1600),
   thumb: await homepageImage(src, i === 0 ? 1200 : 640),
-  label: city.galleryAltTexts[i] || `${city.fullName} property — photo ${i + 1}`,
+  label: `${city.galleryImageTypes[i] === 'rendering' ? 'Proposed renovation — illustrative rendering. ' : ''}${city.galleryAltTexts[i] || `${city.fullName} property — photo ${i + 1}`}`,
 })));
 const mediaGroups = { property: photos, ...Object.fromEntries(suites.map((suite, index) => [
   `suite-${index}`, suite.media.map(item => ({ src: item.image, thumb: item.image, label: `${suite.size} · ${item.label}` })),
@@ -34,10 +37,12 @@ const mediaGroups = { property: photos, ...Object.fromEntries(suites.map((suite,
 const planSuite = suites.findIndex(suite => suite.media.some(item => item.type === 'floor-plan'));
 const planIndex = planSuite >= 0 ? suites[planSuite].media.findIndex(item => item.type === 'floor-plan') : -1;
 const specs = [
-  ['Suite sizes', city.specs.suiteRange], ['Clear height', city.specs.ceilingHeight],
+  [city.propertyType === 'warehouse' ? 'Building / unit sizes' : 'Suite sizes', city.specs.suiteRange], ['Clear height', city.specs.ceilingHeight],
   [city.propertyType === 'retail' ? 'Customer access' : 'Loading access', city.specs.doorSize], ['Electrical service', city.specs.power],
   ['Heating & cooling', city.specs.hvac], ['Lease terms', city.specs.lease],
+  ...(city.yard ? [['Storage yard', city.yard]] : []),
 ];
+const sharePhoto = photos.find(photo => !photo.isRendering);
 const canonical = `https://getflexspace.com/locations/${city.slug}/`;
 const schema = [
   { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
@@ -58,22 +63,25 @@ const schema = [
 ];
 ---
 <NewLayout title={city.seo.title} description={city.seo.description} canonicalUrl={canonical}
-  schemaMarkup={scriptJson(schema)} bodyClass="property-page" leasingLocation={city.name} leasingAvailable={acceptingTours}>
+  ogImage={sharePhoto?.src || '/images/brand/getflexspace-share.png'} ogImageAlt={sharePhoto?.label || `${city.fullName} — ${city.specs.suiteRange}`} schemaMarkup={scriptJson(schema)} bodyClass="property-page" leasingLocation={city.name} leasingAvailable={acceptingTours}>
   <a class="property-skip" href="#property-details">Skip to property details</a>
   <div class="property-content" data-property-location={city.name}>
     <section class="property-intro property-wrap" aria-labelledby="property-title">
       <nav class="property-breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/locations/">Locations</a><span aria-hidden="true">/</span><span aria-current="page">{city.fullName}</span></nav>
+      <div class="property-share"><button type="button" data-share-property data-share-url={canonical} data-share-title={city.seo.title}>Share this property <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V3m-5 5 5-5 5 5M5 13v7h14v-7"/></svg></button><button type="button" data-copy-property-link>Copy link</button><span data-share-status role="status" aria-live="polite"></span></div>
+      {preAcquisition && <p class="property-marketing-note">{acquisitionNotice}</p>}
       <div class="property-title-row">
-        <div><p class="property-eyebrow">{city.propertyType === 'retail' ? 'RETAIL SPACE' : 'A HOME BASE FOR YOUR BUSINESS'}</p><h1 id="property-title">{city.heroH1 || `Warehouse & flex space in ${city.fullName}.`}</h1><a class="property-address" href={directions} target="_blank" rel="noopener">{address}<span aria-hidden="true"><ArrowIcon/></span></a></div>
-        <div class="property-intro-action"><span class:list={['property-badge', { available: acceptingTours }]}><i></i>{comingSoon ? 'Coming soon' : acceptingTours ? 'Now leasing' : 'Waitlist open'}</span><p>{available.length ? `${available.map(suite => suite.size).join(' + ')} available` : acceptingTours ? 'Ask about current space' : 'Be first to hear about openings'}</p><a class="property-button" href="#available-spaces">{acceptingTours ? 'Explore available space' : 'Explore suite options'} <span aria-hidden="true"><ArrowIcon direction="down"/></span></a></div>
+        <div><p class="property-eyebrow">{city.propertyType === 'retail' ? 'RETAIL SPACE' : city.propertyType === 'warehouse' ? 'LARGER WAREHOUSES & YARDS' : 'SMALL-BAY WAREHOUSE & FLEX SPACE'}</p><h1 id="property-title">{city.heroH1 || `Warehouse & flex space in ${city.fullName}.`}</h1><a class="property-address" href={directions} target="_blank" rel="noopener">{address}<span aria-hidden="true"><ArrowIcon/></span></a></div>
+        <div class="property-intro-action"><span class:list={['property-badge', { available: acceptingTours }]}><i></i>{comingSoon ? 'Coming soon' : acceptingTours ? 'Now leasing' : 'Waitlist open'}</span><p>{available.length ? `${available.map(suite => suite.size).join(' + ')} available` : acceptingTours ? 'Ask about current space' : 'Be first to hear about openings'}</p><a class="property-button" href="#available-spaces">{acceptingTours ? 'Explore available space' : city.propertyType === 'warehouse' ? 'View warehouse details' : 'Explore suite options'} <span aria-hidden="true"><ArrowIcon direction="down"/></span></a></div>
       </div>
       <p class="property-lede">{city.heroSubtitle || city.tagline}</p>
       {city.heroLogo && <img class="property-hero-logo" src={city.heroLogo} alt="GetFlexSpace" width="1243" height="228"/>}
       {photos.length > 0 && <div class:list={['property-mosaic', { 'one-photo': photos.length === 1 }]} id="property-photos">
-        {photos.slice(0, 3).map((photo, index) => <a class={`property-photo property-photo-${index}`} href={photo.src} data-property-media="property" data-media-index={index} aria-label={`Open photo ${index + 1}: ${photo.label}`}><img src={photo.thumb} alt={photo.label} width={index === 0 ? 1200 : 640} height={index === 0 ? 900 : 480} loading={index === 0 ? 'eager' : 'lazy'} fetchpriority={index === 0 ? 'high' : 'auto'}/>{index === 2 && photos.length > 3 && <span class="photo-more">+{Math.max(0, photos.length - 3)} photos</span>}</a>)}
+        {photos.slice(0, 3).map((photo, index) => <a class={`property-photo property-photo-${index}`} href={photo.src} data-property-media="property" data-media-index={index} aria-label={`Open photo ${index + 1}: ${photo.label}`}><img src={photo.thumb} alt={photo.label} width={index === 0 ? 1200 : 640} height={index === 0 ? 900 : 480} loading={index === 0 ? 'eager' : 'lazy'} fetchpriority={index === 0 ? 'high' : 'auto'}/>{photo.isRendering && <span class="property-rendering-label">Proposed renovation<br/>Illustrative rendering</span>}{index === 2 && photos.length > 3 && <span class="photo-more">+{Math.max(0, photos.length - 3)} photos</span>}</a>)}
         <div class="property-photo-actions"><a href={photos[0].src} data-property-media="property" data-media-index="0">View all {photos.length} photos <span aria-hidden="true"><ArrowIcon/></span></a>{planSuite >= 0 && <a href={suites[planSuite].media[planIndex].image} data-property-media={`suite-${planSuite}`} data-media-index={planIndex}>View floor plan <span aria-hidden="true"><ArrowIcon/></span></a>}</div>
       </div>}
-      <dl class="property-quick-facts"><div><dt>Suite sizes</dt><dd>{city.specs.suiteRange}</dd></div><div><dt>Clear height</dt><dd>{city.specs.ceilingHeight}</dd></div><div><dt>{city.propertyType === 'retail' ? 'Customer access' : 'Loading'}</dt><dd>{city.specs.doorSize}</dd></div><div><dt>Tenant access</dt><dd>{city.tenantAccess}</dd></div></dl>
+      {photos.some(photo => photo.isRendering) && <p class="property-note photo-disclosure">Renderings illustrate proposed renovation and possible layouts. They do not show the current condition or guarantee the final finish, layout, equipment, or site boundaries.</p>}
+      <dl class="property-quick-facts"><div><dt>{city.propertyType === 'warehouse' ? 'Building / unit sizes' : 'Suite sizes'}</dt><dd>{city.specs.suiteRange}</dd></div><div><dt>{city.yard ? 'Storage yard' : 'Clear height'}</dt><dd>{city.yard || city.specs.ceilingHeight}</dd></div><div><dt>{city.propertyType === 'retail' ? 'Customer access' : 'Loading'}</dt><dd>{city.specs.doorSize}</dd></div><div><dt>Tenant access</dt><dd>{city.tenantAccess}</dd></div></dl>
     </section>
     <nav class="property-section-nav" aria-label="Property sections"><div class="property-wrap"><a href="#available-spaces">Spaces</a><a href="#specs">Features</a><a href="#property-location">Location</a><a href="#faq">FAQs</a><a href="#request-tour" class="section-tour" data-property-inquiry={city.name}>{action} <span aria-hidden="true"><ArrowIcon/></span></a></div></nav>
 
@@ -87,8 +95,8 @@ const schema = [
             <div class="suite-card-heading"><div><p class="property-eyebrow">{suite.name}</p><h3 id={`suite-title-${index}`}>{suite.size}</h3></div><span class:list={['property-badge', { available: suite.available }]}>{comingSoon ? 'Coming soon' : suite.available ? 'Available now' : 'Waitlist'}</span></div>
             <p class="suite-description">{suite.description}</p>
             {suite.media.length > 0 && <SuiteGallery media={suite.media} name={`${suite.size} suite`} brochure={suite.brochure} galleryId={`suite-${index}`} />}
-            <div class="suite-card-bottom"><div><p class="suite-price-label">{suite.available && suite.baseRent ? 'Listed base rent' : 'Availability & pricing'}</p><p class="suite-price">{suite.available && suite.baseRent ? suite.baseRent : 'Ask our leasing team'}</p></div><a href="#request-tour" class:list={['property-button', { secondary: !suite.available }]} data-property-inquiry={city.name} data-request-type={suite.available ? 'tour' : 'waitlist'}>{suite.available ? 'Request a tour' : 'Join location waitlist'} <span aria-hidden="true"><ArrowIcon/></span></a></div>
-            {suite.available && suite.baseRent && <p class="property-note">Ask leasing for the total monthly cost, including additional charges.</p>}
+            <div class="suite-card-bottom"><div><p class="suite-price-label">{(suite.available || comingSoon) && !preAcquisition && suite.baseRent ? comingSoon ? 'Expected base rent' : 'Listed base rent' : 'Availability & pricing'}</p><p class="suite-price">{(suite.available || comingSoon) && !preAcquisition && suite.baseRent || 'Ask our leasing team'}</p></div><a href="#request-tour" class:list={['property-button', { secondary: !suite.available }]} data-property-inquiry={city.name} data-request-type={suite.available ? 'tour' : 'waitlist'}>{suite.available ? 'Request a tour' : 'Join location waitlist'} <span aria-hidden="true"><ArrowIcon/></span></a></div>
+            {(suite.available || comingSoon) && !preAcquisition && suite.baseRent && <p class="property-note">{city.pricingNote || 'Ask leasing for the total monthly cost, including additional charges.'}</p>}
           </article>)}</div>
           {suites.length === 0 && <p class="property-empty">Contact leasing for current layouts and availability.</p>}
           <p class="property-note availability-note">Availability can change. A request starts a conversation with leasing; your tour time and suite are confirmed by our team.</p>
@@ -96,9 +104,10 @@ const schema = [
 
         <section class="property-section" id="specs" aria-labelledby="specs-title"><p class="property-eyebrow">ROOM TO GET TO WORK</p><h2 id="specs-title">{city.specsHeading || 'The details that matter.'}</h2><p class="property-section-intro">{city.specsSubheading || 'Check the essentials for your equipment, inventory, and daily operations.'}</p><dl class="property-specs">{specs.map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}</dl><p class="property-note">Specifications are listed at the property level. Confirm the layout, utilities, loading access, and permitted use for your chosen suite.</p></section>
 
-        <section class="property-section" aria-labelledby="fit-title"><p class="property-eyebrow">{city.tenantProfilesLabel || 'BUILT AROUND YOUR WORK'}</p><h2 id="fit-title">{city.tenantProfilesHeading || 'Space that works for your business.'}</h2><p class="property-section-intro">{city.tenantProfilesSubheading}</p><div class="property-use-grid">{city.tenantProfiles.map((profile, index) => <div><span class="use-index">{String(index + 1).padStart(2, '0')}</span><h3>{profile.title}</h3><p>{profile.description}</p></div>)}</div></section>
+        {city.yard && <section class="property-section" aria-labelledby="yard-title"><p class="property-eyebrow">BUILDING + YARD</p><h2 id="yard-title">{city.yard}</h2><p class="property-section-intro">{city.yardNotes}</p></section>}
+        {city.tenantProfiles.length > 0 && <section class="property-section" aria-labelledby="fit-title"><p class="property-eyebrow">{city.tenantProfilesLabel || 'BUILT AROUND YOUR WORK'}</p><h2 id="fit-title">{city.tenantProfilesHeading || 'Space that works for your business.'}</h2><p class="property-section-intro">{city.tenantProfilesSubheading}</p><div class="property-use-grid">{city.tenantProfiles.map((profile, index) => <div><span class="use-index">{String(index + 1).padStart(2, '0')}</span><h3>{profile.title}</h3><p>{profile.description}</p></div>)}</div></section>}
 
-        <section class="property-section" id="property-location" aria-labelledby="location-title"><p class="property-eyebrow">YOUR NEXT HOME BASE</p><h2 id="location-title">Find us in {city.schema.address.city}.</h2><div class="property-location-heading"><address>{city.schema.address.street}<br/>{city.schema.address.city}, {city.schema.address.state} {city.schema.address.zip}</address><a class="property-text-link" href={directions} target="_blank" rel="noopener">Get directions <ArrowIcon/></a></div><iframe class="property-map" src={city.mapEmbedUrl || `https://maps.google.com/maps?q=${mapQuery}&output=embed`} title={`Map of ${address}`} width="800" height="400" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><div class="property-local-facts"><div><h3>Connected to your market</h3><div class="property-tags">{city.localGuide.nearbyHighways.map(highway => <span>{highway}</span>)}</div><p>{city.localGuide.airport}</p></div><div><h3>Serving the surrounding area</h3><p>{city.localGuide.submarkets.join(' · ')}</p></div></div><details class="property-market-guide"><summary>{city.localGuide.heading}<span aria-hidden="true">+</span></summary><div class="property-prose"><Content/><h3>Local demand drivers</h3><ul>{city.localGuide.demandDrivers.map(driver => <li>{driver}</li>)}</ul></div></details></section>
+        <section class="property-section" id="property-location" aria-labelledby="location-title"><p class="property-eyebrow">YOUR NEXT HOME BASE</p><h2 id="location-title">Find us in {city.schema.address.city}.</h2><div class="property-location-heading"><address>{city.schema.address.street}<br/>{city.schema.address.city}, {city.schema.address.state} {city.schema.address.zip}</address><a class="property-text-link" href={directions} target="_blank" rel="noopener">Get directions <ArrowIcon/></a></div><iframe class="property-map" src={city.mapEmbedUrl || `https://maps.google.com/maps?q=${mapQuery}&output=embed`} title={`Map of ${address}`} width="800" height="400" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>{(city.localGuide.nearbyHighways.length > 0 || city.localGuide.submarkets.length > 0) && <div class="property-local-facts"><div><h3>Connected to your market</h3><div class="property-tags">{city.localGuide.nearbyHighways.map(highway => <span>{highway}</span>)}</div><p>{city.localGuide.airport}</p></div><div><h3>Serving the surrounding area</h3><p>{city.localGuide.submarkets.join(' · ')}</p></div></div>}<details class="property-market-guide"><summary>{city.localGuide.heading}<span aria-hidden="true">+</span></summary><div class="property-prose"><Content/>{city.localGuide.demandDrivers.length > 0 && <><h3>Local demand drivers</h3><ul>{city.localGuide.demandDrivers.map(driver => <li>{driver}</li>)}</ul></>}</div></details></section>
 
         <section class="property-section" id="faq" aria-labelledby="faq-title"><p class="property-eyebrow">A FEW THINGS TO KNOW</p><h2 id="faq-title">{city.faqHeading || 'Your questions, answered.'}</h2><div class="property-faq">{faq.map((item, index) => <details open={index === 0}><summary>{item.question}<span aria-hidden="true">+</span></summary><p>{item.answer}</p></details>)}</div></section>
       </div>
@@ -107,13 +116,13 @@ const schema = [
     </div>
 
     <section class="property-final property-wrap"><div><p class="property-eyebrow">ROOM FOR WHAT’S NEXT</p><h2>{city.ctaHeading || `Let’s find your space in ${city.name}.`}</h2><p>{city.ctaSubheading || 'See the space, ask your questions, and plan your next move.'}</p></div><a href="/contact/" class="property-button" data-property-inquiry={city.name}>{action} <span aria-hidden="true"><ArrowIcon/></span></a></section>
-    <section class="property-other property-wrap" aria-labelledby="other-title"><p class="property-eyebrow">EXPLORE OUR OTHER LOCATIONS</p><h2 id="other-title">More room in the Carolinas.</h2><div>{locations.filter(item => item.data.slug !== city.slug).map(({data}) => <a href={`/locations/${data.slug}/`}><span>{data.fullName}<small>{data.specs.suiteRange} · {locationStatus(data.availability).label}</small></span><span aria-hidden="true"><ArrowIcon/></span></a>)}</div></section>
+    <section class="property-other property-wrap" aria-labelledby="other-title"><p class="property-eyebrow">EXPLORE OUR OTHER LOCATIONS</p><h2 id="other-title">More room in the Carolinas.</h2><div>{locations.filter(item => item.data.slug !== city.slug).map(({data}) => <a href={`/locations/${data.slug}/`}><span>{data.fullName}<small>{data.specs.suiteRange} · {locationStatus(publicAvailability(data)).label}</small></span><span aria-hidden="true"><ArrowIcon/></span></a>)}</div></section>
 
     <div class="property-mobile-actions" aria-label="Contact leasing"><a href="/contact/" class="property-button" data-property-inquiry={city.name}>{action} <span aria-hidden="true"><ArrowIcon/></span></a><a href={`tel:${contact.phoneHref}`}><svg aria-hidden="true"><use href="#phone"/></svg>Call</a><a href={`sms:${contact.phoneHref}`}><svg aria-hidden="true"><use href="#message"/></svg>Text</a></div>
   </div>
 
   <dialog class="property-lightbox" id="property-lightbox" aria-label="Property photos and floor plans"><div class="property-lightbox-header"><p id="property-media-caption" aria-live="polite"></p><button type="button" class="property-lightbox-close" aria-label="Close photo gallery" autofocus>×</button></div><div class="property-lightbox-stage"><img id="property-media-image" alt=""/><p id="property-media-error" role="status" hidden>Unable to load this image. Try the full-size link below.</p></div><div class="property-lightbox-controls"><button type="button" data-media-prev aria-label="Previous photo"><ArrowIcon direction="left"/></button><span id="property-media-count"></span><button type="button" data-media-next aria-label="Next photo"><ArrowIcon direction="right"/></button><button type="button" data-media-zoom aria-pressed="false">Zoom in</button><a id="property-media-original" target="_blank" rel="noopener">Full size <ArrowIcon/></a></div></dialog>
-  <TourInquiry markets={locations.map(({data}) => ({ name: data.name, fullName: data.fullName, availability: data.availability, available: propertyAvailability(data).acceptingTours }))} phone={contact.phone!} phoneHref={contact.phoneHref!} email={contact.email!}/>
+  <TourInquiry markets={locations.map(({data}) => ({ name: data.name, fullName: data.fullName, availability: publicAvailability(data), marketingStage: data.marketingStage, available: propertyAvailability(data).acceptingTours }))} phone={contact.phone!} phoneHref={contact.phoneHref!} email={contact.email!}/>
   <script type="application/json" id="property-media-data" set:html={scriptJson(mediaGroups)}/>
   <script src="../scripts/property.ts"></script>
   <svg class="property-icon-definitions" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs><symbol id="phone" viewBox="0 0 24 24"><path d="M6 3h3l2 5-2 2c1.5 3 2 3.5 5 5l2-2 5 2v3c0 2-2 3-4 2C9 18 6 15 3 7c-1-2 1-4 3-4Z"/></symbol><symbol id="message" viewBox="0 0 24 24"><path d="M4 4h16v12H9l-5 4V4Z"/><path d="M8 8h8M8 12h5"/></symbol></defs></svg>

@@ -1,0 +1,27 @@
+---
+interface Props { groups: any[]; }
+const { groups } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+<div class="location-menu-groups">
+  {groups.map(group => <section class="location-menu-group" aria-label={group.label}>
+    <p>{group.label}</p>
+    <ul>{group.locations.map(({data}) => <li><a href={`${base}locations/${data.slug}/`} aria-current={Astro.url.pathname === `${base}locations/${data.slug}/` ? 'page' : undefined}>{data.name}{data.name === 'West Asheville' && <small>Candler, NC</small>}{data.name === 'High Point' && <small>Archdale, NC</small>}</a></li>)}</ul>
+  </section>)}
+</div>
+<style>
+.location-menu-groups { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
+.location-menu-group { min-width:0; }
+.location-menu-group p { margin:0 0 12px; font:700 12px/1.5 Arial,Helvetica,sans-serif; letter-spacing:1px; text-transform:uppercase; color:#66715d; }
+.location-menu-group ul { margin:0; padding:0; list-style:none; }
+.location-menu-group a { display:flex; flex-direction:column; align-items:flex-start; justify-content:center; min-height:44px; padding:9px 0; font:400 16px/1.4 Arial,Helvetica,sans-serif; color:#202925; text-decoration:none; }
+.location-menu-group a:hover { color:#a95013; }
+.location-menu-group a[aria-current=page] { text-decoration:underline; text-underline-offset:4px; }
+.location-menu-group small { display:block; font-size:13px; color:#66715d; margin-top:3px; }
+@media(max-width:960px) {
+ .location-menu-groups { grid-template-columns:1fr; gap:22px; padding:8px 4px 20px; border-bottom:1px solid #d5d8ce; }
+ .location-menu-group p { font-size:13px; margin-bottom:7px; }
+ .location-menu-group a { font-size:18px; min-height:44px; padding:9px 0; }
+ .location-menu-group small { font-size:14px; }
+}
+</style>

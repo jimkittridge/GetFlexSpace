@@ -1,16 +1,16 @@
 ---
 seo:
   title: Warehouse & Flex Space for Lease in NC & SC | GetFlexSpace
-  description: Explore warehouse and flex space for lease in Durham, Asheville, and Columbia. Compare suite sizes, drive-in access, office options, and request a tour.
+  description: Find small-bay warehouse and flex space in North Carolina and South Carolina, plus larger warehouses and retail locations. Compare space and request a tour.
 heroBackgroundImage: /images/Durham Flex Space.png
 logo: /images/brand/getflexspace-color.svg
 hero:
   headline: Warehouse & flex space for lease in North Carolina & South Carolina.
-  subheadline: Find your home base in Durham, Asheville, or Columbia. Space for contractors, service businesses, e-commerce, and light industrial operations.
+  subheadline: Small-bay warehouse and flex space for contractors, service businesses, e-commerce, and light industrial operations. Find your home base in {{smallBayLocations}}.
 citySection:
   heading: |-
-    Warehouse & flex space.
-    Three Carolina markets.
+    Small-bay spaces.
+    Room for your next move.
   subheading: Compare suite sizes, local access, and availability. Explore each property for the details that matter to your business.
 useCases:
   heading: |-
@@ -44,9 +44,9 @@ faq:
   - question: What is warehouse and flex space?
     answer: Warehouse space provides room for inventory, equipment, materials, and business operations. Flex space combines that warehouse footprint with office, showroom, or other workspace. GetFlexSpace offers warehouse and flex suites in North Carolina and South Carolina; layouts and permitted uses vary by property.
   - question: Where can I lease warehouse space in NC and SC?
-    answer: Explore GetFlexSpace in Durham, North Carolina; Fletcher near Asheville, North Carolina; and Columbia, South Carolina. Each location page lists its suite sizes, features, and availability. Choose the market that fits your customers, team, deliveries, and service area.
+    answer: Our small-bay locations include {{smallBayLocations}}. Explore larger warehouse space in the High Point / Archdale area and retail space in Morganton. Each property page lists its size, features, and current status.
   - question: What sizes of warehouse and flex space do you offer?
-    answer: "Suite sizes across our properties: {{suiteRanges}}. These are the sizes across each property, not a promise that every size is currently available. Contact leasing for current openings."
+    answer: "Small-bay warehouse and flex sizes: {{suiteRanges}}. Larger warehouse offerings have their own building sizes and yard details; retail space is listed separately. Sizes describe the properties, not a promise of current availability. Contact leasing for current openings."
   - question: Can I lease warehouse space with an office?
     answer: Warehouse-plus-office layouts are available within the portfolio. The amount of office space, HVAC coverage, restroom facilities, and interior finish depend on the suite. Tell leasing how your office and warehouse will work together so you can compare appropriate options.
   - question: Is flex space suitable for contractors or my business?
