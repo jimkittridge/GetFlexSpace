@@ -8,6 +8,9 @@ const locations = defineCollection({
     state: z.string(),
     fullName: z.string(),
     slug: z.string(),
+    propertyType: z.enum(['flex', 'retail']).nullish().transform(v => v ?? 'flex'),
+    tenantAccess: z.string().nullish().transform(v => v || '24/7'),
+    heroLogo: z.string().nullish().transform(v => v || ''),
     availability: z.enum(['available', 'full']),
     availableUnits: z.string().optional().default(''),
     image: z.string().optional().default(''),
@@ -63,7 +66,7 @@ const locations = defineCollection({
       geo: z.object({
         lat: z.number(),
         lng: z.number(),
-      }),
+      }).nullish(),
       phone: z.string(),
     }),
     tagline: z.string().optional().default(''),
@@ -187,17 +190,4 @@ const blog = defineCollection({
   }),
 });
 
-const retail = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/retail' }),
-  schema: z.object({
-    name: z.string(), address: z.string(), city: z.string(), state: z.string(),
-    sizes: z.array(z.number().positive()),
-    highlights: z.array(z.object({ title: z.string(), description: z.string() })),
-    media: z.array(z.object({
-      category: z.enum(['Storefronts', 'Interiors', 'Floor plans', 'Parking', 'Neighborhood']),
-      image: z.string(), alt: z.string(),
-    })).nullish().transform(v => v ?? []),
-  }),
-});
-
-export const collections = { locations, pages, blog, retail };
+export const collections = { locations, pages, blog };

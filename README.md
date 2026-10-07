@@ -205,20 +205,17 @@ specs — they were deduplicated deliberately.
 - Blog posts link to `/durham/`, `/asheville/`, `/columbia/`, but the real routes
   are `/locations/<slug>/`. Those internal links likely 404 — unverified.
 
-## Retail space
+## Morganton location
 
-The `/retail-space/` page and Retail Space sections on the homepage and locations
-page use `src/content/retail/morganton-nc.md`. The CMS has a separate Retail Space
-collection with categorized images and floor plans; warehouse specifications do
-not apply to these listings. Both 1,200 and 2,400 sq ft sizes are available per
-the owner. Fleming Drive frontage is documented in the listing broker's record:
-https://www.coldwellbankerhomes.com/nc/morganton/408-w-fleming-dr/pid_73311855/
+408 W Fleming Dr is a normal Locations entry at `src/content/locations/morganton-nc.md`.
+It uses the same `PropertyPage.astro` component, availability logic, galleries,
+and inquiry form as every other location. Edit it under **Locations → Morganton**
+in the CMS. Its public URL is `/locations/morganton-nc/`; `/retail-space/` redirects
+there. The former separate retail collection and page have been removed.
 
-Property photos were provided by the owner in the local `408 w fleming` folder
-on 2026-10-06. Nine images are optimized as WebP in `public/images/morganton/`,
-with EXIF metadata removed. They cover storefronts, covered entrances, interiors,
-and the paved frontage. The neighborhood is shown with a Google Maps embed.
-The owner confirmed no floor plans are available; the page states this and
-invites visitors to tour the layouts. Interior photos depict existing furnishings,
-not a commitment about what comes with the leased space. Signage rights,
-parking counts, traffic counts, and nearby resident counts are not asserted.
+The shared location fields include Property Type, Tenant Access, and an optional
+Hero Logo. Morganton is retail, with both 1,200 and 2,400 sq ft units available.
+Unverified specifications and tenant access direct visitors to leasing. The nine
+owner-provided photos remain in `public/images/morganton/`. No floor plans were
+provided, and the listing states that clearly. Photos are property-level because
+the owner has not identified which photos belong to each available unit size.

@@ -2,6 +2,7 @@ import { openTourInquiry } from './tour-inquiry';
 import { createSlideshow } from '../lib/slideshow.js';
 
 type Market = {
+  type: string; typeLabel: string;
   name: string; fullName: string; stateName: string; index: string;
   image: string; range: string; available: boolean; description: string;
   door: string; height: string; power: string; lease: string; url: string;
@@ -46,7 +47,7 @@ async function showHero(index: number, signal?: AbortSignal) {
   if (version !== imageRequest || signal?.aborted) return;
   heroIndex = index;
   heroImage.src = market.image;
-  heroImage.alt = `Warehouse and flex space in ${market.fullName}`;
+  heroImage.alt = `${market.typeLabel} in ${market.fullName}`;
   heroPhoto.querySelector('.photo-caption p')!.textContent = `${market.name}, ${market.stateName}`.toUpperCase();
   heroPhoto.querySelector('#photo-count')!.textContent = `${market.index} / ${String(markets.length).padStart(2, '0')}`;
   const link = heroPhoto.querySelector<HTMLAnchorElement>('.photo-caption [data-property]')!;
@@ -110,14 +111,14 @@ document.querySelectorAll<HTMLAnchorElement>('[data-property]').forEach(link => 
     currentMarket = markets.find(item => item.name === link.dataset.property)!;
     const image = document.querySelector<HTMLImageElement>('#detail-image')!;
     image.src = currentMarket.image;
-    image.alt = `Warehouse property in ${currentMarket.fullName}`;
+    image.alt = `${currentMarket.typeLabel} in ${currentMarket.fullName}`;
     document.querySelector('#detail-status')!.textContent = currentMarket.available ? 'NOW LEASING' : 'WAITLIST OPEN';
     document.querySelector('#detail-title')!.textContent = currentMarket.fullName;
     document.querySelector('#detail-description')!.textContent = currentMarket.description;
     const facts = document.querySelector('#detail-facts')!;
     facts.replaceChildren();
     for (const [label, value] of [
-      ['Suite sizes', currentMarket.range], ['Loading', currentMarket.door],
+      ['Suite sizes', currentMarket.range], [currentMarket.type === 'retail' ? 'Customer access' : 'Loading', currentMarket.door],
       ['Clear height', currentMarket.height], ['Power', currentMarket.power],
       ['Lease terms', currentMarket.lease], ['Office layout', 'Confirm by suite'],
     ]) {

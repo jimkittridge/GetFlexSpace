@@ -12,3 +12,5 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.property-photo img{transition:none}}
 
 .property-page header [data-property-inquiry]{min-height:48px;display:inline-flex;align-items:center;font-size:16px;padding:12px 18px;border-radius:4px}
+
+.property-hero-logo{display:block;width:220px;max-width:100%;height:auto;margin:0 0 28px}
