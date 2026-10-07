@@ -2,6 +2,7 @@
 name: Morganton
 state: NC
 fullName: Morganton, NC
+homepageCardTitle: Morganton, NC Retail
 slug: morganton-nc
 propertyType: retail
 availability: available
