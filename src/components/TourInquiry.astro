@@ -1,7 +1,7 @@
 ---
 import '../styles/tour-inquiry.css';
 interface Props {
-  markets: { name: string; fullName: string; available: boolean }[];
+  markets: { name: string; fullName: string; available: boolean; availability?: string }[];
   phone: string;
   phoneHref: string;
   email: string;
@@ -22,7 +22,7 @@ const { markets, phone, phoneHref, email } = Astro.props;
             <label for="tour-location">Location
               <select id="tour-location" name="location" required>
                 <option value="">Choose your location</option>
-                {markets.map(market => <option value={market.name} data-available={String(market.available)}>{market.fullName}{market.available ? '' : ' — waitlist'}</option>)}
+                {markets.map(market => <option value={market.name} data-available={String(market.available)} data-availability={market.availability}>{market.fullName}{market.availability === 'coming-soon' ? ' — coming soon' : market.available ? '' : ' — waitlist'}</option>)}
               </select>
             </label>
             <label for="tour-name">Your name

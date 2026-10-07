@@ -3,16 +3,12 @@ import { getCollection, getEntry } from 'astro:content';
 import { homepageImage, portfolioRange, scriptJson } from '../lib/homepage';
 import '../styles/homepage.css';
 import TourInquiry from '../components/TourInquiry.astro';
+import { compareLocationAvailability, locationStatus } from '../lib/property.js';
 
 const cms = (await getEntry('pages', 'homepage'))!.data;
 const contact = (await getEntry('pages', 'contact'))!.data;
 const locations = await getCollection('locations');
-const preferredOrder = ['durham-nc', 'asheville-nc', 'columbia-sc'];
-locations.sort((a, b) => {
-  const aIndex = preferredOrder.indexOf(a.data.slug);
-  const bIndex = preferredOrder.indexOf(b.data.slug);
-  return (aIndex < 0 ? 99 : aIndex) - (bIndex < 0 ? 99 : bIndex) || a.data.name.localeCompare(b.data.name);
-});
+locations.sort((a, b) => compareLocationAvailability(a.data, b.data));
 const markets = await Promise.all(locations.map(async ({data}, i) => ({
   type: data.propertyType, typeLabel: data.propertyType === 'retail' ? 'Retail space' : 'Warehouse & flex space',
   name: data.name, fullName: data.fullName, state: data.state,
@@ -21,6 +17,7 @@ const markets = await Promise.all(locations.map(async ({data}, i) => ({
   index: String(i + 1).padStart(2, '0'),
   image: await homepageImage(data.image), cardImage: await homepageImage(data.image, 720),
   range: data.specs.suiteRange, available: data.availability === 'available',
+  availability: data.availability, statusLabel: locationStatus(data.availability).label,
   door: data.specs.doorSize, height: data.specs.ceilingHeight, power: data.specs.power,
   lease: data.specs.lease, url: `/locations/${data.slug}/`,
   description: (data.homepageDescription || `Explore warehouse and flex space in ${data.fullName}, with {{suiteRange}} suites. Contact leasing for current availability and property details.`).replaceAll('{{suiteRange}}', data.specs.suiteRange),
@@ -60,7 +57,7 @@ const structuredData = {
   <meta property="og:title" content={cms.seo.title}/><meta property="og:description" content={cms.seo.description}/>
   <meta property="og:type" content="website"/><meta property="og:url" content={canonical}/>
   <meta property="og:image" content={new URL(featured.image, canonical).href}/>
-  <meta property="og:image:alt" content={`Warehouse and flex space in ${featured.fullName}`}/>
+  <meta property="og:image:alt" content={`${featured.typeLabel} in ${featured.fullName}`}/>
   <meta name="twitter:card" content="summary_large_image"/>
   <script type="application/ld+json" set:html={scriptJson(structuredData)}/>
 </head>
@@ -82,11 +79,13 @@ const structuredData = {
       <p class="hero-note">{markets.length} Carolina markets. One next step.</p>
     </div>
     <div class="hero-photo" role="group" aria-roledescription="carousel" aria-label="Our locations">
-      <button class="photo-rotation" type="button" aria-label="Pause location slideshow" hidden><svg class="rotation-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg><svg class="rotation-play" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7Z"/></svg><span>Pause</span></button>
-      <img src={featured.image} alt={`${featured.fullName} warehouse and flex suites with drive-in access`} width="1200" height="900" fetchpriority="high">
+      <img src={featured.image} alt={`${featured.typeLabel} in ${featured.fullName}`} width="1200" height="900" fetchpriority="high">
       <div class="photo-top"><span><i></i>EXPLORE OUR SPACES</span><span id="photo-count">01 / {String(markets.length).padStart(2, '0')}</span></div>
       <div class="photo-caption"><div><p>{featured.name.toUpperCase()}, {featured.stateName.toUpperCase()}</p><strong>Your business belongs here.</strong></div><a href={featured.url} class="round-button" data-property={featured.name} aria-label={`Explore ${featured.name}`}><span aria-hidden="true">↗</span></a></div>
+      <div class="photo-controls">
+      <button class="photo-rotation" type="button" aria-label="Pause location slideshow" title="Pause location slideshow" hidden><svg class="rotation-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg><svg class="rotation-play" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7Z"/></svg></button>
       <div class="photo-switch" role="group" aria-label="Choose property photo">{markets.map((market, i) => <button class:list={{active: i === 0}} data-hero={market.name} aria-pressed={i === 0}>{market.name}</button>)}</div>
+      </div>
     </div>
   </section>
   <div class="feature-strip" aria-label="Space features"><span><svg aria-hidden="true"><use href="#door"/></svg>Drive-in access</span><span><svg aria-hidden="true"><use href="#clock"/></svg>24/7 tenant access</span><span><svg aria-hidden="true"><use href="#building"/></svg>Warehouse + office options</span><span><svg aria-hidden="true"><use href="#people"/></svg>Talk directly with leasing</span></div>
@@ -96,7 +95,7 @@ const structuredData = {
     <div class="location-tabs" role="group" aria-label="Filter locations"><button class="selected" data-filter="all" aria-pressed="true">All locations <span>{markets.length}</span></button>{markets.map(market => <button data-filter={market.name} aria-pressed="false">{market.fullName}</button>)}</div>
     <div class="property-grid">
       {markets.map(market => <article class="property" data-city={market.name}>
-        <a class="property-image" data-property={market.name} href={market.url} aria-label={`View ${market.name} property`}><img src={market.cardImage} alt={`${market.typeLabel} in ${market.fullName}`} loading="lazy" width="720" height="540"/><span class:list={['status', {available: market.available}]}><i></i>{market.available ? 'Now leasing' : 'Join the waitlist'}</span><span class="image-arrow" aria-hidden="true">↗</span></a>
+        <a class="property-image" data-property={market.name} href={market.url} aria-label={`View ${market.name} property`}><img src={market.cardImage} alt={`${market.typeLabel} in ${market.fullName}`} loading="lazy" width="720" height="540"/><span class:list={['status', {available: market.available, 'coming-soon': market.availability === 'coming-soon'}]}><i></i>{market.statusLabel}</span><span class="image-arrow" aria-hidden="true">↗</span></a>
         <div class="property-heading"><h3>{market.cardTitle}</h3><span>{market.index}</span></div>
         <p class="property-description">{market.description}</p>
         <div class="property-facts"><span>{market.range}</span><span>{market.type === 'retail' ? 'Retail Space' : 'Drive-in access'}</span></div>

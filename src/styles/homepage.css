@@ -78,13 +78,6 @@ dialog{border:0;padding:0;border-radius:8px;max-width:590px;width:calc(100% - 32
 .property-cta-secondary:hover { background: var(--soft); }
 .property .property-cta:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
 
-.photo-rotation { position: absolute; z-index: 2; top: 64px; right: 28px; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 14px; border: 1px solid #ffffff80; border-radius: 4px; background: #17231de6; color: white; font-size: 14px; line-height: 1.4; }
-.photo-rotation:hover { background: #17231d; }
-.photo-rotation svg { width: 18px; height: 18px; stroke-width: 2; }
-.photo-rotation .rotation-pause, .photo-rotation.is-playing .rotation-play { display: none; }
-.photo-rotation.is-playing .rotation-pause { display: block; }
-@media (max-width: 760px) { .photo-rotation { top: 80px; right: 24px; font-size: 1rem; } }
-
 /* Phone typography prioritizes comfortable reading over content density. */
 @media (max-width: 760px) {
   .hero-description,
@@ -164,4 +157,23 @@ dialog{border:0;padding:0;border-radius:8px;max-width:590px;width:calc(100% - 32
   .site-header nav { display:none; position:absolute; left:0; right:0; top:90px; background:var(--paper); padding:20px 24px; border-bottom:1px solid var(--line); gap:8px; flex-direction:column; }
   .site-header nav.open { display:flex; }
   .menu { display:block; }
+}
+
+/* Keep slideshow controls together and visually secondary to the property. */
+.photo-controls { position: absolute; z-index: 2; left: 30px; right: 30px; bottom: 28px; display: grid; grid-template-columns: minmax(0, 1fr) 44px; gap: 12px; align-items: center; border-top: 1px solid #ffffff50; color: white; }
+.photo-controls .photo-switch { position: static; grid-column: 1; grid-row: 1; min-width: 0; border: 0; gap: 0 20px; }
+.photo-controls .photo-switch button { min-height: 44px; padding: 12px 0; }
+.photo-rotation { grid-column: 2; grid-row: 1; width: 44px; height: 44px; padding: 12px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 50%; background: transparent; color: #ffffffe0; }
+.photo-rotation:hover { background: #ffffff18; color: white; }
+.photo-rotation:focus-visible { outline: 2px solid white; outline-offset: 2px; }
+.photo-rotation svg { width: 16px; height: 16px; stroke-width: 2; }
+.photo-rotation .rotation-pause, .photo-rotation.is-playing .rotation-play { display: none; }
+.photo-rotation.is-playing .rotation-pause { display: block; }
+.status.coming-soon { background: #ffead4; color: #754016; }
+.status.coming-soon i { background: #b16c30; }
+@media (max-width: 760px) {
+  .photo-controls { left: 24px; right: 24px; bottom: 20px; }
+  .photo-controls .photo-switch { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
+  .photo-controls .photo-switch button { text-align: left; }
+  .photo-caption { bottom: 134px; }
 }

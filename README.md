@@ -63,8 +63,14 @@ are waitlist-only even if an individual suite has a stale available flag.
 Location FAQ answers support `{{availabilitySummary}}`, `{{suiteRange}}`, and
 `{{ceilingHeight}}`; visible answers and FAQ structured data resolve together.
 
+Location cards, filters, and the hero slideshow share an availability order:
+Now Leasing, Coming Soon, then Join the Waitlist, with city names breaking ties.
+The location admin exposes all three options; Coming Soon collects waitlist
+requests and shows opening-update copy instead of claiming the property is full.
+
 The homepage location photo rotates every seven seconds while at least half of
-it is visible. Visitors can pause/play or choose a location directly. Hover,
+it is visible. Visitors can pause/play using the compact icon beside the location tabs or
+choose a location directly. Hover,
 hidden tabs, and open dialogs suspend rotation; keyboard focus and manual
 selection pause it until Play is requested. Reduced-motion users start paused.
 Photos are decoded before their image, caption, and property link change together.
