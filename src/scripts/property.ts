@@ -4,7 +4,6 @@ document.querySelectorAll<HTMLAnchorElement>('[data-property-inquiry]').forEach(
   link.addEventListener('click', event => {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
-    link.closest('header details')?.removeAttribute('open');
     openTourInquiry(link.dataset.propertyInquiry, link.dataset.requestType === 'waitlist' ? 'waitlist' : undefined);
   });
 });

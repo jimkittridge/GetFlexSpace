@@ -15,6 +15,5 @@ html {
   }
 
   body { font-size: 1.125rem; }
-  header nav { max-width: calc(100vw - 48px); }
   footer a { overflow-wrap: anywhere; }
 }

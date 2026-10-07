@@ -78,8 +78,9 @@ Public action arrows use `ArrowIcon.astro` SVGs rather than Unicode characters,
 which iOS Safari can display as emoji. Property links name the city and space type.
 The homepage mobile contact bar stays hidden while the hero is visible, then
 appears below the hero and hides again when visitors scroll back to it.
-The homepage header uses the standard Locations and Contact page links.
-Its mobile/tablet hamburger also offers Request a tour; the hero and content
+All public pages use `HeaderNew.astro` for consistent logo sizing, navigation
+typography, alignment, and responsive breakpoints. Its mobile/tablet hamburger
+also offers Request a tour; the hero and content
 sections retain their in-page links for browsing locations and leasing questions.
 
 The Locations directory uses the same availability order, with large property cards,
