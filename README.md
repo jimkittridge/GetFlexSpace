@@ -177,6 +177,14 @@ and authorization against an in-memory SQLite database (Node 22.13+).
 
 ## Editing content
 
+### Reusable larger warehouse format
+
+High Point is unpublished and retained in the CMS as a reference. A separate
+snapshot and reuse instructions are in `templates/locations/`. Copy its section
+structure for future larger buildings and replace all property-specific details
+before publishing. Unpublished entries are excluded from public pages, cards,
+navigation, inquiry choices, and the sitemap.
+
 Content is edited through Sveltia CMS at `/admin/`, which commits straight to
 GitHub. It can also be edited by hand in `src/content/`.
 

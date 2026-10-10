@@ -9,7 +9,7 @@ hero:
 
 items:
   - question: What size suites do you offer?
-    answer: "Our small-bay warehouse and flex spaces range from 950 to 4,000 SF, depending on the location. We also offer larger warehouses and retail space. High Point has an 11,700 SF warehouse coming soon, with a 1.3-acre storage yard. See each property page for its sizes and current status."
+    answer: "Our small-bay warehouse and flex spaces range from 950 to 4,000 SF, depending on the location. We also offer retail space in Morganton. Contact leasing about larger building needs. See each property page for its sizes and current status."
   - question: What are the lease terms?
     answer: "We typically offer 1-year, 2-year, and 3-year lease terms. Longer terms may qualify for reduced rates. We also occasionally offer month-to-month options for tenants with specific needs. Contact us to discuss what works best for your business."
   - question: Can I customize or build out my suite?
@@ -27,5 +27,5 @@ items:
   - question: What if all suites are currently leased?
     answer: "Our spaces fill up fast. If a location is fully leased, submit your information through our availability form and we will place you on the priority list. You will be the first to know when a suite matching your needs opens up — often before it hits the market."
   - question: Where are you located?
-    answer: "Explore small-bay space in Durham, Concord, Fletcher near Asheville, and Columbia; larger warehouse space in High Point; and retail space in Morganton. See the Locations page for current availability and coming-soon offerings."
+    answer: "Explore small-bay space in Durham, Concord, Fletcher near Asheville, and Columbia, and retail space in Morganton. See the Locations page for current availability and coming-soon offerings."
 ---
