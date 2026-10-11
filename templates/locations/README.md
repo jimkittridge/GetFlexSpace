@@ -22,6 +22,7 @@ facts and leave unknown optional details blank; label renderings as renderings.
 Set the publication switch only when the new property's content is ready, then
 run the production build and publish through the normal PR workflow.
 
-Potential future listing supplied by the owner: **1108 9th Ave NE, Hickory, NC**.
-No replacement listing has been created; property details and photos still need
-to be supplied before publishing it.
+The format is now also used by **1108 9th Ave NE, Hickory, NC**, in
+`src/content/locations/hickory-nc.md`. Its photos and floor plan were extracted
+from the owner-supplied Commercial First brochure; its feature copy also uses
+the owner's October 11, 2026 details. High Point remains unpublished.
