@@ -1,9 +1,20 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { accountsEndpoint, authEndpoint, sessionAccount, digest } from '../server/admin-auth.js';
 import { authorizeAdmin, listRequests } from '../server/tour-requests.js';
 
 import { database, accountSession, context, ownerFetch, ownerHeaders } from './admin-fixtures.mjs';
+
+test('Cloudflare invokes Functions for every admin endpoint instead of serving the static homepage', () => {
+  const routes = JSON.parse(readFileSync(new URL('../public/_routes.json', import.meta.url), 'utf8'));
+  for (const path of ['/api/admin/auth/login', '/api/admin/auth/session', '/api/admin/auth/logout', '/api/admin/accounts',
+    '/api/admin/github/graphql', '/api/admin/github/api/v3/user', '/api/admin/requests', '/api/admin/requests/example']) {
+    const match = pattern => pattern.endsWith('*') ? path.startsWith(pattern.slice(0, -1)) : path === pattern;
+    assert.ok(routes.include.some(match), path);
+    assert.ok(!routes.exclude.some(match), path);
+  }
+});
 
 test('accounts use generated random passwords, hashed storage and cookie-bound sessions', async () => {
   const db = database(); const { credentials, session, headers } = await accountSession(db);
