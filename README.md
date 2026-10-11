@@ -327,3 +327,18 @@ are in `public/images/high-point/`: the original interior photo shows the buildi
 before renovation; the three supplied PNGs are owner-confirmed proposed-renovation
 renderings. `galleryImageTypes` mirrors gallery order and visibly labels renderings
 on cards and photo galleries. Social previews prefer an actual property photo.
+
+## Hickory larger warehouse
+
+1108 9th Ave NE is published at `/locations/hickory-nc/` using the saved larger
+warehouse format. Edit **Locations → Hickory** in the CMS. The owner's October 11,
+2026 details supply the 9,000 SF warehouse / 1,260 SF office split, ceiling-height
+areas, fenced paved yard, parking, and prospective business uses. The supplied
+Commercial First brochure provides the photos, floor plan, postal address,
+and $6,000/month NNN asking rent. Electrical service, HVAC, tenant-access hours,
+and lease length are unconfirmed and direct visitors to leasing.
+
+Photos and the floor plan are in `public/images/hickory/`; the unchanged brochure
+is `public/documents/hickory-1108-9th-avenue-brochure.pdf`. Source:
+https://www.commercialfirst.net/documents/957/Kittridge_Jim-_LSG_1_LLC_9th_Avenue.pdf
+High Point stays unpublished, and its reusable reference remains intact.
