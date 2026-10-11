@@ -7,7 +7,7 @@ state: NC
 fullName: Durham, NC
 slug: durham-nc
 availability: available
-availableUnits: 1 Unit Available – 2,000 sq ft
+availableUnits: 2 Units Available – 2,077 & 1,700 sq ft
 image: /images/Durham Flex Space.png
 gallery:
   - /images/1320-old-oxford-road/aerial-front.webp
@@ -61,10 +61,10 @@ localGuide:
     - Residential construction surge
     - RDU airport logistics
 suites:
-  - name: Available Suite
-    size: 2,000 SF
+  - name: 2,077 SF Suite
+    size: 2,077 SF
     status: available
-    description: Great fit for contractors, warehouse users, service businesses, and light industrial operations.
+    description: Fully conditioned warehouse and office space with HVAC, a dock-high door, and drive-in loading access. Great fit for contractors, service businesses, and light industrial operations.
     baseRent: $22.00 / SF NNN
     media:
       - image: /images/1320-old-oxford-road/floor-plan.webp
@@ -86,6 +86,27 @@ suites:
         label: Office interior
         type: photo
     brochure: /images/1320-old-oxford-road/property-brochure.pdf
+  - name: 1,700 SF Suite
+    size: 1,700 SF
+    status: available
+    description: Fully conditioned warehouse and office space with HVAC, a dock-high door, and drive-in loading access. Photos show a similar unit at the property.
+    baseRent: ""
+    media:
+      - image: /images/1320-old-oxford-road/warehouse-interior.webp
+        label: Representative photo — Warehouse interior
+        type: photo
+      - image: /images/1320-old-oxford-road/office-entry.webp
+        label: Representative photo — Office entrance
+        type: photo
+      - image: /images/1320-old-oxford-road/warehouse-office.webp
+        label: Representative photo — Warehouse and office
+        type: photo
+      - image: /images/1320-old-oxford-road/open-drive-in-doors.webp
+        label: Representative photo — Drive-in loading access
+        type: photo
+      - image: /images/1320-old-oxford-road/office-interior.webp
+        label: Representative photo — Office interior
+        type: photo
   - name: Coming Soon!
     size: 1,200 SF
     status: waitlist
