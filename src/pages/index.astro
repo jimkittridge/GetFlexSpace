@@ -18,7 +18,7 @@ locations.sort((a, b) => comparePortfolio(
 ));
 const markets = await Promise.all(locations.map(async ({data}, i) => ({
   group: homepageGroup(data), imageIsRendering: isRenderingImage(data), type: data.propertyType, typeLabel: propertyTypeLabel(data.propertyType), features: propertyHighlights(data),
-  name: data.name, fullName: data.fullName, state: data.state,
+  name: data.name, slug: data.slug, fullName: data.fullName, state: data.state,
   cardTitle: data.homepageCardTitle || data.fullName,
   viewLabel: propertyViewLabel(data),
   stateName: data.state === 'NC' ? 'North Carolina' : data.state === 'SC' ? 'South Carolina' : data.state,

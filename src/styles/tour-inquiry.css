@@ -23,6 +23,8 @@
 #inquiry-intro { color: #526058; font-size: 15px; line-height: 1.65; }
 #tour-request-form { margin-top: 20px; }
 .tour-fields { display: grid; gap: 12px; }
+.tour-location-size { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.tour-location-size label { min-width: 0; }
 .tour-fields label { font-size: 15px; font-weight: 700; margin: 0; line-height: 1.5; }
 .tour-fields input, .tour-fields select { min-height: 52px; padding: 13px 14px; margin-top: 7px; border: 1px solid #87978b; border-radius: 5px; font-size: 16px; }
 .tour-fields input::placeholder { color: #6a756d; opacity: 1; }
@@ -113,3 +115,6 @@
   .tour-success > p:not(.eyebrow) { font-size: 1.125rem; line-height: 1.6; }
   .tour-success .tour-success-reference { font-size: .875rem !important; margin: 12px 0 20px; }
 }
+
+/* Keep both selects readable on phones without adding a form row. */
+.tour-dialog .tour-location-size select { padding-left: 8px; padding-right: 4px; font-size: 16px; }

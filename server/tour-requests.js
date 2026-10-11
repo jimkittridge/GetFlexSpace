@@ -1,3 +1,5 @@
+import { UNIT_SIZES, unitSizeLabel } from '../src/lib/unit-sizes.js';
+
 export const RECIPIENT = 'jim@rothcapital.com';
 export const STATUSES = ['new', 'contacted', 'tour_scheduled', 'closed'];
 const REPOSITORY = 'jimkittridge/GetFlexSpace';
@@ -43,8 +45,11 @@ export function validateRequest(data) {
   if (!name || !location || !business || !phone || !/^[+\d().\s-]+$/.test(phone)
     || digits.length < 10 || digits.length > 15) return null;
   if (!['tour', 'waitlist'].includes(data.request_type)) return null;
+  // Older, already-open forms can still submit without the newly added field.
+  const ideal_size = data.ideal_size === undefined || data.ideal_size === '' ? null : data.ideal_size;
+  if (ideal_size !== null && !UNIT_SIZES.some(size => size.value === ideal_size)) return null;
   if (typeof data.id !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(data.id)) return null;
-  return { id: data.id, name, location, business, cell_phone: phone, request_type: data.request_type };
+  return { id: data.id, name, location, business, cell_phone: phone, request_type: data.request_type, ideal_size };
 }
 
 async function allowSubmission(request, db) {
@@ -75,7 +80,7 @@ export async function notifyRequest(db, lead, env) {
     await env.TOUR_NOTIFICATIONS.notify({
       subject: `GetFlexSpace ${lead.request_type === 'tour' ? 'tour request' : 'waitlist request'} — ${lead.location}`,
       text: [
-        `Name: ${lead.name}`, `Location: ${lead.location}`, `Business: ${lead.business}`,
+        `Name: ${lead.name}`, `Location: ${lead.location}`, `Ideal unit size: ${unitSizeLabel(lead.ideal_size)}`, `Business: ${lead.business}`,
         `Cell phone: ${lead.cell_phone}`, `Request type: ${lead.request_type}`,
         `Request ID: ${lead.id}`, `Received at: ${lead.created_at}`,
         '', 'Manage requests: https://getflexspace.com/admin/requests/',
@@ -94,24 +99,24 @@ export async function submitRequest(context) {
   if (!env.LEADS_DB) return json({ error: 'Online requests are temporarily unavailable. Please call or text leasing.' }, 503);
   let lead;
   try { lead = validateRequest(await readJson(request)); } catch { /* Invalid or oversized JSON. */ }
-  if (!lead) return json({ error: 'Check your name, location, business, and cell phone, then try again.' }, 400);
+  if (!lead) return json({ error: 'Check your name, location, ideal size, business, and cell phone, then try again.' }, 400);
   try {
     if (!(await allowSubmission(request, env.LEADS_DB))) return json({ error: 'Please wait a few minutes before trying again, or call or text leasing.' }, 429);
     const existing = await env.LEADS_DB.prepare('SELECT * FROM tour_requests WHERE id = ?').bind(lead.id).first();
     if (existing) {
-      if (['name', 'location', 'business', 'cell_phone', 'request_type'].some(key => existing[key] !== lead[key])) {
+      if (['name', 'location', 'business', 'cell_phone', 'request_type', 'ideal_size'].some(key => existing[key] !== lead[key])) {
         return json({ error: 'This request has already been received. Please call or text us to update it.' }, 409);
       }
       return json({ success: true, id: existing.id });
     }
     const now = new Date().toISOString();
     const result = await env.LEADS_DB.prepare(`INSERT OR IGNORE INTO tour_requests
-      (id, created_at, updated_at, name, location, business, cell_phone, request_type)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`).bind(lead.id, now, now, lead.name, lead.location, lead.business, lead.cell_phone, lead.request_type).run();
+      (id, created_at, updated_at, name, location, business, cell_phone, request_type, ideal_size)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(lead.id, now, now, lead.name, lead.location, lead.business, lead.cell_phone, lead.request_type, lead.ideal_size).run();
     if (result.meta.changes !== 1) {
       // A concurrent retry may have stored this ID while this request was validating.
       const saved = await env.LEADS_DB.prepare('SELECT * FROM tour_requests WHERE id = ?').bind(lead.id).first();
-      if (!saved || ['name', 'location', 'business', 'cell_phone', 'request_type'].some(key => saved[key] !== lead[key])) {
+      if (!saved || ['name', 'location', 'business', 'cell_phone', 'request_type', 'ideal_size'].some(key => saved[key] !== lead[key])) {
         return json({ error: 'This request has already been received. Please call or text us to update it.' }, 409);
       }
     } else {

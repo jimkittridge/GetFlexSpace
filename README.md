@@ -108,8 +108,11 @@ not verify the live domain. The live redesign was verified in October 2026.
 
 ## Leasing inquiries
 
-The homepage tour/waitlist pop-out collects location, name, business name or
-website, and cell phone. Large call and text links sit beside it on desktop;
+The shared tour/waitlist pop-out collects location, ideal unit size, name, business
+name or website, and cell phone. Location and size share one row on desktop and
+mobile. Sizes are 500–1,000, 1,000–1,500, 1,500–2,000, and 2,000+ sq ft. The selected
+size is saved in the private request record, displayed in the admin, and included
+in notification emails. Older forms and requests without a size remain valid. Large call and text links sit beside it on desktop;
 compact buttons share a row below the form on mobile. The mobile form fits in
 the phone width and scrolls on shorter screens. Mobile readability takes priority
 over fitting everything above the fold: homepage body copy is 18px, with larger
@@ -122,6 +125,13 @@ This is a request for follow-up, not an automatically booked appointment. A UUID
 makes retries safe without duplicate leads. Server validation, a honeypot, and a
 five-request/15-minute IP limit protect the endpoint. Only short-lived IP hashes
 are stored by that limit.
+
+Share `https://getflexspace.com/?waitlist=1` to open the general waitlist. Use a
+published property slug, such as `?waitlist=asheville-nc`, to preselect it. A
+property page also accepts `?waitlist=1` to preselect that property. Selecting a
+location while the waitlist is open updates the browser URL, ready to copy; only
+the property slug is added, never personal form details. Closing removes the
+waitlist parameter. Unpublished or unknown locations are never preselected.
 
 ### Tour request admin
 
@@ -147,7 +157,10 @@ admin APIs. `server/tour-requests.js` contains validation, persistence, and emai
 logic. The static GitHub Pages mirror does not support these functions.
 
 1. Create D1 database `getflexspace-tour-requests` and run
-   `migrations/0001_tour_requests.sql` in its console (or Wrangler).
+   `migrations/0001_tour_requests.sql` and then `migrations/0002_ideal_unit_size.sql`
+   in its console (or Wrangler). On an existing database, apply only the new
+   migration **before** deploying code that writes `ideal_size`; it adds a nullable
+   column and preserves all existing requests.
 2. Bind that database as **LEADS_DB** in the **production** environment of Pages
    project `testgithub`. Use a separate test database for any preview environment;
    never share production lead data with untrusted preview code.
