@@ -7,6 +7,7 @@ import { authorizeAdmin, listRequests, notifyRequest, submitRequest, updateReque
 function database() {
   const sqlite = new DatabaseSync(':memory:');
   sqlite.exec(readFileSync(new URL('../migrations/0001_tour_requests.sql', import.meta.url), 'utf8'));
+  sqlite.exec(readFileSync(new URL('../migrations/0002_ideal_unit_size.sql', import.meta.url), 'utf8'));
   return { sqlite, prepare(sql) {
     const statement = sqlite.prepare(sql);
     let args = [];
@@ -48,6 +49,48 @@ test('a retry returns the original request and does not create a duplicate', asy
   assert.equal(db.sqlite.prepare('SELECT COUNT(*) AS count FROM tour_requests').get().count, 1);
   const conflict = await submitRequest(context({ ...data, name: 'Changed Name' }, db));
   assert.equal(conflict.status, 409);
+});
+
+test('waitlist size is saved, returned to the admin, and included in the notification', async () => {
+  const db = database();
+  const data = { ...lead(), location: 'Columbia', request_type: 'waitlist', ideal_size: '1000-1500' };
+  const ctx = context(data, db);
+  const notifications = [];
+  ctx.env.TOUR_EMAIL_ENABLED = 'true';
+  ctx.env.TOUR_NOTIFICATIONS = { notify: async message => { notifications.push(message); } };
+  assert.equal((await submitRequest(ctx)).status, 201);
+  await Promise.all(ctx.promises);
+  assert.equal(db.sqlite.prepare('SELECT ideal_size FROM tour_requests').get().ideal_size, '1000-1500');
+  assert.equal(notifications.length, 1);
+  assert.match(notifications[0].text, /Ideal unit size: 1,000–1,500 sq ft/);
+  const request = new Request('https://getflexspace.com/api/admin/requests', { headers: adminHeaders });
+  const inbox = await listRequests({ request, env: { LEADS_DB: db } }, adminFetch);
+  assert.equal((await inbox.json()).requests[0].ideal_size, '1000-1500');
+  assert.equal((await submitRequest(context(data, db))).status, 200);
+  assert.equal((await submitRequest(context({ ...data, ideal_size: '2000+' }, db))).status, 409);
+});
+
+test('size choices are validated while previously open forms remain compatible', () => {
+  for (const ideal_size of ['500-1000', '1000-1500', '1500-2000', '2000+']) {
+    assert.equal(validateRequest({ ...lead(), ideal_size }).ideal_size, ideal_size);
+  }
+  for (const ideal_size of ['invalid', '<script>', ['500-1000'], 2000]) {
+    assert.equal(validateRequest({ ...lead(), ideal_size }), null);
+  }
+  assert.equal(validateRequest(lead()).ideal_size, null);
+});
+
+test('the size migration preserves existing leads and marks their size unknown', () => {
+  const db = new DatabaseSync(':memory:');
+  db.exec(readFileSync(new URL('../migrations/0001_tour_requests.sql', import.meta.url), 'utf8'));
+  const data = lead();
+  db.prepare(`INSERT INTO tour_requests (id, created_at, updated_at, name, location, business, cell_phone, request_type)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`).run(data.id, '2026-10-01', '2026-10-01', data.name, data.location, data.business, data.cell_phone, data.request_type);
+  db.exec(readFileSync(new URL('../migrations/0002_ideal_unit_size.sql', import.meta.url), 'utf8'));
+  const saved = db.prepare('SELECT * FROM tour_requests').get();
+  assert.equal(saved.id, data.id);
+  assert.equal(saved.name, data.name);
+  assert.equal(saved.ideal_size, null);
 });
 
 test('rejects invalid phones, unexpected fields, oversized payloads, and cross-origin submissions', async () => {

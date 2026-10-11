@@ -1,7 +1,8 @@
 import { CMS_USER_KEYS, readCmsSession } from '../lib/cms-session.js';
+import { unitSizeLabel } from '../lib/unit-sizes.js';
 
 type Lead = { id: string; created_at: string; name: string; location: string; business: string;
-  cell_phone: string; request_type: string; status: string; email_status: string };
+  cell_phone: string; ideal_size?: string | null; request_type: string; status: string; email_status: string };
 const labels: Record<string, string> = { new: 'New', contacted: 'Contacted', tour_scheduled: 'Tour scheduled', closed: 'Closed' };
 const login = document.querySelector<HTMLElement>('#admin-login')!;
 const inbox = document.querySelector<HTMLElement>('#admin-inbox')!;
@@ -62,7 +63,8 @@ function renderLead(lead: Lead) {
   meta.append(element('span', lead.request_type === 'waitlist' ? 'Waitlist' : 'Tour request', 'request-kind'), element('span', `${lead.location} · ${time}`));
   const phone = element('a', lead.cell_phone, 'request-phone');
   phone.href = `tel:${lead.cell_phone.replace(/[^\d+]/g, '')}`;
-  content.append(meta, element('h2', lead.name), element('p', lead.business, 'business'), phone,
+  content.append(meta, element('h2', lead.name), element('p', lead.business, 'business'),
+    element('p', `Ideal unit size: ${unitSizeLabel(lead.ideal_size)}`, 'business'), phone,
     element('p', `Reference ${lead.id.slice(0, 8).toUpperCase()}`, 'request-id'));
   const actions = element('div', '', 'request-actions');
   const label = element('label', 'Request status');

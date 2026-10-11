@@ -1,3 +1,5 @@
+import { waitlistLocation, waitlistUrl } from '../lib/waitlist-link.js';
+
 const dialog = document.querySelector<HTMLDialogElement>('#inquiry-dialog')!;
 const form = document.querySelector<HTMLFormElement>('#tour-request-form')!;
 const location = document.querySelector<HTMLSelectElement>('#tour-location')!;
@@ -14,6 +16,16 @@ let lastPayload = '';
 let mode = 'tour';
 let requestedMode: 'tour' | 'waitlist' | undefined;
 
+function syncWaitlistLink() {
+  const url = new URL(window.location.href);
+  if (dialog.open && mode === 'waitlist') {
+    history.replaceState(history.state, '', waitlistUrl(url, location.selectedOptions[0]?.dataset.slug));
+  } else if (url.searchParams.has('waitlist')) {
+    url.searchParams.delete('waitlist');
+    history.replaceState(history.state, '', url);
+  }
+}
+
 function updateMode() {
   const preAcquisition = location.selectedOptions[0]?.dataset.marketingStage === 'subject-to-acquisition';
   const comingSoon = location.selectedOptions[0]?.dataset.availability === 'coming-soon';
@@ -23,12 +35,14 @@ function updateMode() {
   document.querySelector('#inquiry-title')!.textContent = waitlist ? 'Get on the list.' : 'Request a tour.';
   document.querySelector('#inquiry-intro')!.textContent = preAcquisition ? `${location.value} is a potential future offering, subject to acquisition and availability. GetFlexSpace does not yet own this property.` : waitlist
     ? comingSoon ? `${location.value} is coming soon. We’ll contact you about opening dates and availability.`
-      : full ? `${location.value} is full. We’ll contact you when space opens.` : `We’ll contact you about upcoming space in ${location.value}.`
+      : full ? `${location.value} is full. We’ll contact you when space opens.` : location.value ? `We’ll contact you about upcoming space in ${location.value}.` : 'Choose a location and ideal size. We’ll contact you when space opens.'
     : 'We’ll call or text to confirm a tour time.';
   submitLabel.textContent = preAcquisition ? 'Register interest' : waitlist ? 'Join the waitlist' : 'Request my tour';
   document.querySelector('.tour-form-note')!.textContent = preAcquisition ? 'Interest only. Timing and availability are not confirmed.' : waitlist
     ? 'No obligation. A suite isn’t reserved.'
     : 'No obligation. We’ll confirm your tour time.';
+  dialog.querySelector('.close-dialog')!.setAttribute('aria-label', waitlist ? 'Close waitlist request' : 'Close tour request');
+  if (dialog.open) syncWaitlistLink();
 }
 
 export function openTourInquiry(city = '', requestType?: 'tour' | 'waitlist') {
@@ -45,9 +59,11 @@ export function openTourInquiry(city = '', requestType?: 'tour' | 'waitlist') {
     updateMode();
   }
   dialog.showModal();
+  syncWaitlistLink();
 }
 
-location.addEventListener('change', () => { requestedMode = undefined; updateMode(); });
+location.addEventListener('change', updateMode);
+dialog.addEventListener('close', syncWaitlistLink);
 phone.addEventListener('input', () => phone.setCustomValidity(''));
 document.querySelector('#tour-done')!.addEventListener('click', () => dialog.close());
 
@@ -62,6 +78,7 @@ form.addEventListener('submit', async event => {
   const payload = {
     name: String(data.get('name') || '').trim(), location: String(data.get('location') || ''),
     business: String(data.get('business') || '').trim(), cell_phone: phone.value.trim(),
+    ideal_size: String(data.get('ideal_size') || ''),
     request_type: mode, website_confirm: String(data.get('website_confirm') || ''),
   };
   const signature = JSON.stringify(payload);
@@ -100,3 +117,7 @@ form.addEventListener('submit', async event => {
     updateMode();
   }
 });
+
+const linkedLocation = waitlistLocation(new URL(window.location.href),
+  Array.from(location.options).filter(option => option.dataset.slug).map(option => ({ slug: option.dataset.slug, name: option.value })));
+if (linkedLocation !== undefined) openTourInquiry(linkedLocation, 'waitlist');

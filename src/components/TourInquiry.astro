@@ -1,8 +1,9 @@
 ---
 import ArrowIcon from './ArrowIcon.astro';
+import { UNIT_SIZES } from '../lib/unit-sizes.js';
 import '../styles/tour-inquiry.css';
 interface Props {
-  markets: { name: string; fullName: string; available: boolean; availability?: string; marketingStage?: string }[];
+  markets: { name: string; slug: string; fullName: string; available: boolean; availability?: string; marketingStage?: string }[];
   phone: string;
   phoneHref: string;
   email: string;
@@ -20,12 +21,20 @@ const { markets, phone, phoneHref, email } = Astro.props;
         <p id="inquiry-intro">We’ll call or text to confirm a tour time.</p>
         <form id="tour-request-form" method="POST" action="/api/tour-requests">
           <div class="tour-fields">
+            <div class="tour-location-size">
             <label for="tour-location">Location
               <select id="tour-location" name="location" required>
-                <option value="">Choose your location</option>
-                {markets.map(market => <option value={market.name} data-available={String(market.available)} data-availability={market.availability} data-marketing-stage={market.marketingStage}>{market.fullName}{market.availability === 'coming-soon' ? ' — coming soon' : market.available ? '' : ' — waitlist'}</option>)}
+                <option value="">Choose location</option>
+                {markets.map(market => <option value={market.name} data-slug={market.slug} data-available={String(market.available)} data-availability={market.availability} data-marketing-stage={market.marketingStage}>{market.name}</option>)}
               </select>
             </label>
+            <label for="tour-size">Ideal size (sq ft)
+              <select id="tour-size" name="ideal_size" required>
+                <option value="">Choose size</option>
+                {UNIT_SIZES.map(size => <option value={size.value}>{size.label}</option>)}
+              </select>
+            </label>
+            </div>
             <label for="tour-name">Your name
               <input id="tour-name" name="name" autocomplete="name" required minlength="2" maxlength="100" placeholder="First and last name"/>
             </label>
