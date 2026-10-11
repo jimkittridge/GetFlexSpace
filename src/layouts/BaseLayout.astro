@@ -33,7 +33,7 @@ const canonical = canonicalUrl || Astro.url.href;
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
 
-  {schemaMarkup && <Fragment set:html={`<script type="application/ld+json">${schemaMarkup}</script>`} />}
+  {schemaMarkup && <Fragment set:html={`<script type="application/ld+json">${schemaMarkup.replaceAll('<', '\\u003c')}</script>`} />}
   <slot name="head" />
 </head>
 <body>

@@ -36,7 +36,7 @@ function clearSession() {
 async function api(path: string, options: RequestInit = {}) {
   const requestToken = currentCmsToken();
   if (!requestToken || requestToken !== token) {
-    clearSession(); throw new Error('Sign in to the content manager to open your tour inbox.');
+    clearSession(); throw new Error('Sign in to your admin account to open the tour inbox.');
   }
   const response = await fetch(path, { ...options, headers: { Authorization: `Bearer ${requestToken}`,
     Accept: 'application/json', ...(options.body ? { 'Content-Type': 'application/json' } : {}) }, cache: 'no-store' });
@@ -47,7 +47,7 @@ async function api(path: string, options: RequestInit = {}) {
   if (!response.ok) {
     if (response.status === 401) {
       rejectedToken = requestToken; clearSession();
-      throw new Error('Your CMS sign-in needs attention. Open the content manager and sign in with an account that can edit GetFlexSpace.');
+      throw new Error('Your admin session expired or access was disabled. Open the admin sign-in to continue.');
     }
     throw new Error(data.error || 'The request could not be completed.');
   }

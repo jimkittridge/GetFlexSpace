@@ -1,6 +1,7 @@
 // This small adapter follows Sveltia CMS 0.229.0's user cache. Keep the CMS
-// version pinned and verify these keys when upgrading. Never copy the token
-// into another store, a URL, or a message; the server still verifies access.
+// version pinned and verify these keys when upgrading. GitHub-owner tokens are
+// never copied into another store, URL, or message. Password logins put only a
+// cookie-bound CSRF marker here; the server verifies its private session cookie.
 export const CMS_VERSION = '0.229.0';
 export const CMS_USER_KEYS = ['sveltia-cms.user', 'decap-cms-user', 'netlify-cms-user'];
 

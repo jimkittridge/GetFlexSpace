@@ -142,20 +142,65 @@ waitlist parameter. Unpublished or unknown locations are never preselected.
 
 ### Tour request admin
 
-Open `/admin/` and select the **Tour requests** tab. Sign in once using the
-content manager; both tabs use that existing Sveltia session. Switching tabs
-keeps the CMS mounted, so unfinished content edits are preserved. The older
-`/admin/requests/` URL still works and reuses the same session; signed-out users
-are directed to the content manager instead of a second token form.
+Open `/admin/` for username/password sign-in to both content and the private
+**Tour requests** inbox. Existing Sveltia GitHub sessions still work; the
+**Owner sign-in with GitHub** link is the recovery/bootstrap route.
 
-The server verifies repository write access on every inbox request. No additional
-token copy, URL token, or public lead file is created. The shared-session adapter
-in `src/lib/cms-session.js` reads Sveltia's existing browser user cache; signing
-out through the CMS account menu clears the inbox too. Data stays in private D1.
-The CMS is pinned to **0.229.0** because the cache format is an internal detail;
-verify the adapter and sign-in/sign-out flow before upgrading that version.
-The inbox includes status filters, New/Contacted/Tour scheduled/Closed statuses,
-phone links, notification status, and a retry button for failed notifications.
+The **Accounts** tab is restricted server-side to account owners and the verified
+`jimkittridge` GitHub owner. Create one Editor account per person/AI: editors can
+publish CMS content and manage all tour/waitlist requests, but cannot create
+accounts or modify website code, workflows, admin configuration, or other repos.
+Owner accounts can also manage access. Password reset and Disable access revoke
+all of that account's sessions immediately. Account activity records sign-ins,
+account changes, and the file paths in content commits (not lead contact details).
+
+Passwords are **server-generated 256-bit random secrets**, shown once. Store/share
+them through a password manager. They are hashed with SHA-256 like high-entropy
+API keys; human-chosen passwords are intentionally not accepted. Do not add a
+custom-password field without a suitable password KDF and migration. There is no
+public registration or emailed reset flow: an owner generates a replacement.
+
+Actual sessions use host-only Secure, HttpOnly, SameSite=Strict cookies, expire
+in 12 hours, and are hashed in D1. Sveltia's pinned user-cache format carries a
+CSRF marker which is useless without the cookie. The server checks the account
+and session on each request. Both the workspace Sign out button and Sveltia's
+account-menu Sign Out revoke the cookie-backed session. Password accounts use a
+restricted same-origin GitHub gateway; the GitHub credential never reaches the
+browser. Legacy owner GitHub sessions still use the existing direct API adapter.
+
+The CMS remains pinned to **0.229.0**. Verify the gateway read/save/upload flows,
+cache adapter, and both sign-out paths before upgrading. The inbox includes
+status filters, New/Contacted/Tour scheduled/Closed statuses, phone links,
+notification status, and a retry button for failed notifications.
+
+#### One-time standard-login setup
+
+1. Apply `migrations/0004_admin_accounts.sql` to production `LEADS_DB`. This only
+   creates account/session/rate-limit/audit tables; existing leads are unchanged.
+2. Create a **fine-grained GitHub personal access token**, limited to the
+   `jimkittridge/GetFlexSpace` repository with **Contents: Read and write** and
+   the required read-only metadata access. Store it as an encrypted production
+   Pages secret named **CMS_GITHUB_TOKEN**, then redeploy. Do not use the owner's
+   broad personal token or put any token in the repo. Optional Checks/Deployments
+   read access enables Sveltia's deployment-status display, not content editing.
+3. At `/admin/?login=github`, sign in as the GitHub owner. Open **Accounts** and
+   create your own Owner login, then separate Editor logins for AI tools. Save
+   each generated password immediately; it cannot be retrieved later.
+4. Verify a new login, a content save, the inbox, and revocation before sharing
+   accounts. Do not grant live agents access by reusing a local fixture account.
+
+Without the secret, password accounts can still access the inbox; the Content
+panel explains the missing connection, and the owner GitHub route still works.
+Use a separate D1 database and repository credential for any trusted preview.
+Never bind production lead data or credentials to untrusted preview code.
+
+The gateway permits markdown in the configured CMS content collections, ordinary
+PNG/JPEG/WebP/GIF uploads under `public/images`, and PDFs under `public/documents`.
+It rejects executable uploads (including SVG/HTML), arbitrary API calls and
+branches, scripted URLs, and executable markup. Markdown rendering is sanitized
+and JSON-LD escapes `<` to keep content from becoming script. Current AVIF upload
+support is deliberately disabled for password accounts pending an image-pipeline
+security upgrade. Existing SVG brand assets remain readable and usable.
 
 ### Hosting setup
 
@@ -220,22 +265,13 @@ GitHub. It can also be edited by hand in `src/content/`.
 
 ### Signing in
 
-The CMS offers **"Sign In Using Access Token"**, with a classic GitHub personal
-access token (`repo` scope). That talks directly to the GitHub API and needs no
-OAuth server. Sveltia remembers this sign-in and the tour inbox shares it. The
-session stops working when the token expires or is revoked. The unsupported
-OAuth button is hidden using `auth_methods: [token]`; it previously fell back to
-Netlify's unavailable OAuth service because this site has no `base_url`.
+Use the standard login at `/admin/`. Owners manage individual logins under
+**Accounts**; see the setup and credential handling notes above. The GitHub
+recovery option keeps `auth_methods: [token]` and the original direct connection.
+There is no need to share a GitHub token with an AI account.
 
-**Permanent fix (not yet done):** deploy
-[`sveltia/sveltia-cms-auth`](https://github.com/sveltia/sveltia-cms-auth) to
-Cloudflare Workers, register a GitHub OAuth App pointing at `<worker>/callback`,
-set `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` / `ALLOWED_DOMAINS`, then add
-`base_url: <worker-url>` under `backend:` in `config.yml`.
-
-`oauth-proxy/` holds an alternative worker. It emits valid JS now (a
-quote-escaping bug that broke the callback was fixed), but it has **no CSRF
-`state` parameter and no domain allowlist** — prefer the official worker.
+The historical `oauth-proxy/` is unused and has no CSRF state/domain allowlist.
+It is not part of standard sign-in and should not be deployed for this flow.
 
 ## Gotchas
 

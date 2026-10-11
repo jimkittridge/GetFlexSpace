@@ -18,17 +18,62 @@ import '../../styles/admin-workspace.css';
       <nav class="workspace-tabs" aria-label="Admin sections">
         <button type="button" id="content-tab" aria-current="page" aria-controls="content-panel">Content</button>
         <button type="button" id="tours-tab" aria-controls="tours-panel">Tour requests</button>
+        <button type="button" id="accounts-tab" aria-controls="accounts-panel" hidden>Accounts</button>
       </nav>
       <a class="workspace-site" href="/" target="_blank" rel="noopener">View site ↗</a>
+      <button type="button" id="workspace-signout" class="workspace-signout" hidden>Sign out</button>
     </header>
     <p id="workspace-notice" class="workspace-notice" role="status" hidden></p>
     <main class="workspace-main">
-      <section id="content-panel" aria-label="Website content" class="workspace-panel">
+      <section id="login-panel" class="workspace-panel account-panel" aria-labelledby="login-heading" hidden>
+        <div class="admin-login-card">
+          <p class="account-eyebrow">YOUR GETFLEXSPACE WORKSPACE</p>
+          <h1 id="login-heading">Welcome back.</h1>
+          <p>Sign in to manage website content, tour requests, and the waitlist.</p>
+          <form id="account-login-form">
+            <label>Username<input id="login-username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required maxlength="64" /></label>
+            <label>Password<input id="login-password" name="password" type="password" autocomplete="current-password" required maxlength="256" /></label>
+            <button type="submit" class="account-primary">Sign in</button>
+          </form>
+          <p id="login-message" role="status"></p>
+          <p class="account-help">Need access or a password reset? Contact the account owner.</p>
+          <a href="/admin/?login=github" class="owner-signin">Owner sign-in with GitHub →</a>
+        </div>
+      </section>
+      <section id="content-panel" aria-label="Website content" class="workspace-panel" hidden>
         <p id="cms-loading" class="workspace-loading" role="status">Loading content manager…</p>
         <div id="nc-root"></div>
       </section>
       <section id="tours-panel" aria-label="Tour requests" class="workspace-panel" hidden>
-        <iframe id="tours-frame" src="/admin/requests/?embedded=1" title="Tour requests inbox" referrerpolicy="same-origin"></iframe>
+        <iframe id="tours-frame" title="Tour requests inbox" referrerpolicy="same-origin"></iframe>
+      </section>
+      <section id="accounts-panel" aria-labelledby="accounts-heading" class="workspace-panel account-panel" hidden>
+        <div class="account-container">
+          <p class="account-eyebrow">CONTROL WHO HAS ACCESS</p>
+          <h1 id="accounts-heading">Accounts.</h1>
+          <p>Create a separate login for each person or AI. Editors can publish website content and manage all tour and waitlist requests.</p>
+          <div id="connection-notice" class="connection-notice" hidden>
+            <strong>Finish connecting content editing</strong>
+            <p>Add a fine-grained GitHub token as the <code>CMS_GITHUB_TOKEN</code> encrypted secret in Cloudflare Pages. Limit it to the GetFlexSpace repository, with Contents read/write. Keep this credential in Cloudflare; give each AI its own login below.</p>
+          </div>
+          <form id="create-account-form" class="create-account-form">
+            <label>Name<input name="name" required maxlength="80" placeholder="Grok" autocomplete="off" /></label>
+            <label>Username<input name="username" required pattern="[a-zA-Z0-9][a-zA-Z0-9._-]{1,63}" maxlength="64" placeholder="grok" autocomplete="off" autocapitalize="none" spellcheck="false" /></label>
+            <label>Access<select name="role"><option value="editor">Editor — content + inbox</option><option value="owner">Owner — also manage accounts</option></select></label>
+            <button class="account-primary" type="submit">Create account</button>
+          </form>
+          <p class="account-help">A strong password is generated for you. Only owners can create accounts, reset passwords, or disable access.</p>
+          <div id="new-credentials" class="new-credentials" hidden>
+            <strong>Save this password now. It is shown only once.</strong>
+            <p>Share these details only with the person or AI receiving access. This login can view personal information in the leasing inbox.</p>
+            <label>Login details<textarea id="credential-details" readonly rows="4" spellcheck="false"></textarea></label>
+            <button type="button" id="copy-credentials">Copy login details</button>
+            <button type="button" id="dismiss-credentials">I saved it</button>
+          </div>
+          <p id="accounts-message" role="status"></p>
+          <div id="accounts-list" class="accounts-list"></div>
+          <details class="account-activity"><summary>Recent account activity</summary><ul id="account-activity-list"></ul></details>
+        </div>
       </section>
     </main>
   </div>
