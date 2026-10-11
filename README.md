@@ -80,6 +80,9 @@ selection pause it until Play is requested. Reduced-motion users start paused.
 Photos are decoded before their image, caption, and property link change together.
 Public action arrows use `ArrowIcon.astro` SVGs rather than Unicode characters,
 which iOS Safari can display as emoji. Property links name the city and space type.
+Property contact cards use full-width call/text rows with SVG icons and the phone
+number inside the call action. The intro's Now leasing dot gives two gentle halo
+pulses (under five seconds) and stays static for reduced-motion users.
 The homepage mobile contact bar stays hidden while the hero is visible, then
 appears below the hero and hides again when visitors scroll back to it.
 All public pages use `HeaderNew.astro` for consistent logo sizing, navigation
@@ -110,7 +113,11 @@ not verify the live domain. The live redesign was verified in October 2026.
 
 The shared tour/waitlist pop-out collects location, ideal unit size, name, business
 name or website, and cell phone. Location and size share one row on desktop and
-mobile. Sizes are 500–1,000, 1,000–1,500, 1,500–2,000, and 2,000+ sq ft. The selected
+mobile. A specific suite CTA replaces the ideal-size selector with a read-only
+**Unit** field showing the chosen size (and unit number when recorded). Changing
+location or opening a general CTA restores the size selector. Exact-space
+requests save the suite selection without a redundant size range; notification
+emails and the inbox show the chosen space instead. General requests use sizes of 500–1,000, 1,000–1,500, 1,500–2,000, and 2,000+ sq ft. The selected
 size is saved in the private request record, displayed in the admin, and included
 in notification emails. Emails also include the property street address, city,
 state, and ZIP when recorded, plus the selected suite name/size and unit number

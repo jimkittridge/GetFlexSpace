@@ -118,3 +118,6 @@
 
 /* Keep both selects readable on phones without adding a form row. */
 .tour-dialog .tour-location-size select { padding-left: 8px; padding-right: 4px; font-size: 16px; }
+
+/* An exact unit takes the size field's place, keeping the same two-column row. */
+.tour-fields #tour-unit { font-size:16px; padding-left:10px; padding-right:8px; background:#eef2e9; border-color:#a4b49b; font-weight:600; }

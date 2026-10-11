@@ -4,6 +4,8 @@ const dialog = document.querySelector<HTMLDialogElement>('#inquiry-dialog')!;
 const form = document.querySelector<HTMLFormElement>('#tour-request-form')!;
 const location = document.querySelector<HTMLSelectElement>('#tour-location')!;
 const phone = document.querySelector<HTMLInputElement>('#tour-phone')!;
+const size = document.querySelector<HTMLSelectElement>('#tour-size')!;
+const unit = document.querySelector<HTMLInputElement>('#tour-unit')!;
 const submit = document.querySelector<HTMLButtonElement>('#tour-submit')!;
 const submitLabel = document.querySelector('#tour-submit-label')!;
 const errorBox = document.querySelector<HTMLElement>('#tour-form-error')!;
@@ -48,7 +50,15 @@ function updateMode() {
       : full ? `${location.value} is full. We’ll contact you when space opens.` : location.value ? `We’ll contact you about upcoming space in ${location.value}.` : 'Choose a location and ideal size. We’ll contact you when space opens.'
     : 'We’ll call or text to confirm a tour time.';
   const suite = selectedSuite();
-  if (suite) {
+  const hasSelectedUnit = Boolean(selectedSuiteKey && suite);
+  document.querySelector<HTMLElement>('#tour-size-field')!.hidden = hasSelectedUnit;
+  document.querySelector<HTMLElement>('#tour-unit-field')!.hidden = !hasSelectedUnit;
+  size.required = !hasSelectedUnit;
+  size.disabled = hasSelectedUnit || sending;
+  unit.disabled = !hasSelectedUnit || sending;
+  unit.value = hasSelectedUnit ? (suite!.unitNumber ? `${suite!.unitNumber} — ${suite!.size}` : suite!.size) : '';
+  if (hasSelectedUnit) size.value = '';
+  if (suite && !hasSelectedUnit) {
     const intro = document.querySelector('#inquiry-intro')!;
     intro.textContent = `${suite.label}. ${intro.textContent}`;
   }
@@ -97,7 +107,7 @@ form.addEventListener('submit', async event => {
     business: String(data.get('business') || '').trim(), cell_phone: phone.value.trim(),
     location_slug: location.selectedOptions[0]?.dataset.slug || '',
     suite_key: selectedSuiteKey || '',
-    ideal_size: String(data.get('ideal_size') || ''),
+    ideal_size: selectedSuiteKey ? '' : String(data.get('ideal_size') || ''),
     request_type: mode, website_confirm: String(data.get('website_confirm') || ''),
   };
   const signature = JSON.stringify(payload);

@@ -94,7 +94,8 @@ export async function notifyRequest(db, lead, env) {
         ...(property.unitNote ? [`Unit note: ${property.unitNote}`] : []),
         ...(property.selection === 'only-listed-space' ? ['Space context: This is the only space listed for this property.'] : []),
         ...(property.url ? [`Property details: ${property.url}`] : []),
-        `Ideal unit size: ${unitSizeLabel(lead.ideal_size)}`, `Business: ${lead.business}`,
+        ...(property.selection === 'selected-space' ? [] : [`Ideal unit size: ${unitSizeLabel(lead.ideal_size)}`]),
+        `Business: ${lead.business}`,
         `Cell phone: ${lead.cell_phone}`, `Request type: ${lead.request_type}`,
         `Request ID: ${lead.id}`, `Received at: ${lead.created_at}`,
         '', 'Manage requests: https://getflexspace.com/admin/requests/',
@@ -108,9 +109,13 @@ export async function notifyRequest(db, lead, env) {
 }
 
 function sameInquiry(existing, lead) {
-  if (['name', 'business', 'cell_phone', 'request_type', 'ideal_size'].some(key => existing[key] !== lead[key])) return false;
+  if (['name', 'business', 'cell_phone', 'request_type'].some(key => existing[key] !== lead[key])) return false;
   const saved = existing.property_context ? JSON.parse(existing.property_context) : resolveInquiryContext(existing);
   const current = JSON.parse(lead.property_context);
+  // Older forms asked for a range even after the visitor chose an exact space.
+  // That redundant field must not turn a safe retry into a conflicting lead.
+  if ((saved?.selection !== 'selected-space' || current.selection !== 'selected-space')
+    && existing.ideal_size !== lead.ideal_size) return false;
   return saved?.slug === current.slug
     && (existing.property_context || lead.suite_key ? saved?.suiteKey === current.suiteKey : true);
 }
@@ -125,6 +130,7 @@ export async function submitRequest(context) {
   const property = resolveInquiryContext(lead);
   if (!property) return json({ error: 'This property or space listing has changed. Refresh the page and choose your location again.' }, 400);
   lead.location = property.name;
+  if (property.selection === 'selected-space') lead.ideal_size = null;
   lead.property_context = JSON.stringify(property);
   try {
     if (!(await allowSubmission(request, env.LEADS_DB))) return json({ error: 'Please wait a few minutes before trying again, or call or text leasing.' }, 429);
