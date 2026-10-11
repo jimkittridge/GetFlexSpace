@@ -2,7 +2,7 @@ import { CMS_USER_KEYS, readCmsSession } from '../lib/cms-session.js';
 import { unitSizeLabel } from '../lib/unit-sizes.js';
 
 type Lead = { id: string; created_at: string; name: string; location: string; business: string;
-  property?: { address: string; addressNote?: string; suiteLabel?: string; unitNote?: string };
+  property?: { address: string; addressNote?: string; suiteLabel?: string; unitNote?: string; selection?: string };
   cell_phone: string; ideal_size?: string | null; request_type: string; status: string; email_status: string };
 const labels: Record<string, string> = { new: 'New', contacted: 'Contacted', tour_scheduled: 'Tour scheduled', closed: 'Closed' };
 const login = document.querySelector<HTMLElement>('#admin-login')!;
@@ -69,7 +69,7 @@ function renderLead(lead: Lead) {
     element('p', `Space: ${lead.property?.suiteLabel || 'No specific space selected'}`, 'business'),
     ...(lead.property?.unitNote ? [element('p', lead.property.unitNote, 'business')] : []),
     ...(lead.property?.addressNote ? [element('p', lead.property.addressNote, 'business')] : []),
-    element('p', `Ideal unit size: ${unitSizeLabel(lead.ideal_size)}`, 'business'), phone,
+    ...(lead.property?.selection === 'selected-space' ? [] : [element('p', `Ideal unit size: ${unitSizeLabel(lead.ideal_size)}`, 'business')]), phone,
     element('p', `Reference ${lead.id.slice(0, 8).toUpperCase()}`, 'request-id'));
   const actions = element('div', '', 'request-actions');
   const label = element('label', 'Request status');

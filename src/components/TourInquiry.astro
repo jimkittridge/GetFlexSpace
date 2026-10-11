@@ -34,11 +34,14 @@ const properties = (await getCollection('locations', isPublished)).map(({ data }
                 {markets.map(market => <option value={market.name} data-slug={market.slug} data-available={String(market.available)} data-availability={market.availability} data-marketing-stage={market.marketingStage}>{market.name}</option>)}
               </select>
             </label>
-            <label for="tour-size">Ideal size (sq ft)
+            <label id="tour-size-field" for="tour-size">Ideal size (sq ft)
               <select id="tour-size" name="ideal_size" required>
                 <option value="">Choose size</option>
                 {UNIT_SIZES.map(size => <option value={size.value}>{size.label}</option>)}
               </select>
+            </label>
+            <label id="tour-unit-field" for="tour-unit" hidden>Unit
+              <input id="tour-unit" type="text" readonly disabled/>
             </label>
             </div>
             <label for="tour-name">Your name

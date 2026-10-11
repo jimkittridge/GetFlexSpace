@@ -185,6 +185,8 @@ test('suite inquiries save the trusted address and selected space in admin and t
   assert.equal(property.address, '1320 Old Oxford Rd, Durham, NC 27704');
   assert.equal(property.suiteLabel, '2,077 SF Suite');
   assert.equal(property.unitNumber, null);
+  assert.equal(saved.ideal_size, null);
+  assert.doesNotMatch(notifications[0].text, /Ideal unit size:/);
   assert.match(property.unitNote, /no unit number is recorded/);
   assert.match(notifications[0].subject, /1320 Old Oxford Rd, Durham, NC 27704 — 2,077 SF Suite/);
   assert.match(notifications[0].text, /Space of interest: 2,077 SF Suite/);
@@ -196,14 +198,16 @@ test('suite inquiries save the trusted address and selected space in admin and t
   assert.equal((await submitRequest(context({ ...data, suite_key: JSON.stringify(['1,700 SF Suite', '1,700 SF', '']) }, db))).status, 409);
 });
 
-test('suite waitlist emails identify the layout without turning preferred size into a unit', async () => {
+test('suite waitlist emails use the selected layout without a redundant preferred size', async () => {
   const db = database(); const notifications = [];
   const ctx = context({ ...lead(), location: 'Fletcher / Asheville', location_slug: 'asheville-nc',
     request_type: 'waitlist', ideal_size: '500-1000', suite_key: JSON.stringify(['Standard Suite', '1,000 SF', '']) }, db);
   ctx.env.TOUR_EMAIL_ENABLED = 'true'; ctx.env.TOUR_NOTIFICATIONS = { notify: async message => notifications.push(message) };
   assert.equal((await submitRequest(ctx)).status, 201); await Promise.all(ctx.promises);
   assert.match(notifications[0].subject, /452 Butler Bridge Rd, Fletcher, NC 28732 — Standard Suite — 1,000 SF/);
-  assert.match(notifications[0].text, /Ideal unit size: 500–1,000 sq ft/);
+  assert.equal(db.sqlite.prepare('SELECT ideal_size FROM tour_requests').get().ideal_size, null);
+  assert.match(notifications[0].text, /Space of interest: Standard Suite — 1,000 SF/);
+  assert.doesNotMatch(notifications[0].text, /Ideal unit size:/);
   assert.match(notifications[0].text, /Unit \/ suite number: Not specified/);
 });
 
@@ -251,4 +255,36 @@ test('the context migration preserves old leads and legacy emails explain missin
   sqlite.exec(readFileSync(new URL('../migrations/0003_inquiry_property_context.sql', import.meta.url), 'utf8'));
   const saved = sqlite.prepare('SELECT * FROM tour_requests').get();
   assert.equal(saved.id, data.id); assert.equal(saved.property_context, null);
+});
+
+
+test('cached forms cannot save or email a range that contradicts the selected suite', async () => {
+  const db = database(); const notifications = [];
+  const data = { ...lead(), location_slug: 'durham-nc',
+    suite_key: JSON.stringify(['1,700 SF Suite', '1,700 SF', '']), ideal_size: '1000-1500' };
+  const ctx = context(data, db);
+  ctx.env.TOUR_EMAIL_ENABLED = 'true';
+  ctx.env.TOUR_NOTIFICATIONS = { notify: async message => notifications.push(message) };
+  assert.equal((await submitRequest(ctx)).status, 201); await Promise.all(ctx.promises);
+  const saved = db.sqlite.prepare('SELECT * FROM tour_requests').get();
+  assert.equal(saved.ideal_size, null);
+  assert.equal(JSON.parse(saved.property_context).suiteLabel, '1,700 SF Suite');
+  assert.match(notifications[0].text, /Space of interest: 1,700 SF Suite/);
+  assert.doesNotMatch(notifications[0].text, /Ideal unit size:|1,000–1,500/);
+  assert.equal((await submitRequest(context({ ...data, ideal_size: '' }, db))).status, 200);
+  assert.equal(db.sqlite.prepare('SELECT COUNT(*) AS count FROM tour_requests').get().count, 1);
+});
+
+test('previously saved suite requests remain retryable and omit the obsolete range in emails', async () => {
+  const db = database();
+  const data = { ...lead(), suite_key: JSON.stringify(['2,077 SF Suite', '2,077 SF', '']) };
+  assert.equal((await submitRequest(context(data, db))).status, 201);
+  db.sqlite.prepare('UPDATE tour_requests SET ideal_size = ? WHERE id = ?').run('1000-1500', data.id);
+  assert.equal((await submitRequest(context({ ...data, ideal_size: '1000-1500' }, db))).status, 200);
+  const notifications = [];
+  await notifyRequest(db, db.sqlite.prepare('SELECT * FROM tour_requests').get(), {
+    TOUR_EMAIL_ENABLED: 'true', TOUR_NOTIFICATIONS: { notify: async message => notifications.push(message) },
+  });
+  assert.match(notifications[0].text, /Space of interest: 2,077 SF Suite/);
+  assert.doesNotMatch(notifications[0].text, /Ideal unit size:/);
 });
