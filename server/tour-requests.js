@@ -1,5 +1,6 @@
 import { UNIT_SIZES, unitSizeLabel } from '../src/lib/unit-sizes.js';
 import { resolveInquiryContext, savedInquiryContext } from './inquiry-context.js';
+import { isSessionRequest, sessionAccount } from './admin-auth.js';
 
 export const RECIPIENT = 'jim@rothcapital.com';
 export const STATUSES = ['new', 'contacted', 'tour_scheduled', 'closed'];
@@ -154,7 +155,10 @@ export async function submitRequest(context) {
   }
 }
 
-export async function authorizeAdmin(request, fetcher = fetch) {
+export async function authorizeAdmin(request, fetcher = fetch, env = {}) {
+  if (isSessionRequest(request)) {
+    try { return Boolean(await sessionAccount(request, env)); } catch { return false; }
+  }
   const authorization = request.headers.get('Authorization') || '';
   if (!/^Bearer \S{20,255}$/.test(authorization)) return false;
   try {
@@ -171,7 +175,7 @@ export async function authorizeAdmin(request, fetcher = fetch) {
 }
 
 export async function listRequests(context, fetcher = fetch) {
-  if (!(await authorizeAdmin(context.request, fetcher))) return json({ error: 'Sign in with a GitHub token that can edit GetFlexSpace.' }, 401);
+  if (!(await authorizeAdmin(context.request, fetcher, context.env))) return json({ error: 'Sign in to your GetFlexSpace admin account.' }, 401);
   if (!context.env.LEADS_DB) return json({ error: 'The request database is not connected yet.' }, 503);
   const url = new URL(context.request.url);
   const status = url.searchParams.get('status') || '';
@@ -188,7 +192,7 @@ export async function listRequests(context, fetcher = fetch) {
 
 export async function updateRequest(context, fetcher = fetch) {
   if (!sameOrigin(context.request)) return json({ error: 'Invalid origin.' }, 403);
-  if (!(await authorizeAdmin(context.request, fetcher))) return json({ error: 'Sign in with a GitHub token that can edit GetFlexSpace.' }, 401);
+  if (!(await authorizeAdmin(context.request, fetcher, context.env))) return json({ error: 'Sign in to your GetFlexSpace admin account.' }, 401);
   if (!context.env.LEADS_DB) return json({ error: 'The request database is not connected yet.' }, 503);
   try {
     const data = await readJson(context.request);
