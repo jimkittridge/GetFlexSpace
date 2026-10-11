@@ -112,7 +112,14 @@ The shared tour/waitlist pop-out collects location, ideal unit size, name, busin
 name or website, and cell phone. Location and size share one row on desktop and
 mobile. Sizes are 500–1,000, 1,000–1,500, 1,500–2,000, and 2,000+ sq ft. The selected
 size is saved in the private request record, displayed in the admin, and included
-in notification emails. Older forms and requests without a size remain valid. Large call and text links sit beside it on desktop;
+in notification emails. Emails also include the property street address, city,
+state, and ZIP when recorded, plus the selected suite name/size and unit number
+when known. Suite-card buttons carry the specific selection; changing location
+or opening a general CTA clears it. General inquiries explicitly say no space
+was selected. A property with one listed space identifies it as the only listing,
+not as an explicit visitor selection. Add actual unit identifiers under
+**Locations → Suites → Unit / Suite Number** in the CMS; blank unit numbers and
+missing ZIP codes are explained in the notification instead of guessed. Older forms and requests without a size remain valid. Large call and text links sit beside it on desktop;
 compact buttons share a row below the form on mobile. The mobile form fits in
 the phone width and scrolls on shorter screens. Mobile readability takes priority
 over fitting everything above the fold: homepage body copy is 18px, with larger
@@ -130,7 +137,7 @@ Share `https://getflexspace.com/?waitlist=1` to open the general waitlist. Use a
 published property slug, such as `?waitlist=asheville-nc`, to preselect it. A
 property page also accepts `?waitlist=1` to preselect that property. Selecting a
 location while the waitlist is open updates the browser URL, ready to copy; only
-the property slug is added, never personal form details. Closing removes the
+the property slug and an optional selected-space key are added, never personal form details. Closing removes the
 waitlist parameter. Unpublished or unknown locations are never preselected.
 
 ### Tour request admin
@@ -157,10 +164,10 @@ admin APIs. `server/tour-requests.js` contains validation, persistence, and emai
 logic. The static GitHub Pages mirror does not support these functions.
 
 1. Create D1 database `getflexspace-tour-requests` and run
-   `migrations/0001_tour_requests.sql` and then `migrations/0002_ideal_unit_size.sql`
-   in its console (or Wrangler). On an existing database, apply only the new
-   migration **before** deploying code that writes `ideal_size`; it adds a nullable
-   column and preserves all existing requests.
+   `migrations/0001_tour_requests.sql`, `migrations/0002_ideal_unit_size.sql`, and
+   `migrations/0003_inquiry_property_context.sql` in order in its console (or
+   Wrangler). On an existing database, apply only unapplied migrations **before**
+   deploying the corresponding code. These additions preserve existing requests.
 2. Bind that database as **LEADS_DB** in the **production** environment of Pages
    project `testgithub`. Use a separate test database for any preview environment;
    never share production lead data with untrusted preview code.
@@ -181,6 +188,16 @@ available on the free plan. No mail API key is stored in this repository. The
 notification worker is deployed separately from the Pages/GitHub build; update
 it with `wrangler deploy --config notification-worker/wrangler.jsonc` when its
 code changes. Its checked-in configuration disables public and preview URLs.
+
+The build and test scripts generate a server-only inquiry catalog from published
+CMS location records. It emits a plain JavaScript module for compatibility with
+Cloudflare’s hosted Pages Functions compiler. The API resolves location/suite identifiers against that
+catalog, ignoring client-provided address or unit text. Each new lead saves a
+snapshot of its address and space details in `property_context`, so a retry
+does not silently use later listing edits. Legacy leads without a snapshot use
+the current address with an explicit note; their original unit selection was not
+captured and cannot be reconstructed. Run `npm run build` before a standalone
+Cloudflare Functions compile so the generated catalog exists.
 
 For local backend testing, build the site and run `wrangler pages dev dist` with
 a local D1 binding. Apply the migration to that same local database. Leave

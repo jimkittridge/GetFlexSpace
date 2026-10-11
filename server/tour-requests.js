@@ -1,4 +1,5 @@
 import { UNIT_SIZES, unitSizeLabel } from '../src/lib/unit-sizes.js';
+import { resolveInquiryContext, savedInquiryContext } from './inquiry-context.js';
 
 export const RECIPIENT = 'jim@rothcapital.com';
 export const STATUSES = ['new', 'contacted', 'tour_scheduled', 'closed'];
@@ -48,8 +49,12 @@ export function validateRequest(data) {
   // Older, already-open forms can still submit without the newly added field.
   const ideal_size = data.ideal_size === undefined || data.ideal_size === '' ? null : data.ideal_size;
   if (ideal_size !== null && !UNIT_SIZES.some(size => size.value === ideal_size)) return null;
+  const location_slug = data.location_slug == null || data.location_slug === '' ? null : clean(data.location_slug, 2, 100);
+  const suite_key = data.suite_key == null || data.suite_key === '' ? null : clean(data.suite_key, 2, 500);
+  if ((data.location_slug != null && data.location_slug !== '' && !location_slug)
+    || (data.suite_key != null && data.suite_key !== '' && !suite_key)) return null;
   if (typeof data.id !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(data.id)) return null;
-  return { id: data.id, name, location, business, cell_phone: phone, request_type: data.request_type, ideal_size };
+  return { id: data.id, name, location, business, cell_phone: phone, request_type: data.request_type, ideal_size, location_slug, suite_key };
 }
 
 async function allowSubmission(request, db) {
@@ -77,10 +82,18 @@ export async function notifyRequest(db, lead, env) {
   if (claim.meta.changes !== 1) return;
   try {
     if (!env.TOUR_NOTIFICATIONS) throw new Error('Email sender unavailable');
+    const property = savedInquiryContext(lead);
     await env.TOUR_NOTIFICATIONS.notify({
-      subject: `GetFlexSpace ${lead.request_type === 'tour' ? 'tour request' : 'waitlist request'} — ${lead.location}`,
+      subject: `GetFlexSpace ${lead.request_type === 'tour' ? 'tour request' : 'waitlist request'} — ${property.address}${property.suiteLabel ? ` — ${property.suiteLabel}` : ''}`.slice(0, 300),
       text: [
-        `Name: ${lead.name}`, `Location: ${lead.location}`, `Ideal unit size: ${unitSizeLabel(lead.ideal_size)}`, `Business: ${lead.business}`,
+        `Name: ${lead.name}`, `Location: ${lead.location}`, `Property address: ${property.address}`,
+        ...(property.addressNote ? [`Address note: ${property.addressNote}`] : []),
+        `Space of interest: ${property.suiteLabel || 'No specific space selected'}`,
+        `Unit / suite number: ${property.unitNumber || 'Not specified'}`,
+        ...(property.unitNote ? [`Unit note: ${property.unitNote}`] : []),
+        ...(property.selection === 'only-listed-space' ? ['Space context: This is the only space listed for this property.'] : []),
+        ...(property.url ? [`Property details: ${property.url}`] : []),
+        `Ideal unit size: ${unitSizeLabel(lead.ideal_size)}`, `Business: ${lead.business}`,
         `Cell phone: ${lead.cell_phone}`, `Request type: ${lead.request_type}`,
         `Request ID: ${lead.id}`, `Received at: ${lead.created_at}`,
         '', 'Manage requests: https://getflexspace.com/admin/requests/',
@@ -93,6 +106,14 @@ export async function notifyRequest(db, lead, env) {
   }
 }
 
+function sameInquiry(existing, lead) {
+  if (['name', 'business', 'cell_phone', 'request_type', 'ideal_size'].some(key => existing[key] !== lead[key])) return false;
+  const saved = existing.property_context ? JSON.parse(existing.property_context) : resolveInquiryContext(existing);
+  const current = JSON.parse(lead.property_context);
+  return saved?.slug === current.slug
+    && (existing.property_context || lead.suite_key ? saved?.suiteKey === current.suiteKey : true);
+}
+
 export async function submitRequest(context) {
   const { request, env } = context;
   if (!sameOrigin(request)) return json({ error: 'Please submit this form from our website.' }, 403);
@@ -100,23 +121,27 @@ export async function submitRequest(context) {
   let lead;
   try { lead = validateRequest(await readJson(request)); } catch { /* Invalid or oversized JSON. */ }
   if (!lead) return json({ error: 'Check your name, location, ideal size, business, and cell phone, then try again.' }, 400);
+  const property = resolveInquiryContext(lead);
+  if (!property) return json({ error: 'This property or space listing has changed. Refresh the page and choose your location again.' }, 400);
+  lead.location = property.name;
+  lead.property_context = JSON.stringify(property);
   try {
     if (!(await allowSubmission(request, env.LEADS_DB))) return json({ error: 'Please wait a few minutes before trying again, or call or text leasing.' }, 429);
     const existing = await env.LEADS_DB.prepare('SELECT * FROM tour_requests WHERE id = ?').bind(lead.id).first();
     if (existing) {
-      if (['name', 'location', 'business', 'cell_phone', 'request_type', 'ideal_size'].some(key => existing[key] !== lead[key])) {
+      if (!sameInquiry(existing, lead)) {
         return json({ error: 'This request has already been received. Please call or text us to update it.' }, 409);
       }
       return json({ success: true, id: existing.id });
     }
     const now = new Date().toISOString();
     const result = await env.LEADS_DB.prepare(`INSERT OR IGNORE INTO tour_requests
-      (id, created_at, updated_at, name, location, business, cell_phone, request_type, ideal_size)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(lead.id, now, now, lead.name, lead.location, lead.business, lead.cell_phone, lead.request_type, lead.ideal_size).run();
+      (id, created_at, updated_at, name, location, business, cell_phone, request_type, ideal_size, property_context)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(lead.id, now, now, lead.name, lead.location, lead.business, lead.cell_phone, lead.request_type, lead.ideal_size, lead.property_context).run();
     if (result.meta.changes !== 1) {
       // A concurrent retry may have stored this ID while this request was validating.
       const saved = await env.LEADS_DB.prepare('SELECT * FROM tour_requests WHERE id = ?').bind(lead.id).first();
-      if (!saved || ['name', 'location', 'business', 'cell_phone', 'request_type', 'ideal_size'].some(key => saved[key] !== lead[key])) {
+      if (!saved || !sameInquiry(saved, lead)) {
         return json({ error: 'This request has already been received. Please call or text us to update it.' }, 409);
       }
     } else {
@@ -157,7 +182,7 @@ export async function listRequests(context, fetcher = fetch) {
     const params = status ? [status] : [];
     const rows = await context.env.LEADS_DB.prepare(`SELECT * FROM tour_requests${query} ORDER BY created_at DESC, id DESC LIMIT 51 OFFSET ?`).bind(...params, offset).all();
     const counts = await context.env.LEADS_DB.prepare('SELECT status, COUNT(*) AS count FROM tour_requests GROUP BY status').all();
-    return json({ requests: rows.results.slice(0, 50), hasMore: rows.results.length > 50, counts: counts.results, recipient: RECIPIENT });
+    return json({ requests: rows.results.slice(0, 50).map(lead => ({ ...lead, property: savedInquiryContext(lead) })), hasMore: rows.results.length > 50, counts: counts.results, recipient: RECIPIENT });
   } catch { return json({ error: 'Couldn’t load requests. Please try again.' }, 503); }
 }
 

@@ -1,5 +1,9 @@
 ---
 import ArrowIcon from './ArrowIcon.astro';
+import { getCollection } from 'astro:content';
+import { isPublished } from '../lib/portfolio.js';
+import { inquiryProperty } from '../lib/inquiry-property.js';
+import { scriptJson } from '../lib/homepage';
 import { UNIT_SIZES } from '../lib/unit-sizes.js';
 import '../styles/tour-inquiry.css';
 interface Props {
@@ -9,8 +13,10 @@ interface Props {
   email: string;
 }
 const { markets, phone, phoneHref, email } = Astro.props;
+const properties = (await getCollection('locations', isPublished)).map(({ data }) => inquiryProperty(data));
 ---
 
+<script id="inquiry-properties-data" type="application/json" set:html={scriptJson(properties)}/>
 <dialog id="inquiry-dialog" class="tour-dialog" aria-labelledby="inquiry-title" aria-describedby="inquiry-intro">
   <button class="close-dialog" aria-label="Close tour request">×</button>
   <div class="tour-columns">

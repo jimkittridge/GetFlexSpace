@@ -49,6 +49,7 @@ const locations = defineCollection({
     })),
     suites: z.array(z.object({
       name: z.string(),
+      unitNumber: z.string().nullish().transform(v => v?.trim() || ''),
       size: z.string(),
       status: z.enum(['available', 'waitlist']),
       description: z.string(),

@@ -15,13 +15,23 @@ let requestId = '';
 let lastPayload = '';
 let mode = 'tour';
 let requestedMode: 'tour' | 'waitlist' | undefined;
+type InquirySuite = { key: string; label: string; unitNumber: string; size: string };
+type InquiryProperty = { slug: string; suites: InquirySuite[] };
+const properties: InquiryProperty[] = JSON.parse(document.querySelector('#inquiry-properties-data')!.textContent!);
+let selectedSuiteKey = '';
+function selectedSuite() {
+  const property = properties.find(item => item.slug === location.selectedOptions[0]?.dataset.slug);
+  return property?.suites.find(suite => suite.key === selectedSuiteKey)
+    || (property?.suites.length === 1 ? property.suites[0] : undefined);
+}
 
 function syncWaitlistLink() {
   const url = new URL(window.location.href);
   if (dialog.open && mode === 'waitlist') {
-    history.replaceState(history.state, '', waitlistUrl(url, location.selectedOptions[0]?.dataset.slug));
+    history.replaceState(history.state, '', waitlistUrl(url, location.selectedOptions[0]?.dataset.slug, selectedSuiteKey));
   } else if (url.searchParams.has('waitlist')) {
     url.searchParams.delete('waitlist');
+    url.searchParams.delete('space');
     history.replaceState(history.state, '', url);
   }
 }
@@ -37,6 +47,11 @@ function updateMode() {
     ? comingSoon ? `${location.value} is coming soon. We’ll contact you about opening dates and availability.`
       : full ? `${location.value} is full. We’ll contact you when space opens.` : location.value ? `We’ll contact you about upcoming space in ${location.value}.` : 'Choose a location and ideal size. We’ll contact you when space opens.'
     : 'We’ll call or text to confirm a tour time.';
+  const suite = selectedSuite();
+  if (suite) {
+    const intro = document.querySelector('#inquiry-intro')!;
+    intro.textContent = `${suite.label}. ${intro.textContent}`;
+  }
   submitLabel.textContent = preAcquisition ? 'Register interest' : waitlist ? 'Join the waitlist' : 'Request my tour';
   document.querySelector('.tour-form-note')!.textContent = preAcquisition ? 'Interest only. Timing and availability are not confirmed.' : waitlist
     ? 'No obligation. A suite isn’t reserved.'
@@ -45,7 +60,7 @@ function updateMode() {
   if (dialog.open) syncWaitlistLink();
 }
 
-export function openTourInquiry(city = '', requestType?: 'tour' | 'waitlist') {
+export function openTourInquiry(city = '', requestType?: 'tour' | 'waitlist', suiteKey = '') {
   if (sent) {
     form.reset(); sent = false; requestId = ''; lastPayload = '';
     success.hidden = true; formContent.hidden = false;
@@ -55,6 +70,8 @@ export function openTourInquiry(city = '', requestType?: 'tour' | 'waitlist') {
   if (!sending) {
     requestedMode = requestType;
     if (city) location.value = city;
+    selectedSuiteKey = suiteKey;
+    if (selectedSuite()?.key !== suiteKey) selectedSuiteKey = '';
     errorBox.hidden = true;
     updateMode();
   }
@@ -62,7 +79,7 @@ export function openTourInquiry(city = '', requestType?: 'tour' | 'waitlist') {
   syncWaitlistLink();
 }
 
-location.addEventListener('change', updateMode);
+location.addEventListener('change', () => { selectedSuiteKey = ''; updateMode(); });
 dialog.addEventListener('close', syncWaitlistLink);
 phone.addEventListener('input', () => phone.setCustomValidity(''));
 document.querySelector('#tour-done')!.addEventListener('click', () => dialog.close());
@@ -78,6 +95,8 @@ form.addEventListener('submit', async event => {
   const payload = {
     name: String(data.get('name') || '').trim(), location: String(data.get('location') || ''),
     business: String(data.get('business') || '').trim(), cell_phone: phone.value.trim(),
+    location_slug: location.selectedOptions[0]?.dataset.slug || '',
+    suite_key: selectedSuiteKey || '',
     ideal_size: String(data.get('ideal_size') || ''),
     request_type: mode, website_confirm: String(data.get('website_confirm') || ''),
   };
@@ -120,4 +139,4 @@ form.addEventListener('submit', async event => {
 
 const linkedLocation = waitlistLocation(new URL(window.location.href),
   Array.from(location.options).filter(option => option.dataset.slug).map(option => ({ slug: option.dataset.slug, name: option.value })));
-if (linkedLocation !== undefined) openTourInquiry(linkedLocation, 'waitlist');
+if (linkedLocation !== undefined) openTourInquiry(linkedLocation, 'waitlist', new URL(window.location.href).searchParams.get('space') || '');

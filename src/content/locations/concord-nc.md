@@ -81,7 +81,7 @@ schema:
     street: 101 Corban Ave SW
     city: Concord
     state: NC
-    zip: ""
+    zip: "28025"
   phone: "+19806002520"
 heroH1: |-
   Warehouse space in Concord.
