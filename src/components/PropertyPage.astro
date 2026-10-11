@@ -1,4 +1,5 @@
 ---
+import { suiteKey } from '../lib/inquiry-property.js';
 import ArrowIcon from './ArrowIcon.astro';
 import { isPublished, comparePortfolio, acquisitionNotice } from '../lib/portfolio.js';
 import { getCollection, getEntry, render } from 'astro:content';
@@ -92,10 +93,10 @@ const schema = [
           {available.length > 0 && suites.some(suite => !suite.available) && <div class="suite-filters" role="group" aria-label="Filter suites"><button type="button" data-suite-filter="all" aria-pressed="true">All spaces <span>{suites.length}</span></button><button type="button" data-suite-filter="available" aria-pressed="false">Available now <span>{available.length}</span></button><button type="button" data-suite-filter="waitlist" aria-pressed="false">Waitlist</button></div>}
           <p class="property-sr-only" id="suite-filter-status" role="status"></p>
           <div class="property-suite-list">{suites.map((suite, index) => <article class="property-suite" data-suite-status={suite.available ? 'available' : 'waitlist'} aria-labelledby={`suite-title-${index}`}>
-            <div class="suite-card-heading"><div><p class="property-eyebrow">{suite.name}</p><h3 id={`suite-title-${index}`}>{suite.size}</h3></div><span class:list={['property-badge', { available: suite.available }]}>{comingSoon ? 'Coming soon' : suite.available ? 'Available now' : 'Waitlist'}</span></div>
+            <div class="suite-card-heading"><div><p class="property-eyebrow">{suite.unitNumber ? `Unit ${suite.unitNumber} · ${suite.name}` : suite.name}</p><h3 id={`suite-title-${index}`}>{suite.size}</h3></div><span class:list={['property-badge', { available: suite.available }]}>{comingSoon ? 'Coming soon' : suite.available ? 'Available now' : 'Waitlist'}</span></div>
             <p class="suite-description">{suite.description}</p>
             {suite.media.length > 0 && <SuiteGallery media={suite.media} name={`${suite.size} suite`} brochure={suite.brochure} galleryId={`suite-${index}`} />}
-            <div class="suite-card-bottom"><div><p class="suite-price-label">{(suite.available || comingSoon) && !preAcquisition && suite.baseRent ? comingSoon ? 'Expected base rent' : 'Listed base rent' : 'Availability & pricing'}</p><p class="suite-price">{(suite.available || comingSoon) && !preAcquisition && suite.baseRent || 'Ask our leasing team'}</p></div><a href="#request-tour" class:list={['property-button', { secondary: !suite.available }]} data-property-inquiry={city.name} data-request-type={suite.available ? 'tour' : 'waitlist'}>{suite.available ? 'Request a tour' : 'Join location waitlist'} <span aria-hidden="true"><ArrowIcon/></span></a></div>
+            <div class="suite-card-bottom"><div><p class="suite-price-label">{(suite.available || comingSoon) && !preAcquisition && suite.baseRent ? comingSoon ? 'Expected base rent' : 'Listed base rent' : 'Availability & pricing'}</p><p class="suite-price">{(suite.available || comingSoon) && !preAcquisition && suite.baseRent || 'Ask our leasing team'}</p></div><a href="#request-tour" class:list={['property-button', { secondary: !suite.available }]} data-property-inquiry={city.name} data-suite-key={suiteKey(suite)} data-request-type={suite.available ? 'tour' : 'waitlist'}>{suite.available ? 'Request a tour' : 'Join waitlist for this space'} <span aria-hidden="true"><ArrowIcon/></span></a></div>
             {(suite.available || comingSoon) && !preAcquisition && suite.baseRent && <p class="property-note">{city.pricingNote || 'Ask leasing for the total monthly cost, including additional charges.'}</p>}
           </article>)}</div>
           {suites.length === 0 && <p class="property-empty">Contact leasing for current layouts and availability.</p>}

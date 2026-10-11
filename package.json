@@ -3,10 +3,12 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "node --test tests/cms-config.test.mjs",
+    "prebuild": "node --test tests/cms-config.test.mjs && node scripts/generate-inquiry-properties.mjs",
     "build": "astro build",
     "preview": "astro preview",
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "pretest": "node scripts/generate-inquiry-properties.mjs",
+    "predev": "node scripts/generate-inquiry-properties.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.1",

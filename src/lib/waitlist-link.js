@@ -7,8 +7,10 @@ export function waitlistLocation(url, markets) {
   return markets.find(market => market.slug === slug)?.name || '';
 }
 
-export function waitlistUrl(url, slug = '') {
+export function waitlistUrl(url, slug = '', suiteKey = '') {
   const shared = new URL(url);
   shared.searchParams.set('waitlist', slug || '1');
+  if (suiteKey && slug) shared.searchParams.set('space', suiteKey);
+  else shared.searchParams.delete('space');
   return shared;
 }

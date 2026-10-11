@@ -4,7 +4,7 @@ document.querySelectorAll<HTMLAnchorElement>('[data-property-inquiry]').forEach(
   link.addEventListener('click', event => {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
-    openTourInquiry(link.dataset.propertyInquiry, link.dataset.requestType === 'waitlist' ? 'waitlist' : undefined);
+    openTourInquiry(link.dataset.propertyInquiry, link.dataset.requestType === 'waitlist' ? 'waitlist' : undefined, link.dataset.suiteKey);
   });
 });
 const inquiry = document.querySelector<HTMLDialogElement>('#inquiry-dialog')!;

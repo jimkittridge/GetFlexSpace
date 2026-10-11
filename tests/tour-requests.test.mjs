@@ -8,6 +8,7 @@ function database() {
   const sqlite = new DatabaseSync(':memory:');
   sqlite.exec(readFileSync(new URL('../migrations/0001_tour_requests.sql', import.meta.url), 'utf8'));
   sqlite.exec(readFileSync(new URL('../migrations/0002_ideal_unit_size.sql', import.meta.url), 'utf8'));
+  sqlite.exec(readFileSync(new URL('../migrations/0003_inquiry_property_context.sql', import.meta.url), 'utf8'));
   return { sqlite, prepare(sql) {
     const statement = sqlite.prepare(sql);
     let args = [];
@@ -127,7 +128,7 @@ test('email failure preserves the saved lead, and retry sends to the fixed recip
   assert.equal(row.email_status, 'failed'); assert.equal(row.name, data.name);
   let calls = 0;
   const sender = { notify: async message => {
-    calls++; assert.ok(message.subject.includes('Durham'));
+    calls++; assert.ok(message.subject.includes('1320 Old Oxford Rd, Durham, NC 27704'));
     assert.ok(message.text.includes(data.id)); assert.ok(message.text.includes(data.business));
     assert.equal(Object.hasOwn(message, 'to'), false); return { messageId: 'test-message' };
   } };
@@ -166,4 +167,88 @@ test('only one sender claims a pending email', async () => {
   const sender = { notify: async () => { calls++; return { messageId: 'test-message' }; } };
   await Promise.all([notifyRequest(db, saved, { TOUR_EMAIL_ENABLED: 'true', TOUR_NOTIFICATIONS: sender }), notifyRequest(db, saved, { TOUR_EMAIL_ENABLED: 'true', TOUR_NOTIFICATIONS: sender })]);
   assert.equal(calls, 1);
+});
+
+test('suite inquiries save the trusted address and selected space in admin and tour emails', async () => {
+  const db = database();
+  const suite_key = JSON.stringify(['2,077 SF Suite', '2,077 SF', '']);
+  const data = { ...lead(), location_slug: 'durham-nc', suite_key,
+    property_address: 'Fake address', unit_number: 'Invented unit' };
+  const notifications = [];
+  const ctx = context(data, db);
+  ctx.env.TOUR_EMAIL_ENABLED = 'true';
+  ctx.env.TOUR_NOTIFICATIONS = { notify: async message => notifications.push(message) };
+  assert.equal((await submitRequest(ctx)).status, 201);
+  await Promise.all(ctx.promises);
+  const saved = db.sqlite.prepare('SELECT * FROM tour_requests').get();
+  const property = JSON.parse(saved.property_context);
+  assert.equal(property.address, '1320 Old Oxford Rd, Durham, NC 27704');
+  assert.equal(property.suiteLabel, '2,077 SF Suite');
+  assert.equal(property.unitNumber, null);
+  assert.match(property.unitNote, /no unit number is recorded/);
+  assert.match(notifications[0].subject, /1320 Old Oxford Rd, Durham, NC 27704 — 2,077 SF Suite/);
+  assert.match(notifications[0].text, /Space of interest: 2,077 SF Suite/);
+  assert.doesNotMatch(notifications[0].text, /Fake address|Invented unit/);
+  const request = new Request('https://getflexspace.com/api/admin/requests', { headers: adminHeaders });
+  const inbox = await listRequests({ request, env: { LEADS_DB: db } }, adminFetch);
+  assert.deepEqual((await inbox.json()).requests[0].property, property);
+  assert.equal((await submitRequest(context(data, db))).status, 200);
+  assert.equal((await submitRequest(context({ ...data, suite_key: JSON.stringify(['1,700 SF Suite', '1,700 SF', '']) }, db))).status, 409);
+});
+
+test('suite waitlist emails identify the layout without turning preferred size into a unit', async () => {
+  const db = database(); const notifications = [];
+  const ctx = context({ ...lead(), location: 'Fletcher / Asheville', location_slug: 'asheville-nc',
+    request_type: 'waitlist', ideal_size: '500-1000', suite_key: JSON.stringify(['Standard Suite', '1,000 SF', '']) }, db);
+  ctx.env.TOUR_EMAIL_ENABLED = 'true'; ctx.env.TOUR_NOTIFICATIONS = { notify: async message => notifications.push(message) };
+  assert.equal((await submitRequest(ctx)).status, 201); await Promise.all(ctx.promises);
+  assert.match(notifications[0].subject, /452 Butler Bridge Rd, Fletcher, NC 28732 — Standard Suite — 1,000 SF/);
+  assert.match(notifications[0].text, /Ideal unit size: 500–1,000 sq ft/);
+  assert.match(notifications[0].text, /Unit \/ suite number: Not specified/);
+});
+
+test('property-level requests explain why no specific unit is identified', async () => {
+  const db = database(); const ctx = context({ ...lead(), ideal_size: '1500-2000' }, db);
+  assert.equal((await submitRequest(ctx)).status, 201);
+  const property = JSON.parse(db.sqlite.prepare('SELECT property_context FROM tour_requests').get().property_context);
+  assert.equal(property.suiteLabel, null);
+  assert.match(property.unitNote, /No specific space was selected/);
+  assert.match(property.unitNote, /not a unit assignment/);
+});
+
+test('forged or stale property and suite identifiers cannot label a lead with another property', async () => {
+  const db = database();
+  for (const change of [{ location_slug: 'high-point-nc' }, { location: 'Unknown location' },
+    { suite_key: JSON.stringify(['Warehouse', '3,400 SF', '']) }, { suite_key: 'stale' }]) {
+    assert.equal((await submitRequest(context({ ...lead(), ...change }, db))).status, 400);
+  }
+  for (const change of [{ location_slug: [] }, { location_slug: 0 }, { suite_key: false }, { suite_key: ['wrong'] }]) {
+    assert.equal(validateRequest({ ...lead(), ...change }), null);
+  }
+  assert.equal(db.sqlite.prepare('SELECT COUNT(*) AS count FROM tour_requests').get().count, 0);
+});
+
+test('email retries preserve the stored address and unit snapshot', async () => {
+  const db = database(); const data = lead(); await submitRequest(context(data, db));
+  const property = { address: '1320 Old Oxford Rd, Durham, NC 27704', suiteLabel: 'Unit B — 2,077 SF',
+    unitNumber: 'B', unitNote: '', selection: 'selected-space', url: 'https://getflexspace.com/locations/durham-nc/' };
+  db.sqlite.prepare('UPDATE tour_requests SET property_context = ? WHERE id = ?').run(JSON.stringify(property), data.id);
+  const saved = db.sqlite.prepare('SELECT * FROM tour_requests').get();
+  const messages = [];
+  await notifyRequest(db, saved, { TOUR_EMAIL_ENABLED: 'true', TOUR_NOTIFICATIONS: { notify: async message => messages.push(message) } });
+  assert.match(messages[0].subject, /Unit B — 2,077 SF/);
+  assert.match(messages[0].text, /Unit \/ suite number: B/);
+});
+
+test('the context migration preserves old leads and legacy emails explain missing selections', async () => {
+  const sqlite = new DatabaseSync(':memory:');
+  for (const file of ['0001_tour_requests.sql', '0002_ideal_unit_size.sql']) {
+    sqlite.exec(readFileSync(new URL(`../migrations/${file}`, import.meta.url), 'utf8'));
+  }
+  const data = lead();
+  sqlite.prepare(`INSERT INTO tour_requests (id, created_at, updated_at, name, location, business, cell_phone, request_type)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`).run(data.id, '2026-10-01', '2026-10-01', data.name, data.location, data.business, data.cell_phone, data.request_type);
+  sqlite.exec(readFileSync(new URL('../migrations/0003_inquiry_property_context.sql', import.meta.url), 'utf8'));
+  const saved = sqlite.prepare('SELECT * FROM tour_requests').get();
+  assert.equal(saved.id, data.id); assert.equal(saved.property_context, null);
 });

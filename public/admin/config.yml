@@ -96,6 +96,7 @@ collections:
         widget: list
         fields:
           - { label: Name, name: name, widget: string, hint: "e.g. Available Suite, Standard Suite" }
+          - { label: Unit / Suite Number, name: unitNumber, widget: string, required: false, hint: "Actual unit identifier, e.g. 104 or B. Leave blank for a layout without a specific unit number. Included in inquiry emails when known." }
           - { label: Size, name: size, widget: string, hint: "e.g. 2,500 SF" }
           - label: Status
             name: status

@@ -20,3 +20,11 @@ test('the waitlist URL shares only the chosen location and preserves the current
   assert.equal(original.searchParams.has('waitlist'), false);
   assert.equal(waitlistUrl(original).searchParams.get('waitlist'), '1');
 });
+
+test('shared suite waitlists keep the selected space and clear it when changing location', () => {
+  const key = JSON.stringify(['Standard Suite', '1,000 SF', '']);
+  const shared = waitlistUrl(new URL('https://getflexspace.com/'), 'asheville-nc', key);
+  assert.equal(shared.searchParams.get('space'), key);
+  assert.equal(waitlistUrl(shared, 'columbia-sc').searchParams.has('space'), false);
+  assert.equal(waitlistUrl(shared, '', key).searchParams.has('space'), false);
+});
