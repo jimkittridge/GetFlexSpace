@@ -190,7 +190,8 @@ it with `wrangler deploy --config notification-worker/wrangler.jsonc` when its
 code changes. Its checked-in configuration disables public and preview URLs.
 
 The build and test scripts generate a server-only inquiry catalog from published
-CMS location records. The API resolves location/suite identifiers against that
+CMS location records. It emits a plain JavaScript module for compatibility with
+Cloudflare’s hosted Pages Functions compiler. The API resolves location/suite identifiers against that
 catalog, ignoring client-provided address or unit text. Each new lead saves a
 snapshot of its address and space details in `property_context`, so a retry
 does not silently use later listing edits. Legacy leads without a snapshot use

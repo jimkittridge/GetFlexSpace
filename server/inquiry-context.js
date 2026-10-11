@@ -1,4 +1,4 @@
-import properties from './generated/inquiry-properties.json' with { type: 'json' };
+import properties from './generated/inquiry-properties.js';
 
 function findProperty(lead, catalog = properties) {
   if (lead.location_slug) return catalog.find(property => property.slug === lead.location_slug);

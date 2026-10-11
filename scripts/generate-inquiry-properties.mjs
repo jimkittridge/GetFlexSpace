@@ -11,5 +11,5 @@ const properties = readdirSync(directory).filter(file => file.endsWith('.md')).s
 }).filter(data => data.published !== false).map(inquiryProperty);
 if (new Set(properties.map(property => property.slug)).size !== properties.length) throw new Error('Duplicate property slug');
 mkdirSync(new URL('../server/generated/', import.meta.url), { recursive: true });
-writeFileSync(new URL('../server/generated/inquiry-properties.json', import.meta.url), `${JSON.stringify(properties, null, 2)}\n`);
+writeFileSync(new URL('../server/generated/inquiry-properties.js', import.meta.url), `// Generated from published CMS properties. Do not edit.\nexport default ${JSON.stringify(properties, null, 2)};\n`);
 console.log(`Prepared inquiry details for ${properties.length} published properties.`);
